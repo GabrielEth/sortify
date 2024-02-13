@@ -1,6 +1,5 @@
-# Project Name
-> Outline a brief description of your project.
-> Live demo [_here_](https://www.example.com). <!-- If you have the project hosted somewhere, include the link here. -->
+# Moodify
+> Moodify is intended to be used in conjunction with Spotify to create personalized playlists tailored to your desired mood and other related song features. This app uses songs you have already liked in your library rather than finding new songs.
 
 ## Table of Contents
 * [General Info](#general-information)
