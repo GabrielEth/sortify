@@ -1,6 +1,9 @@
 # Moodify
-> Moodify is intended to be used in conjunction with Spotify to create personalized playlists tailored to your desired mood and other related song features. This app uses songs you have already liked in your library rather than finding new songs.
-
+  Created by Dylan Bladen, Jason Fuller, Gabriel Garza, Stormie Renevey, Mason Melead
+> Moodify is an app intended to be used in conjunction with Spotify to create personalized playlists tailored to your desired mood and other related song features. This app uses songs you have already liked in your library rather than finding new songs.
+  The app is being created for spotify users who want more options for creating playlists based on music they already have.
+  We are creating this app with the intent to provide more customization with creating spotify playlists. This will save spotify users a lot of time and provide new types of playlists for them to listen to.
+	
 ## Table of Contents
 * [General Info](#general-information)
 * [Technologies Used](#technologies-used)
@@ -24,9 +27,8 @@
 
 
 ## Technologies Used
-- Tech 1 - version 1.0
-- Tech 2 - version 2.0
-- Tech 3 - version 3.0
+- React Native - version
+- Firebase - version
 
 
 ## Features
@@ -55,7 +57,7 @@ Provide various use cases and code examples here.
 
 
 ## Project Status
-Project is: _in progress_ / _complete_ / _no longer being worked on_. If you are no longer working on it, provide reasons why.
+Project is: _in progress_
 
 
 ## Room for Improvement
