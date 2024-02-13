@@ -33,9 +33,10 @@
 
 ## Features
 List the ready features here:
-- Awesome feature 1
-- Awesome feature 2
-- Awesome feature 3
+- OAuth Login through Spotify 
+- Playlist generation based on user's existing song library
+- User's generated playlist will update as user adds to their liked songs on spotify
+
 
 
 ## Screenshots
