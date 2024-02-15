@@ -24,13 +24,12 @@
 
 
 ## Features
-List the ready features here:
-* OAuth Login through Spotify and logout
-* Playlist generation based on user's existing song library
-* User's generated playlist will update as user adds to their liked songs on spotify
-* Filter on playlist creation
-* Ability to preview the playlist
-* Ability to push new playlist to Spotify account or cancel
+*  OAuth Login through Spotify and logout
+*  Playlist generation based on user's existing song library
+*  User's generated playlist will update as user adds to their liked songs on spotify
+*  Filter on playlist creation
+*  Ability to preview the playlist
+*  Ability to push new playlist to Spotify account or cancel
 
 
 ## Screenshots
