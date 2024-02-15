@@ -1,8 +1,5 @@
 # Moodify
   Created by Dylan Bladen, Jason Fuller, Gabriel Garza, Stormie Renevey, Mason Melead
-> Moodify is an app intended to be used in conjunction with Spotify to create personalized playlists tailored to your desired mood and other related song features. This app uses songs you have already liked in your library rather than finding new songs.
-  The app is being created for spotify users who want more options for creating playlists based on music they already have.
-  We are creating this app with the intent to provide more customization with creating spotify playlists. This will save spotify users a lot of time and provide new types of playlists for them to listen to.
 	
 ## Table of Contents
 * [General Info](#general-information)
@@ -13,28 +10,27 @@
 * [Usage](#usage)
 * [Project Status](#project-status)
 * [Room for Improvement](#room-for-improvement)
-<!-- * [License](#license) -->
 
 
 ## General Information
-- Provide general information about your project here.
-- What problem does it (intend to) solve?
-- What is the purpose of your project?
-- Why did you undertake it?
-<!-- You don't have to answer all the questions - just the ones relevant to your project. -->
+- Moodify is an app intended to be used in conjunction with Spotify to create personalized playlists tailored to your desired mood and other related song features. 
+- The app is being created for spotify users who want more options for creating playlists based on music they already have. Songs will be pulled from a user's liked songs in their library rather than finding new music.
+- We are creating this app with the intent to provide more customization with creating spotify playlists. This will save spotify users a lot of time and provide new types of playlists for them to listen to.
 
 
 ## Technologies Used
-- React Native - version
-- Firebase - version
+- React
+- Firebase
 
 
 ## Features
 List the ready features here:
-- OAuth Login through Spotify 
+- OAuth Login through Spotify and logout
 - Playlist generation based on user's existing song library
 - User's generated playlist will update as user adds to their liked songs on spotify
-
+- Filter on playlist creation
+- Ability to preview the playlist
+- Ability to push new playlist to Spotify account or cancel
 
 
 ## Screenshots
@@ -47,12 +43,14 @@ What are the project requirements/dependencies? Where are they listed? A require
 
 Proceed to describe how to install / setup one's local environment / get started with the project.
 
+`TBD`
+
 
 ## Usage
 How does one go about using it?
 Provide various use cases and code examples here.
 
-`write-your-code-here`
+`TBD`
 
 
 ## Project Status
@@ -72,14 +70,4 @@ To do:
 
 
 ## Acknowledgements
-Give credit here.
-- This project was inspired by...
-- This project was based on [this tutorial](https://www.example.com).
-- Many thanks to...
-
-
-<!-- Optional -->
-<!-- ## License -->
-<!-- This project is open source and available under the [... License](). -->
-
-<!-- You don't have to include all sections - just the one's relevant to your project -->
+- Thanks to Spotify for the information available via their APIs. Their APIs are used throughout this app to display a lot of song information.
