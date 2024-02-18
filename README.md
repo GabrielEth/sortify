@@ -24,7 +24,11 @@
 
 
 ## Features
-*  OAuth Login through Spotify and logout
+# 1st Sprint
+*  OAuth Login through Spotify and logout SCRUM 44,45,42,75,76, User Story SCRUM 7,41
+*  Inticive UI design (including landing page) SCRUM 61,62,63,64,67,74 User Story SCRUM 57,68
+*  User's liked songs fetched from sptify into application SCRU 46,65,70 User Story SCRUM 32
+# tbd
 *  Playlist generation based on user's existing song library
 *  User's generated playlist will update as user adds to their liked songs on spotify
 *  Filter on playlist creation
