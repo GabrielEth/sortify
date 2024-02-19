@@ -1,4 +1,4 @@
-# Moodify
+# Sortify
   Created by Dylan Bladen, Jason Fuller, Gabriel Garza, Stormie Renevey, Mason Melead
 	
 ## Table of Contents
@@ -13,13 +13,13 @@
 
 
 ## General Information
-- Moodify is an app intended to be used in conjunction with Spotify to create personalized playlists tailored to your desired mood and other related song features. 
+- Sortify is an app intended to be used in conjunction with Spotify to create personalized playlists tailored to your desired mood and other related song features. 
 - The app is being created for spotify users who want more options for creating playlists based on music they already have. Songs will be pulled from a user's liked songs in their library rather than finding new music.
 - We are creating this app with the intent to provide more customization with creating spotify playlists. This will save spotify users a lot of time and provide new types of playlists for them to listen to.
 
 
 ## Technologies Used
-- React
+- MERN
 - Firebase
 
 
