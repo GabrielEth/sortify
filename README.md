@@ -37,8 +37,7 @@
 
 
 ## Screenshots
-![Example screenshot](./img/screenshot.png)
-<!-- If you have screenshots you'd like to share, include them here. -->
+
 
 
 ## Setup
@@ -73,4 +72,4 @@ To do:
 
 
 ## Acknowledgements
-- Thanks to Spotify for the information available via their APIs. Their APIs are used throughout this app to display a lot of song information.
+- Thanks to Spotify for the information available via their APIs. Their APIs will be utilized throughout this app.
