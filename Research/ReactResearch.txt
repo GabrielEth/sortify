@@ -1,0 +1,12 @@
+1.	React Research/Foundations
+2.	I have never used React before and need some basic understanding of syntax and how it is used to create the frontend. I do have experience with HTML, CSS, Typescript, and the idea of components already because I have used Angular.
+3.	I expect to know how components are structured and how to pass information to them. 
+4.  I expect to better understand the syntax of react and this will be used when I am creating the main page for our app to allow a user to import songs, view their imported playlists, and other features to come.
+5.	Task SCRUM-85 {and route guard} and potentially more down the road
+
+React Notes
+
+React is component based - Function or Class components.
+Components can only change their internal state, not their properties
+Props/state input, UI output
+Virtual views in memory --> making it fast and responsive
