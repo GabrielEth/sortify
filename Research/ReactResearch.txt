@@ -6,6 +6,10 @@
 
 React (and some JavaScript) Notes
 
+LINKS
+https://jscomplete.com/learn
+https://legacy.reactjs.org/docs/getting-started.html
+
 React is component based - Function or Class components.
 Function Components: Typically used when they state management is not needed or lifecycle methods, but becoming more common now due to their simplicity.
 Function Components can use things like useState and useEffect to handle state effects more easily
