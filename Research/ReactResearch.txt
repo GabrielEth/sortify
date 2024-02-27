@@ -1,0 +1,63 @@
+1.	React Research/Foundations
+2.	I have never used React before and need some basic understanding of syntax and how it is used to create the frontend. I do have experience with HTML, CSS, Typescript, and the idea of components already because I have used Angular.
+3.	I expect to know how components are structured and how to pass information to them. 
+4.  I expect to better understand the syntax of react and this will be used when I am creating the main page for our app to allow a user to import songs, view their imported playlists, and other features to come.
+5.	Task SCRUM-85, 76, 79 for this sprint.
+
+React (and some JavaScript) Notes
+
+LINKS
+https://jscomplete.com/learn
+https://legacy.reactjs.org/docs/getting-started.html
+
+React is component based - Function or Class components.
+Function Components: Typically used when they state management is not needed or lifecycle methods, but becoming more common now due to their simplicity.
+Function Components can use things like useState and useEffect to handle state effects more easily
+Class Components: Extend React.Component class but can extend other components too, more commonly used for state management lifecycle and lifecycle methods (ex. componentDidMount(): called right after component is rendered for the first time)
+Every class component has to have a render() function implemented
+Components can only change their internal state, not their properties
+Props/state input, UI output (look more into idea of props on your own)
+Virtual views in memory make it fast and responsive, diffs between virtual dom and inputs and only updates what has changed
+Functions that use an await need to be labeled async
+Async <=> asynchronous, meaning some sort of request that brings back a response. Response comes back in the form of a promise.
+Can deserialize a response into json by using .json on whatever variable you used to capture the response. You must await the deserialization too.
+'this' keyword will be used when it is an instance of a component
+Use map for lists of data, maps array of properties from an object to a new array. Helpful for displaying a list of info
+ex. <variable holding response data>.map(<storage variable) => <<component in use> {...<storage variable>} and nested within html 
+
+Example of some React code (using function components) I worked on with a tutorial that was in React 17. Rendering & some slight syntax change and rendering would be done using root.render for react18.
+
+function Button(props) {
+  const handleClick = () => props.onClickFunction(props.increment);
+	return (
+  	<button onClick={handleClick}>
+      +{props.increment}
+    </button>
+  );
+}
+
+function Display(props) {
+	return (
+  	<div>{props.message}</div>
+  );
+}
+
+function App() {
+	const [counter, setCounter] = useState(0);
+  const incrementCounter = (incrementValue) => setCounter(counter+incrementValue);
+	return (
+    <div>
+      <Button onClickFunction={incrementCounter} increment={1} />
+      <Button onClickFunction={incrementCounter} increment={5} />
+      <Button onClickFunction={incrementCounter} increment={10} />
+      <Button onClickFunction={incrementCounter} increment={100} />
+      <Display message={counter}/>
+    </div>  
+  );
+}
+
+ReactDOM.render(
+  <App />, 
+  document.getElementById('mountNode'),
+);
+
