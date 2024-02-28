@@ -1,15 +1,17 @@
 import React from 'react'
 import Login from './Login';
-import { Container } from 'react-bootstrap';
-
-
+import { Router } from 'express';
+import Landingpage from './Landingpage';
 
 const App = () => {
   return (
-    <div>
-      <div className='bg-green-400 text-white'>Sortify</div>
-      <div><Login /></div>
-    </div>
+    <Router>
+      <div>
+        <div className='bg-green-400 text-white'>Sortify</div>
+        <Route path="/" exact component={Login} />
+        <Route path="/landingpage" component={Landingpage} />
+      </div>
+    </Router>
   )
 }
 
