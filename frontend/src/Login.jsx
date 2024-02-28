@@ -1,7 +1,6 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import Logo from './../../Resources/Logo.png'
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 export default function Login() {
     return (
