@@ -1,18 +1,17 @@
-import React from 'react'
-import Login from './Login';
-import { Router } from 'express';
-import Landingpage from './Landingpage';
+import Login from "./login";
+import { Route, Routes } from "react-router-dom";
+import LandingPage from "./landing-page";
 
 const App = () => {
   return (
-    <Router>
-      <div>
-        <div className='bg-green-400 text-white'>Sortify</div>
-        <Route path="/" exact component={Login} />
-        <Route path="/landingpage" component={Landingpage} />
-      </div>
-    </Router>
-  )
-}
+    <>
+      <div className="bg-green-400 text-white">Sortify</div>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/landingpage" element={ <LandingPage /> } />
+      </Routes>
+    </>
+  );
+};
 
 export default App;
