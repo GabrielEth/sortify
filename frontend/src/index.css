@@ -1,3 +1,23 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html, body, #app, #app>div {
+    height: 100%
+}
+
+.header {
+    background-color: #F0DCCA;
+    height: 4rem;
+    align-items: right;
+}
+
+.footer {
+    background-color: #F0DCCA;
+    height: 4rem;
+}
+
+.settings-icon {
+    width: 50px;
+    height: auto;
+}

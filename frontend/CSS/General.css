@@ -9,7 +9,8 @@
 
 
 --- 02 COLORS
-
+Almond: #f0dcca
+Green: #99bc85
 
 
 --- 03 IMAGES 
@@ -120,3 +121,10 @@ body {
 strong {
   font-weight: 500;
 }
+
+/* .colors {
+  lightest-green: #E1F0DA
+  #D4E7C5
+  #BFD8AF
+  #99BC85
+} */
