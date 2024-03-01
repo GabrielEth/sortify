@@ -1,6 +1,6 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
-import Logo from './../../Resources/Logo.png';
+import Logo from './../../Resources/Logo.png'; // Import statement kept from original code
 import 'bootstrap/dist/css/bootstrap.min.css';
 import querystring from 'querystring';
 
