@@ -1,0 +1,19 @@
+Title or name of research/training: 
+    Spotify API Research
+
+Why you are doing it: 
+    Need to understand what metrics are applied to individual songs and how we can use those metrics.
+
+What you expect to learn/do.
+    From the research gathered, I plan to implement the user options within the U/I and also informing my teamates
+    on what direction we will be going with the playlist customization. 
+
+What do you expect to do with it, including any code you expect to write.  Be specific.  For example, "Writing the UI" is not sufficient.   "Writing the Login class" is.
+    From the metrics given, we aim to integrate them through user preferences. This will allow us to generate 
+    the custom playlist. 
+
+What task(s) in Jira represent the work you will do that was/is dependent on the research/training.: 
+    "Define 'buckets' for playlist sorting" Using the metrics we are able to gather, we will define types of playlist users can generate from their music.
+    Furthemore, in the next sprint this information will be used for algorithm design.
+
+---------------------------------------------------------------------------------------------------------
