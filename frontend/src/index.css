@@ -17,7 +17,11 @@ html, body, #app, #app>div {
     height: 4rem;
 }
 
-.settings-icon {
+.cog {
     width: 50px;
     height: auto;
+    float: right;
+    margin-top: .5rem;
+    margin-right: .5rem;
+    cursor: pointer;
 }
