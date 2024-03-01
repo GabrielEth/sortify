@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import querystring from 'querystring';
 
 const client_id = '20992e27a1c343b69cb1f404a3fe8ad2';
+const client_secret = '04dbbead01694ebe8bff95e6e9ebf4f6'; // Add your client secret here
 const redirect_uri = 'http://localhost:5173/callback';
 const scope = 'user-read-private user-read-email';
 
@@ -20,7 +21,7 @@ const generateRandomString = (length) => {
 
 export default function Login() {
     const handleLogin = () => {
-        console.log("Login button clicked!"); // Add this line to log when the button is clicked
+        console.log("Login button clicked!");
 
         const state = generateRandomString(16);
         const queryParams = new URLSearchParams({
@@ -33,6 +34,33 @@ export default function Login() {
         const authUrl = `https://accounts.spotify.com/authorize?${queryParams.toString()}`;
         window.location.href = authUrl;
     };
+
+    const appGetCallback = (req, res) => {
+        var code = req.query.code || null;
+        var state = req.query.state || null;
+
+        if (state === null) {
+            res.redirect('/#' +
+                querystring.stringify({
+                    error: 'state_mismatch'
+                }));
+        } else {
+            var authOptions = {
+                url: 'https://accounts.spotify.com/api/token',
+                form: {
+                    code: code,
+                    redirect_uri: redirect_uri,
+                    grant_type: 'authorization_code'
+                },
+                headers: {
+                    'content-type': 'application/x-www-form-urlencoded',
+                    'Authorization': 'Basic ' + (new Buffer.from(client_id + ':' + client_secret).toString('base64'))
+                },
+                json: true
+            };
+        }
+    };
+
     return (
         <div
             style={{
