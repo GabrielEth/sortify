@@ -33,4 +33,13 @@ MongoDB Atlas is what we should use. The system will be largely managed for us, 
 
 - Collections are analagous to tables in relational databases. Collections are groups of similar documents, though documents within a collection are not required to have the same fields
 - Documents are the basic unit of data in MongoDB. They are stored in a BSON format. They consist of key-value pairs (AKA fields).
--
+
+### What do we need to store?
+
+Collections:
+
+- users: user ID, Oauth token, preferences/settings, unique sorting profile
+- playlists : playlist ID, name, track list, last modified,
+  - track list as an array of embedded documents, with fields like track id, name, artist, sample flag(whether it is marked as a sample song for the sorting)
+- staging: stuff that is currently being worked on
+- logs: logs of user actions used for analytics
