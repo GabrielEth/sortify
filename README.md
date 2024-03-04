@@ -67,6 +67,7 @@ Mason Melead:
 
 # SECOND SPRINT
 Objectives
+
 - Fix redirect from login page
 - Unit testing
 - Route guard bug fix
