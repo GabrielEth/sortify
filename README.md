@@ -24,11 +24,43 @@
 
 
 ## Features
-# 1st Sprint
-*  OAuth Login through Spotify and logout SCRUM 44,45,42,75,76, User Story SCRUM 7,41
-*  Inticive UI design (including landing page) SCRUM 61,62,63,64,67,74 User Story SCRUM 57,68
-*  User's liked songs fetched from sptify into application SCRUM 46,65,70 User Story SCRUM 32
-*  Automative Interval Sorting (playlists update automatically based on an interval in the settings) SCRUM 65, User Story SCRUM 30
+
+
+# FIRST SPRINT
+
+Dylan Bladen 
+  - Scrum 85: React Research
+  - Scrum 78: Implment Dashboard U/I Skeleton
+  - Scrum 76: Implement Dashboard Route Guard 
+  - Scrum 67: Design & Mock a dashboard
+
+Stormie Renevey
+ - Scrum 81: Initialize app by Configuring/Connecting Front & Back End
+ - Scrum 83: Research MERN Stack Application Deployment
+ - Scrum 84: Deploy MERN Stack Application (Frontend)
+ - Scrum 36: Define 'Buckets' for playlist sorting
+ - Scrum 35: Research Spotify API Song Stats
+
+Gabriel Garza
+  - Scrum 87: Implement U/I Visual  
+  - Scrum 65: Write a fucntion to store a user's liked songs temporarily
+  - Scrum 63: Define Architecture for putting songs in data structure 
+  - Scrum 51: Research Spotify API
+
+Jason Fuller
+  - Scrum 88: Implement Login Page U/I
+  - Scrum 45: Design a clear and intuitive UI flow for users to start the OAuth process, including button or links to "Connect to Spotify."
+  - Scrum 44: Implement token refresh logic to ensure the app can maintain access without requiring the user to frequently re-authenticate.
+  - Scrum 43: Develop the authentication flow in the app, ensuring it meets Spotify's security standards.
+  - Scrum 42: Research Spotify's OAuth 2.0 implementation documentation.
+
+Mason Melead:
+  - Scrum 77: Define Sortify U/X
+  - Scrum 74: Define Everything to be Stored in database
+  - SCRUM-64: MongoDB Research
+
+# SECOND SPRINT
+
 # tbd
 *  Playlist generation based on user's existing song library
 *  User's generated playlist will update as user adds to their liked songs on spotify
@@ -74,14 +106,3 @@ To do:
 
 ## Acknowledgements
 - Thanks to Spotify for the information available via their APIs. Their APIs will be utilized throughout this app.
-
-## Work done
-
-** Gabriel: "provided users with a wat to fetch their songs from their spotify account into the app" **
-
-| Jira Task | Description | Where |
-| :--------- | :------------ | :--------- |
-| SCRUM 87 | Implement U/I Visual Organizer | Bitbucket |
-| SCRUM 63 | define Architecture for Putting Songs in Data Structure | Bitbucket |
-| SCRUM 65 | Write a function to store a users' liked songs temporarily | Bitbucket |
-| SCRUM 51 | Research Spotify API | Bitbucket |
