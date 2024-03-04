@@ -114,3 +114,61 @@ valence     number [float]
     A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more positive (e.g. happy, cheerful, euphoric), while tracks with low valence sound more negative (e.g. sad, depressed, angry).
     Range: 0 - 1
     Example: 0.428
+
+
+---------------------------------------------------------------------------------------------------
+
+DEFINE BUCKETS
+
+BASIC:
+
+Happy/Upbeat Playlist: 
+Focus on tracks with high valence, which indicates more positive and cheerful music. High danceability and energy levels could also contribute to this mood, reflecting songs that are lively and uplifting.
+
+Sad/Melancholic Playlist: 
+Look for songs with low valence, which are likely to convey a more negative or sad mood. Lower energy levels and slower tempo could also be indicative of melancholic or introspective tracks.
+
+Chill/Relaxing Playlist: 
+This playlist could feature songs with lower energy, higher acousticness, and possibly lower tempo, which might help listeners unwind and relax.
+
+Workout/Gym Playlist: 
+High-energy tracks with fast tempo and strong beat (reflected in danceability and possibly time signature) would be suitable here, helping listeners stay motivated and energized during their workouts.
+
+Focus/Study Playlist: 
+Tracks with high instrumentalness (indicating fewer vocals) could help minimize distractions. Lower energy and possibly a steadier tempo could also contribute to a more conducive environment for concentration.
+
+Party/High-Energy Playlist: 
+Similar to the gym playlist but with an emphasis on high danceability, high energy, and possibly higher loudness, to create a vibrant and dynamic atmosphere suitable for social gatherings.
+
+Romantic Playlist: 
+Songs with a certain valence range that feels intimate or passionate, possibly combined with a specific tempo or key, could create a romantic or sensual mood.
+
+Live Performance Playlist: 
+Tracks with high liveness values can give listeners the feeling of a live performance, adding a sense of immediacy and presence.
+
+
+LESS BASIC:
+
+Nostalgic Playlist:
+Curate songs with a specific range of tempo and key that might evoke a sense of nostalgia. Combine this with a certain level of acousticness and valence to capture songs that bring back memories and induce a nostalgic feeling.
+
+Euphoric/Trance Playlist: 
+Focus on tracks with high instrumentalness to minimize vocal distractions, combined with a steady tempo and high energy. This can create an immersive, trance-like state, suitable for deep focus or meditation.
+
+Dark/Mysterious Playlist: 
+Look for songs with low valence and potentially lower danceability or energy, which could convey a sense of mystery or darkness. This could be ideal for thematic parties, writing, or immersive gaming sessions.
+
+Epic/Grandiose Playlist: 
+Select tracks with a combination of high energy, significant loudness, and a broad dynamic range to create a sense of awe and grandeur. This playlist would be perfect for inspiration, motivation, or as a backdrop for grand events.
+
+Whimsical/Fun Playlist: 
+Choose songs with quirky or unusual time signatures, high danceability, and possibly varying levels of valence to create a playful and fun atmosphere. This could be great for children's parties, creative brainstorming sessions, or just lifting the mood.
+
+Introspective/Contemplative Playlist: 
+Select tracks with lower danceability, moderate to low energy, and varying levels of acousticness. This could help listeners reflect, meditate, or engage in deep thought, ideal for journaling, studying, or winding down.
+
+Ethnic/World Music Playlist: 
+Utilize the key and mode features to identify songs from specific cultural or regional scales, combined with unique instrumentations (high instrumentalness) to create playlists that transport listeners to different parts of the world.
+
+Angst/Rebellion Playlist: 
+Target songs with high energy, lower valence, and possibly higher speechiness to capture a sense of angst or rebellion. This could resonate with listeners going through a phase of dissent or seeking empowerment.
