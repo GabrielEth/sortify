@@ -74,3 +74,13 @@ To do:
 
 ## Acknowledgements
 - Thanks to Spotify for the information available via their APIs. Their APIs will be utilized throughout this app.
+
+## Work done
+
+** Gabriel: "provided users with a wat to fetch their songs from their spotify account into the app" **
+| Jira Task     |                    Description                                 | Where     |
+| :---------    | :------------ 												 | Bitbucket |
+| SCRUM 87      | Implement U/I Visual Organizer 								 | Bitbucket |
+| SCRUM 63      | define Archtitecture for Putting Songs in Data Structure	     | Bitbucket |
+| SCRUM 65      | Write a function to store a users' liked songs temporarily     | Bitbucket |
+| SCRUM 51      | Research Spotify API 											 | Bitbucket |
