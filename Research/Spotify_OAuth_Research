@@ -1,0 +1,7 @@
+Title or name of research/training - Spotify OAuth 2.0
+Why you are doing it. - We need to to fetch user data
+What you expect to learn/do. - How to implement Spotify OAuth flow into our project
+What do you expect to do with it, including any code you expect to write.- I expect to redirect user to spofity login page, refresh user token, then fetch any needed data
+What task(s) in Jira represent the work you will do that was/is dependent on the research/training. - "Implement token refresh logic to ensure the app can maintain access without requiring the user to frequently re-authenticate.", "Develop the authentication flow in the app, ensuring it meets Spotify's security standards.", "Design a clear and intuitive UI flow for users to start the OAuth process, including buttons or links to "Connect to Spotify.""
+
+https://developer.spotify.com/documentation/web-api/tutorials/code-flow
