@@ -66,6 +66,15 @@ Mason Melead:
 - SCRUM-64: MongoDB Research
 
 # SECOND SPRINT
+Objectives
+- Fix redirect from login page
+- Unit testing
+- Route guard bug fix
+- Flesh out dashboard UI more
+- Replace dummy data with actual user playlist data
+- Further develop sorting algorithms based on the defined buckets
+- Database implementation
+- Database testing
 
 # tbd
 *  Playlist generation based on user's existing song library
