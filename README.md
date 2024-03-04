@@ -28,14 +28,18 @@
 
 # FIRST SPRINT
 
-Dylan Bladen 
+Dylan Bladen
 - Scrum 85: React Research
+  - [Scrum 85](https://cs3398s24luna.atlassian.net/browse/SCRUM-85), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/5)
 - Scrum 78: Implment Dashboard U/I Skeleton
-- Scrum 76: Implement Dashboard Route Guard 
+  - [Scrum 78](https://cs3398s24luna.atlassian.net/browse/SCRUM-78), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/8)
+- Scrum 76: Implement Dashboard Route Guard
+  - [Scrum 76](https://cs3398s24luna.atlassian.net/browse/SCRUM-76), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/14)
 - Scrum 67: Design & Mock a dashboard
+  - [Scrum 67](https://cs3398s24luna.atlassian.net/browse/SCRUM-67), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/7)
+
 
 Stormie Renevey
-
 - Scrum 81: Initialize app by Configuring/Connecting Front & Back End
   - [Scrum 81](https://cs3398s24luna.atlassian.net/browse/SCRUM-81), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/2)
 - Scrum 83: Research MERN Stack Application Deployment
@@ -47,23 +51,41 @@ Stormie Renevey
 - Scrum 35: Research Spotify API Song Stats
   - [Scrum 35](https://cs3398s24luna.atlassian.net/browse/SCRUM-35), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/11)
 
+
 Gabriel Garza
-- Scrum 87: Implement U/I Visual  
+- Scrum 87: Implement U/I Visual
+  - [Scrum 87](https://cs3398s24luna.atlassian.net/browse/SCRUM-87)
 - Scrum 65: Write a fucntion to store a user's liked songs temporarily
-- Scrum 63: Define Architecture for putting songs in data structure 
+  - [Scrum 65](https://cs3398s24luna.atlassian.net/browse/SCRUM-65)
+- Scrum 63: Define Architecture for putting songs in data structure
+  - [Scrum 63](https://cs3398s24luna.atlassian.net/browse/SCRUM-63)
 - Scrum 51: Research Spotify API
+  - [Scrum 51](https://cs3398s24luna.atlassian.net/browse/SCRUM-51)
+[Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/4)
+
 
 Jason Fuller
 - Scrum 88: Implement Login Page U/I
+  - [Scrum 88](https://cs3398s24luna.atlassian.net/browse/SCRUM-88)
 - Scrum 45: Design a clear and intuitive UI flow for users to start the OAuth process, including button or links to "Connect to Spotify."
+  - [Scrum 45](https://cs3398s24luna.atlassian.net/browse/SCRUM-45)
 - Scrum 44: Implement token refresh logic to ensure the app can maintain access without requiring the user to frequently re-authenticate.
+  - [Scrum 44](https://cs3398s24luna.atlassian.net/browse/SCRUM-44)
 - Scrum 43: Develop the authentication flow in the app, ensuring it meets Spotify's security standards.
+  - [Scrum 43](https://cs3398s24luna.atlassian.net/browse/SCRUM-43)
 - Scrum 42: Research Spotify's OAuth 2.0 implementation documentation.
+  - [Scrum 42](https://cs3398s24luna.atlassian.net/browse/SCRUM-42) 
+[Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/3)
+
 
 Mason Melead:
 - Scrum 77: Define Sortify U/X
+  - [Scrum 77](https://cs3398s24luna.atlassian.net/browse/SCRUM-77), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/6)
 - Scrum 74: Define Everything to be Stored in database
-- SCRUM-64: MongoDB Research
+  - [Scrum 74](https://cs3398s24luna.atlassian.net/browse/SCRUM-74)
+- Scrum 64: MongoDB Research
+  - [Scrum 64](https://cs3398s24luna.atlassian.net/browse/SCRUM-64), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/12)
+
 
 # SECOND SPRINT
 
