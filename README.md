@@ -35,6 +35,12 @@ Dylan Bladen
   - Scrum 67: Design & Mock a dashboard
 
 Stormie Renevey
+* [Scrum 81](https://cs3398s24luna.atlassian.net/browse/SCRUM-81), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/2)
+* [Scrum 83](https://cs3398s24luna.atlassian.net/browse/SCRUM-83), [Bitbucket]()
+* [Scrum 84](https://cs3398s24luna.atlassian.net/browse/SCRUM-84), [Bitbucket]()
+* [Scrum 36](https://cs3398s24luna.atlassian.net/browse/SCRUM-36), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/13)
+* [Scrum 35](https://cs3398s24luna.atlassian.net/browse/SCRUM-35), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/11)
+
  - Scrum 81: Initialize app by Configuring/Connecting Front & Back End
  - Scrum 83: Research MERN Stack Application Deployment
  - Scrum 84: Deploy MERN Stack Application (Frontend)
