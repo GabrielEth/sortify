@@ -29,10 +29,10 @@
 # FIRST SPRINT
 
 Dylan Bladen 
-  - Scrum 85: React Research
-  - Scrum 78: Implment Dashboard U/I Skeleton
-  - Scrum 76: Implement Dashboard Route Guard 
-  - Scrum 67: Design & Mock a dashboard
+- Scrum 85: React Research
+- Scrum 78: Implment Dashboard U/I Skeleton
+- Scrum 76: Implement Dashboard Route Guard 
+- Scrum 67: Design & Mock a dashboard
 
 Stormie Renevey
 * [Scrum 81](https://cs3398s24luna.atlassian.net/browse/SCRUM-81), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/2)
@@ -41,29 +41,29 @@ Stormie Renevey
 * [Scrum 36](https://cs3398s24luna.atlassian.net/browse/SCRUM-36), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/13)
 * [Scrum 35](https://cs3398s24luna.atlassian.net/browse/SCRUM-35), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/pull-requests/11)
 
- - Scrum 81: Initialize app by Configuring/Connecting Front & Back End
- - Scrum 83: Research MERN Stack Application Deployment
- - Scrum 84: Deploy MERN Stack Application (Frontend)
- - Scrum 36: Define 'Buckets' for playlist sorting
- - Scrum 35: Research Spotify API Song Stats
+- Scrum 81: Initialize app by Configuring/Connecting Front & Back End
+- Scrum 83: Research MERN Stack Application Deployment
+- Scrum 84: Deploy MERN Stack Application (Frontend)
+- Scrum 36: Define 'Buckets' for playlist sorting
+- Scrum 35: Research Spotify API Song Stats
 
 Gabriel Garza
-  - Scrum 87: Implement U/I Visual  
-  - Scrum 65: Write a fucntion to store a user's liked songs temporarily
-  - Scrum 63: Define Architecture for putting songs in data structure 
-  - Scrum 51: Research Spotify API
+- Scrum 87: Implement U/I Visual  
+- Scrum 65: Write a fucntion to store a user's liked songs temporarily
+- Scrum 63: Define Architecture for putting songs in data structure 
+- Scrum 51: Research Spotify API
 
 Jason Fuller
-  - Scrum 88: Implement Login Page U/I
-  - Scrum 45: Design a clear and intuitive UI flow for users to start the OAuth process, including button or links to "Connect to Spotify."
-  - Scrum 44: Implement token refresh logic to ensure the app can maintain access without requiring the user to frequently re-authenticate.
-  - Scrum 43: Develop the authentication flow in the app, ensuring it meets Spotify's security standards.
-  - Scrum 42: Research Spotify's OAuth 2.0 implementation documentation.
+- Scrum 88: Implement Login Page U/I
+- Scrum 45: Design a clear and intuitive UI flow for users to start the OAuth process, including button or links to "Connect to Spotify."
+- Scrum 44: Implement token refresh logic to ensure the app can maintain access without requiring the user to frequently re-authenticate.
+- Scrum 43: Develop the authentication flow in the app, ensuring it meets Spotify's security standards.
+- Scrum 42: Research Spotify's OAuth 2.0 implementation documentation.
 
 Mason Melead:
-  - Scrum 77: Define Sortify U/X
-  - Scrum 74: Define Everything to be Stored in database
-  - SCRUM-64: MongoDB Research
+- Scrum 77: Define Sortify U/X
+- Scrum 74: Define Everything to be Stored in database
+- SCRUM-64: MongoDB Research
 
 # SECOND SPRINT
 
