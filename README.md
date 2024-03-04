@@ -78,9 +78,10 @@ To do:
 ## Work done
 
 ** Gabriel: "provided users with a wat to fetch their songs from their spotify account into the app" **
-| Jira Task     |                    Description                                 | Where     |
-| :---------    | :------------ 												 | Bitbucket |
-| SCRUM 87      | Implement U/I Visual Organizer 								 | Bitbucket |
-| SCRUM 63      | define Archtitecture for Putting Songs in Data Structure	     | Bitbucket |
-| SCRUM 65      | Write a function to store a users' liked songs temporarily     | Bitbucket |
-| SCRUM 51      | Research Spotify API 											 | Bitbucket |
+
+| Jira Task | Description | Where |
+| :--------- | :------------ | :--------- |
+| SCRUM 87 | Implement U/I Visual Organizer | Bitbucket |
+| SCRUM 63 | define Architecture for Putting Songs in Data Structure | Bitbucket |
+| SCRUM 65 | Write a function to store a users' liked songs temporarily | Bitbucket |
+| SCRUM 51 | Research Spotify API | Bitbucket |
