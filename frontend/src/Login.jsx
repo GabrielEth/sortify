@@ -2,9 +2,9 @@ import { Container } from 'react-bootstrap';
 import Logo from './../../Resources/Logo.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const client_id = '20992e27a1c343b69cb1f404a3fe8ad2';
+const client_id = '7de6fc918ba248768d83e1ed282527c6';
 // const client_secret = '04dbbead01694ebe8bff95e6e9ebf4f6'; // Add your client secret here
-const redirect_uri = 'http://localhost:5173/callback';
+const redirect_uri = 'http://localhost:5555/callback';
 const scope = 'user-read-private user-read-email';
 
 const generateRandomString = (length) => {
