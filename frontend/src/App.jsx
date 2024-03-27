@@ -1,6 +1,6 @@
-import Login from "./login";
+import Login from "./Login";
+import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
 import { useState } from "react";
-import { Route, Routes } from "react-router-dom";
 import Dashboard from "./dashboard/dashboard";
 import SettingsCog from "./assets/settings.svg";
 import SettingsModal from "./settingsmodal";
@@ -25,10 +25,16 @@ const App = () => {
           onClose={toggleSettingsModal}
         />
       </div>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          {/* <Route element={<ProtectedRoute />}> */}
+          <Route path="/dashboard" element={<Dashboard />} />
+          {/* </Route> */}
+          <Route path="/" element={<Navigate replace to="/login" />} />
+          {/* <Route path="*" element={<Navigate replace to="/login" />} /> */}
+        </Routes>
+      </BrowserRouter>
       <div className="footer"></div>
     </>
   );

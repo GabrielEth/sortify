@@ -1,7 +1,37 @@
 import { Container } from 'react-bootstrap';
-import Logo from './../../Resources/Logo.png'
+import Logo from './../../Resources/Logo.png';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const client_id = '7de6fc918ba248768d83e1ed282527c6';
+// const client_secret = '04dbbead01694ebe8bff95e6e9ebf4f6'; // Add your client secret here
+const redirect_uri = 'http://localhost:5555/callback';
+const scope = 'user-read-private user-read-email';
+
+const generateRandomString = (length) => {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+};
 
 export default function Login() {
+    const handleLogin = () => {
+
+        const state = generateRandomString(16);
+        const queryParams = new URLSearchParams({
+            response_type: 'code',
+            client_id: client_id,
+            scope: scope,
+            redirect_uri: redirect_uri,
+            state: state
+        });
+        const authUrl = `https://accounts.spotify.com/authorize?${queryParams.toString()}`;
+        window.location.href = authUrl;
+    };
+
     return (
         <div
             style={{
@@ -15,7 +45,7 @@ export default function Login() {
             <Container
                 className="d-flex flex-column align-items-center"
                 style={{
-                    backgroundColor: "#333", // Optional, can be removed
+                    backgroundColor: "#333",
                     padding: '30px',
                     borderRadius: '10px',
                     textAlign: 'center',
@@ -34,13 +64,13 @@ export default function Login() {
                     color: 'white'
                 }}>Create personalized mood-based playlist
                 </div>
-                <a className="btn btn-success btn-lg" href='/login' style={{
+                <button className="btn btn-success btn-lg" onClick={handleLogin} style={{
                     padding: 16,
                     borderRadius: 99,
                     marginTop: 30
                 }}>
                     Login With Spotify
-                </a>
+                </button>
             </Container>
         </div>
     )
