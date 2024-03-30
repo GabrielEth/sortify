@@ -1,0 +1,6 @@
+Some resrources that will be used in later UI development
+
+spotify clone for later reference if needed: https://github.com/namratapdr/spotify-clone/tree/master
+Dashboard 1: https://github.com/horizon-ui/horizon-ui-chakra
+Dashboard 2: https://github.com/yuanguandong/react-dashboard-pro
+Could be useful: https://github.com/kimcoder/react-simple-image-slider
