@@ -115,3 +115,5 @@ exportPlaylistToSpotify(userId, accessToken, playlistDetails, trackUris)
 updatePlaylistOnSpotify(accessToken, playlistId, trackUris)
 .then(updatedPlaylistId => console.log(`Playlist updated successfully: ${updatedPlaylistId}`))
 .catch(error => console.error(error));
+
+module.exports = { exportPlaylistToSpotify, updatePlaylistOnSpotify };
