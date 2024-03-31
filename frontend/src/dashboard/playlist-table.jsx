@@ -1,39 +1,86 @@
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+
+import "./playlist-table.css";
+
+import newPlaylist from '../../../Resources/newPlaylist.png'
+
+
 export function PlaylistTable({ playlists }) {
-  const dummyPlaylists = [
-    { name: "Chill Vibes", tracks: 42 },
-    { name: "Workout Mix", tracks: 58 },
-    { name: "Liked Songs", tracks: 2500 },
-  ];
+
+  const cardsPerRow = 5; // Set the minimum number of cards per row
 
   return (
-    <>
-      <div className="playlist-container">
-        <table className="playlist-table">
-          <thead>
-            <tr>
-              <th><input className="checkbox" type="checkbox" /></th>
-              <th>Playlist Name</th>
-              <th>Number of Tracks</th>
-              <th>{/*context menu here*/}</th>
-            </tr>
-          </thead>
-          <tbody className="playlist-entry">
-            {dummyPlaylists.map((playlist, index) => (
-              <tr key={index}>
-                <td><input className="checkbox" type="checkbox" /></td>
-                <td>{playlist.name}</td>
-                <td className="centered-text">{playlist.tracks}</td>
-                <td></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="table-footer">
-        <button className="sortify-music-btn staging-btn">
-          Go to Staging Area
-        </button>
-      </div>
-    </>
+    <Container>
+      <Row>
+
+        <Col>
+        <Card>
+        <Card.Img variant="top" src={newPlaylist} />
+        <Card.Body>
+          <Card.Text>
+            Create New Playlist
+          </Card.Text>
+        </Card.Body>
+      </Card>
+        </Col>
+
+        <Col><Card>
+        <Card.Img variant="top" src="holder.js/100px180" />
+        <Card.Body>
+          <Card.Text>
+            Alt
+          </Card.Text>
+        </Card.Body>
+      </Card>
+      </Col>
+
+      <Col>
+      <Card>
+        <Card.Img variant="top" src="holder.js/100px180" />
+        <Card.Body>
+          <Card.Text>
+            Sad Boy Hours
+          </Card.Text>
+        </Card.Body>
+      </Card>
+      </Col>
+      </Row>
+      <Row>
+      <Col>
+        <Card>
+        <Card.Img variant="top" src='holder.js/100px180' />
+        <Card.Body>
+          <Card.Text>
+            Gym
+          </Card.Text>
+        </Card.Body>
+      </Card>
+        </Col>
+
+        <Col><Card>
+        <Card.Img variant="top" src="holder.js/100px180" />
+        <Card.Body>
+          <Card.Text>
+            Summer 2023
+          </Card.Text>
+        </Card.Body>
+      </Card>
+      </Col>
+
+      <Col>
+      <Card>
+        <Card.Img variant="top" src="holder.js/100px180" />
+        <Card.Body>
+          <Card.Text>
+            ❤️‍🔥
+          </Card.Text>
+        </Card.Body>
+      </Card>
+      </Col>
+      </Row>
+    </Container>
   );
 }
