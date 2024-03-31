@@ -1,7 +1,6 @@
 import Login from "./Login";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
 import Dashboard from "./dashboard/dashboard";
-import ProtectedRoute from "./routeguard";
 
 const App = () => {
   return (
