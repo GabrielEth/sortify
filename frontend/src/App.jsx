@@ -9,12 +9,16 @@ const App = () => {
       <div className="header">
         <img src=""></img> {/* for settings cog */}
       </div>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route element={<ProtectedRoute />}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          {/* <Route element={<ProtectedRoute />}> */}
           <Route path="/dashboard" element={<Dashboard />} />
-        </Route>
-      </Routes>
+          {/* </Route> */}
+          <Route path="/" element={<Navigate replace to="/login" />} />
+          {/* <Route path="*" element={<Navigate replace to="/login" />} /> */}
+        </Routes>
+      </BrowserRouter>
       <div className="footer"></div>
     </>
   );
