@@ -7,80 +7,37 @@ import "./playlist-table.css";
 
 import newPlaylist from '../../../Resources/newPlaylist.png'
 
-
-export function PlaylistTable({ playlists }) {
-
-  const cardsPerRow = 5; // Set the minimum number of cards per row
+const PlaylistTable = ({ playlists }) => {
+  const cardsPerRow = 5;
 
   return (
     <Container>
-      <Row>
-
-        <Col>
-        <Card>
-        <Card.Img variant="top" src={newPlaylist} />
-        <Card.Body>
-          <Card.Text>
-            Create New Playlist
-          </Card.Text>
-        </Card.Body>
-      </Card>
+      <Row className="g-3">
+        {/* Placeholder for "Create New Playlist" card */}
+        <Col md={12 / cardsPerRow}>
+          <Card className="card-hover-effect">
+            <Card.Img variant="top" src={newPlaylist} alt="Create New Playlist" />
+            <Card.Body>
+              <Card.Text>Create New Playlist</Card.Text>
+            </Card.Body>
+          </Card>
         </Col>
 
-        <Col><Card>
-        <Card.Img variant="top" src="holder.js/100px180" />
-        <Card.Body>
-          <Card.Text>
-            Alt
-          </Card.Text>
-        </Card.Body>
-      </Card>
-      </Col>
-
-      <Col>
-      <Card>
-        <Card.Img variant="top" src="holder.js/100px180" />
-        <Card.Body>
-          <Card.Text>
-            Sad Boy Hours
-          </Card.Text>
-        </Card.Body>
-      </Card>
-      </Col>
-      </Row>
-      <Row>
-      <Col>
-        <Card>
-        <Card.Img variant="top" src='holder.js/100px180' />
-        <Card.Body>
-          <Card.Text>
-            Gym
-          </Card.Text>
-        </Card.Body>
-      </Card>
-        </Col>
-
-        <Col><Card>
-        <Card.Img variant="top" src="holder.js/100px180" />
-        <Card.Body>
-          <Card.Text>
-            Summer 2023
-          </Card.Text>
-        </Card.Body>
-      </Card>
-      </Col>
-
-      <Col>
-      <Card>
-        <Card.Img variant="top" src="holder.js/100px180" />
-        <Card.Body>
-          <Card.Text>
-            ❤️‍🔥
-          </Card.Text>
-        </Card.Body>
-      </Card>
-      </Col>
+        {/* Dynamic playlist cards */}
+        {playlists.map((playlist, index) => (
+          <Col key={index} md={12 / cardsPerRow}>
+            <Card className="card-hover-effect">
+              <Card.Img variant="top" src={playlist.imageUrl || 'path/to/your/placeholder_image.jpg'} alt={playlist.name} />
+              <Card.Body>
+                <Card.Title>{playlist.name}</Card.Title>
+                <Card.Text>{playlist.description}</Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
       </Row>
     </Container>
   );
-}
+};
+
+export default PlaylistTable;

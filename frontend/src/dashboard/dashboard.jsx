@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { PlaylistTable } from "./playlist-table";
+//import  (PlaylistTable}  from "./playlist-table";
 import { useLocation } from "react-router-dom";
 import "./dashboard.css";
+import PlaylistComponent from './playlist-component.jsx'; 
+
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -59,7 +61,7 @@ export default function Dashboard({ isImportingMusic }) {
         <h2 className="text-black">
           
         </h2>
-        {<PlaylistTable />}
+        <PlaylistComponent accessToken={accessToken} />
       </div>
     </div>
   );
