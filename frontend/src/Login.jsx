@@ -1,11 +1,8 @@
 import { Container } from 'react-bootstrap';
 import Logo from './../../Resources/Logo.png'; // Import statement kept from original code
 import Background from './../../Resources/Background.jpg'
-
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Typewriter from 'typewriter-effect';
-
-import querystring from 'querystring';
 
 
 const client_id = '7de6fc918ba248768d83e1ed282527c6';
