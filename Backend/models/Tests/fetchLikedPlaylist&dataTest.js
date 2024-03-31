@@ -1,46 +1,58 @@
-// Function calls and logging results
+const accessToken = 'YOUR_SPOTIFY_ACCESS_TOKEN_HERE'; // Replace with your actual access token
 
-import fetch from 'node-fetch'; 
-import dotenv from 'dotenv'; 
-dotenv.config(); 
-const accessToken = process.env.SPOTIFY_ACCESS_TOKEN;
+const {
+  fetchLikedSongs,
+  fetchArtistsGenres,
+  fetchSongDetails,
+  fetchUserPlaylists
+} = require('./fetchLikedPlaylist&Data.js'); // Adjust the path as necessary
 
-// Paste your functions here: fetchLikedSongs, fetchArtistsGenres, and fetchSongDetails
 
 
 // Test fetchLikedSongs
 async function testFetchLikedSongs() {
+    console.log('Testing fetchLikedSongs...');
+    const likedSongs = await fetchLikedSongs(accessToken);
+    console.log(`Fetched ${likedSongs.length} liked songs.`);
+    console.log(likedSongs.slice(0, 2)); // Log the first two for inspection
+    return likedSongs; // Return for further tests
+}
+
+// Test fetchArtistsGenres
+async function testFetchArtistsGenres(likedSongs) {
+    console.log('Testing fetchArtistsGenres...');
+    const artistIds = likedSongs.flatMap(song => song.artistIds).slice(0, 10); // Take only a subset to limit requests
+    const artistGenres = await fetchArtistsGenres(artistIds, accessToken);
+    console.log(`Fetched genres for ${artistGenres.length} artists.`);
+    console.log(artistGenres.slice(0, 2)); // Log the first two for inspection
+}
+
+// Test fetchSongDetails
+async function testFetchSongDetails(likedSongs) {
+    console.log('Testing fetchSongDetails...');
+    const detailedSongs = await fetchSongDetails(likedSongs.slice(0, 5), accessToken); // Test with a subset
+    console.log(`Fetched detailed information for ${detailedSongs.length} songs.`);
+    console.log(detailedSongs.slice(0, 2)); // Log the first two for inspection
+}
+
+// Test fetchUserPlaylists
+async function testFetchUserPlaylists() {
+    console.log('Testing fetchUserPlaylists...');
+    const playlists = await fetchUserPlaylists(accessToken);
+    console.log(`Fetched ${playlists.length} playlists.`);
+    console.log(playlists.slice(0, 2)); // Log the first two for inspection
+}
+
+async function runTests() {
     try {
-      const likedSongs = await fetchLikedSongs(accessToken);
-      console.log("Liked Songs:", likedSongs);
+        // Run tests sequentially to respect potential rate limits and dependencies
+        const likedSongs = await testFetchLikedSongs();
+        await testFetchArtistsGenres(likedSongs);
+        await testFetchSongDetails(likedSongs);
+        await testFetchUserPlaylists();
     } catch (error) {
-      console.error("Error fetching liked songs:", error.message);
+        console.error('Error during tests:', error);
     }
-  }
-  
-  // Test fetchArtistsGenres with a dummy array of artist IDs
-  async function testFetchArtistsGenres() {
-    try {
-      const artistGenres = await fetchArtistsGenres(['PUT_ARTIST_IDS_HERE'], accessToken);
-      console.log("Artist Genres:", artistGenres);
-    } catch (error) {
-      console.error("Error fetching artist genres:", error.message);
-    }
-  }
-  
-  // Since fetchSongDetails relies on the output of fetchLikedSongs, you might want to call it within testFetchLikedSongs or separately after ensuring you have liked songs data
-  async function testFetchSongDetails() {
-    try {
-      const likedSongs = await fetchLikedSongs(accessToken); // Assuming this returns liked songs
-      const detailedSongs = await fetchSongDetails(likedSongs, accessToken);
-      console.log("Detailed Songs:", detailedSongs);
-    } catch (error) {
-      console.error("Error fetching song details:", error.message);
-    }
-  }
-  
-  // Run tests
-  testFetchLikedSongs();
-  // testFetchArtistsGenres(); Uncomment and use valid artist IDs
-  // testFetchSongDetails(); Uncomment if needed
-  
+}
+
+runTests();
