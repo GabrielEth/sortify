@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import PlaylistTable from './playlist-table.jsx'; 
+import LoadingCircle from '../loading-circle.jsx';
+
 
 const PlaylistComponent = () => {
   const accessToken = useSelector((state) => state.auth.accessToken);
@@ -43,10 +45,19 @@ const PlaylistComponent = () => {
     }
   }, [accessToken]);
 
-  if (isLoading) return <div>Loading...</div>; // loading bar here eventually??
   if (error) return <div>Error: {error}</div>;
 
-  return <PlaylistTable playlists={playlists} />;
+  return (
+    <div>
+      {isLoading ? (
+        <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1000 }}>
+          <LoadingCircle />
+        </div>
+      ) : (
+        <PlaylistTable playlists={playlists} />
+      )}
+    </div>
+  );
 };
 
 export default PlaylistComponent;
