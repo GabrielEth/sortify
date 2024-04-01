@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
-import { PlaylistTable } from "./playlist-table";
+//import  (PlaylistTable}  from "./playlist-table";
 import { useLocation } from "react-router-dom";
 import "./dashboard.css";
+import PlaylistComponent from './playlist-component.jsx'; 
+
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -36,6 +38,7 @@ export default function Dashboard({ isImportingMusic }) {
 
   return (
     <div className="dashboard">
+
       <div className="profile-section">
         <img
           src={profilePicture}
@@ -43,9 +46,12 @@ export default function Dashboard({ isImportingMusic }) {
           className="profile-image"
         />
       </div>
-      <div className="import-container">
-        <button className="sortify-music-btn">Import Music</button>
-      </div>
+
+      <div className="instructions">
+      <h1>
+        Create A New Playlist OR Select One To Update!
+      </h1>
+    </div>
 
       <div className="loading-bar" hidden={!isImportingMusic}>
         <div className="loading-progress"></div>
@@ -53,9 +59,9 @@ export default function Dashboard({ isImportingMusic }) {
 
       <div className="select-playlists">
         <h2 className="text-black">
-          Select Playlists you would like to include in your generated playlist
+          
         </h2>
-        {<PlaylistTable />}
+        <PlaylistComponent accessToken={accessToken} />
       </div>
     </div>
   );
