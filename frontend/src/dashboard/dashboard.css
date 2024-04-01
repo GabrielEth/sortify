@@ -7,7 +7,7 @@
     flex-direction: column;
     align-items: center;
     padding: 4rem;
-    background-color: #99bc85;
+    background-color: #081C15;
     min-height: 100vh;
     margin: 0 auto;
   }
@@ -19,6 +19,13 @@
     border-radius: 50%;
     margin-bottom: 20px;
   }
+
+  .instructions h1 {
+    font-weight: bold; /* Makes text bold */
+    font-size: 24px; /* Set the font size as needed */
+    color: #52B788; /* Sets the color */
+  }
+  
 
   .import-container {
     align-items: center;
@@ -63,8 +70,8 @@
     margin-top: 5rem;
     margin-right: 0;
     width: 70%;
-    border: solid 1px #f0dcca;
-    box-shadow: 0px 0px 15px 3px #f0dcca;
+    border: solid 1px #52B788;
+    box-shadow: 0px 0px 15px 3px #52B788;
     position: relative;
   }
 

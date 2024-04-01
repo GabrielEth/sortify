@@ -1,39 +1,43 @@
-export function PlaylistTable({ playlists }) {
-  const dummyPlaylists = [
-    { name: "Chill Vibes", tracks: 42 },
-    { name: "Workout Mix", tracks: 58 },
-    { name: "Liked Songs", tracks: 2500 },
-  ];
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Card from 'react-bootstrap/Card';
+
+import "./playlist-table.css";
+
+import newPlaylist from '../../../Resources/newPlaylist.png'
+
+const PlaylistTable = ({ playlists }) => {
+  const cardsPerRow = 5;
 
   return (
-    <>
-      <div className="playlist-container">
-        <table className="playlist-table">
-          <thead>
-            <tr>
-              <th><input className="checkbox" type="checkbox" /></th>
-              <th>Playlist Name</th>
-              <th>Number of Tracks</th>
-              <th>{/*context menu here*/}</th>
-            </tr>
-          </thead>
-          <tbody className="playlist-entry">
-            {dummyPlaylists.map((playlist, index) => (
-              <tr key={index}>
-                <td><input className="checkbox" type="checkbox" /></td>
-                <td>{playlist.name}</td>
-                <td className="centered-text">{playlist.tracks}</td>
-                <td></td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <div className="table-footer">
-        <button className="sortify-music-btn staging-btn">
-          Go to Staging Area
-        </button>
-      </div>
-    </>
+    <Container>
+      <Row className="g-3">
+        {/* Placeholder for "Create New Playlist" card */}
+        <Col md={12 / cardsPerRow}>
+          <Card className="card-hover-effect">
+            <Card.Img variant="top" src={newPlaylist} alt="Create New Playlist" />
+            <Card.Body>
+              <Card.Text>Create New Playlist</Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+
+        {/* Dynamic playlist cards */}
+        {playlists.map((playlist, index) => (
+          <Col key={index} md={12 / cardsPerRow}>
+            <Card className="card-hover-effect">
+              <Card.Img variant="top" src={playlist.imageUrl || 'path/to/your/placeholder_image.jpg'} alt={playlist.name} />
+              <Card.Body>
+                <Card.Title>{playlist.name}</Card.Title>
+                <Card.Text>{playlist.description}</Card.Text>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </Container>
   );
-}
+};
+
+export default PlaylistTable;

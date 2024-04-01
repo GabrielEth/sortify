@@ -1,6 +1,9 @@
 import { Container } from 'react-bootstrap';
-import Logo from './../../Resources/Logo.png';
+import Logo from './../../Resources/Logo.png'; // Import statement kept from original code
+import Background from './../../Resources/Background.jpg'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import Typewriter from 'typewriter-effect';
+
 
 const client_id = '7de6fc918ba248768d83e1ed282527c6';
 // const client_secret = '04dbbead01694ebe8bff95e6e9ebf4f6'; // Add your client secret here
@@ -35,7 +38,9 @@ export default function Login() {
     return (
         <div
             style={{
-                backgroundColor: "#333",
+                backgroundImage: `url("${Background}")`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
                 minHeight: "100vh",
                 display: 'flex',
                 justifyContent: 'center',
@@ -45,7 +50,7 @@ export default function Login() {
             <Container
                 className="d-flex flex-column align-items-center"
                 style={{
-                    backgroundColor: "#333",
+                    backgroundColor: "rgba(230, 250, 235, 0.5)", // Add a semi-transparent white background for better readability
                     padding: '30px',
                     borderRadius: '10px',
                     textAlign: 'center',
@@ -61,10 +66,20 @@ export default function Login() {
                     fontSize: 17,
                     fontFamily: 'montserrat',
                     marginTop: 15,
-                    color: 'white'
-                }}>Create personalized mood-based playlist
+                    color: 'black'
+                }}>
+                    <hi>
+                        <Typewriter
+                            options={{
+                                autoStart: true,
+                                loop: true,
+                                delay: 70,
+                                strings: ["Create personalized mood-based playlist"]
+                            }}
+                        />
+                    </hi>
                 </div>
-                <button className="btn btn-success btn-lg" onClick={handleLogin} style={{
+                <button className="btn btn-success btn-lg throbbing-button" onClick={handleLogin} style={{
                     padding: 16,
                     borderRadius: 99,
                     marginTop: 30
