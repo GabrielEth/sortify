@@ -17,6 +17,7 @@ const App = () => {
           </Route>
           <Route path="/callback" element={<Callback />} />
           <Route path="/" element={<Navigate replace to="/login" />} />
+          <Route path="*" element={<Navigate replace to="/login" />} />
         </Routes>
         <div className="footer"></div>
       </BrowserRouter>

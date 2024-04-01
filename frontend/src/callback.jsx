@@ -13,8 +13,6 @@ const Callback = () => {
     const accessToken = params.get("access_token");
     const refreshToken = params.get("refresh_token");
 
-    console.log({ accessToken, refreshToken });
-
     if (accessToken && refreshToken) {
       dispatch(setTokens({ accessToken, refreshToken }));
       navigate("/dashboard", { replace: true });
