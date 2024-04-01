@@ -1,18 +1,11 @@
 import { useState, useEffect } from "react";
-//import  (PlaylistTable}  from "./playlist-table";
-import { useLocation } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "./dashboard.css";
 import PlaylistComponent from './playlist-component.jsx'; 
 
-
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
-
 export default function Dashboard({ isImportingMusic }) {
-  const query = useQuery();
-  const accessToken = query.get("access_token");
-  const refreshToken = query.get("refresh_token");
+  const accessToken = useSelector((state) => state.auth.accessToken);
+  const refreshToken = useSelector((state) => state.auth.refreshToken);
 
   const [profilePicture, setProfilePicture] = useState(null);
 

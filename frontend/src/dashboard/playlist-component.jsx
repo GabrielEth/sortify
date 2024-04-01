@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PlaylistTable from './playlist-table.jsx'; 
 
-const PlaylistComponent = ({ accessToken }) => {
+const PlaylistComponent = () => {
+  const accessToken = useSelector((state) => state.auth.accessToken);
+
   const [playlists, setPlaylists] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -33,14 +36,14 @@ const PlaylistComponent = ({ accessToken }) => {
             setError('Failed to fetch playlists');
           }
         })
-        .catch(error => {
+        .catch(() => {
           setIsLoading(false);
           setError('Error fetching playlists');
         });
     }
-  }, [accessToken]); // Re-fetch when accessToken changes
+  }, [accessToken]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <div>Loading...</div>; // loading bar here eventually??
   if (error) return <div>Error: {error}</div>;
 
   return <PlaylistTable playlists={playlists} />;

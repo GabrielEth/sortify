@@ -1,12 +1,12 @@
+import { useSelector } from 'react-redux';
 import { Outlet, Navigate } from 'react-router-dom'
 
-/* can verify token with the back end if we decide to store that information */
-
 const ProtectedRoute = () => {
-    let authentication = { 'token': localStorage.getItem('authToken') }
+    const accessToken = useSelector((state) => state.auth.accessToken);
+
     return(
-        authentication.token ? <Outlet/> : <Navigate to="/login"/>
-    )
+        accessToken ? <Outlet /> : <Navigate to="/login" />
+    );
 }
 
 export default ProtectedRoute

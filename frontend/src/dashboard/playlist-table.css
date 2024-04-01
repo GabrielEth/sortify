@@ -1,12 +1,9 @@
-/* Stylesheet file (e.g., styles.css) */
-
 .card-hover-effect {
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  }
-  
-  .card-hover-effect:hover {
-    transform: scale(1.05); /* Adjust the scale value to make it larger */
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); /* This will create a subtle shadow effect */
-    border: 2px solid #D8F3DC; /* Replace with your desired color */
-  }
-  
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card-hover-effect:hover {
+  transform: scale(1.05); /* Adjust the scale value to make it larger */
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); /* This will create a subtle shadow effect */
+  border: 2px solid #d8f3dc; /* Replace with your desired color */
+}
