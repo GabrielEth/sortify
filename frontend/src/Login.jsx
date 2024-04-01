@@ -4,9 +4,7 @@ import Background from './../../Resources/Background.jpg'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Typewriter from 'typewriter-effect';
 
-
 const client_id = '7de6fc918ba248768d83e1ed282527c6';
-// const client_secret = '04dbbead01694ebe8bff95e6e9ebf4f6'; // Add your client secret here
 const redirect_uri = 'http://localhost:5555/callback';
 const scope = 'user-read-private user-read-email';
 
@@ -21,7 +19,7 @@ const generateRandomString = (length) => {
 };
 
 export default function Login() {
-    const handleLogin = () => {
+    const handleLogin = async () => {
 
         const state = generateRandomString(16);
         const queryParams = new URLSearchParams({
