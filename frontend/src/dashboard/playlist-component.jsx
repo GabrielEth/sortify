@@ -47,16 +47,36 @@ const PlaylistComponent = () => {
 
   if (error) return <div>Error: {error}</div>;
 
+  const overlayStyle = { 
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    zIndex: 1000,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
+
+  const contentStyle = isLoading ? {
+    filter: 'blur(5px)',
+    pointerEvents: 'none',
+    userSelect: 'none',
+  } : {};
+
   return (
-    <div>
-      {isLoading ? (
-        <div style={{ position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1000 }}>
+    <>
+      <div style={contentStyle}>
+        <PlaylistTable playlists={playlists} />
+      </div>
+      {isLoading && (
+        <div style={overlayStyle}>
           <LoadingCircle />
         </div>
-      ) : (
-        <PlaylistTable playlists={playlists} />
       )}
-    </div>
+    </>
   );
 };
 
