@@ -1,7 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import PlaylistTable from './playlist-table.jsx'; 
+import LoadingCircle from '../loading-circle.jsx';
 
-const PlaylistComponent = ({ accessToken }) => {
+
+const PlaylistComponent = () => {
+  const accessToken = useSelector((state) => state.auth.accessToken);
+
   const [playlists, setPlaylists] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -33,17 +38,46 @@ const PlaylistComponent = ({ accessToken }) => {
             setError('Failed to fetch playlists');
           }
         })
-        .catch(error => {
+        .catch(() => {
           setIsLoading(false);
           setError('Error fetching playlists');
         });
     }
-  }, [accessToken]); // Re-fetch when accessToken changes
+  }, [accessToken]);
 
-  if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  return <PlaylistTable playlists={playlists} />;
+  const overlayStyle = { 
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    zIndex: 1000,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
+
+  const contentStyle = isLoading ? {
+    filter: 'blur(5px)',
+    pointerEvents: 'none',
+    userSelect: 'none',
+  } : {};
+
+  return (
+    <>
+      <div style={contentStyle}>
+        <PlaylistTable playlists={playlists} />
+      </div>
+      {isLoading && (
+        <div style={overlayStyle}>
+          <LoadingCircle />
+        </div>
+      )}
+    </>
+  );
 };
 
 export default PlaylistComponent;

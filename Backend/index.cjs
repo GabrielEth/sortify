@@ -53,9 +53,8 @@ app.get("/callback", async (req, res) => {
         refresh_token,
       });
       
-      res.redirect(`http://localhost:5173/dashboard?${queryParams}`);
+      res.redirect(`http://localhost:5173/callback?${queryParams}`);
     } catch (error) {
-      console.error("Error fetching tokens:", error.message);
       res.redirect(`http://localhost:5173/error?message=${encodeURIComponent(error.message)}`);
     }
   }
