@@ -1,0 +1,87 @@
+.create-playlist-container {
+    background-color: #1f3327;
+    color: #c5c6c7;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    padding: 20px;
+    max-width: 600px;
+}
+
+.section-heading {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.subsection-heading {
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.dropdown {
+    width: 100%;
+    padding: 8px;
+    margin-top: 8px;
+    color: #1f2833;
+    background-color: #66fc8c;
+    border: none;
+    border-radius: 5px;
+}
+
+.scrollable-list {
+    max-height: 200px;
+    overflow-y: auto;
+    margin-top: 8px;
+}
+
+.song-item {
+    margin-bottom: 5px;
+}
+
+.song-label {
+    display: flex;
+    align-items: center;
+}
+
+.result-item {
+    margin-bottom: 5px;
+}
+
+.like-dislike-section {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.like-dislike-label {
+    font-weight: bold;
+}
+
+.like-dislike-buttons {
+    margin-top: 10px;
+}
+
+.like-button,
+.dislike-button,
+.export-button {
+    background-color: #45a25e;
+    margin-top: 20px;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.like-button:hover,
+.dislike-button:hover,
+.export-button:hover {
+    background-color: #66fc9f;
+    color: #1f2833;
+}
