@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import PlaylistTable from './playlist-table.jsx'; 
 import LoadingCircle from '../loading-circle.jsx';
 
-
 const PlaylistComponent = () => {
-  const accessToken = useSelector((state) => state.auth.accessToken);
+  const accessToken = localStorage.getItem('access_token');
 
   const [playlists, setPlaylists] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
