@@ -284,3 +284,9 @@ async function fetchSongDetails(likedSongs, accessToken) {
     return detailedSongs;
 }
 
+module.exports = {
+    fetchLikedSongs,
+    fetchArtistsGenres,
+    fetchSongDetails,
+    fetchUserPlaylists
+};

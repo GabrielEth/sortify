@@ -6,7 +6,7 @@ import Typewriter from "typewriter-effect";
 
 const client_id = "7de6fc918ba248768d83e1ed282527c6";
 const redirect_uri = "http://localhost:5555/callback";
-const scope = "user-read-private user-read-email";
+const scope = "user-read-private user-read-email user-library-read user-library-modify playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative";
 
 const generateRandomString = (length) => {
   let result = "";

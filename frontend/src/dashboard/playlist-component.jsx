@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import PlaylistTable from './playlist-table.jsx'; 
+import LoadingCircle from '../loading-circle.jsx';
 
 const PlaylistComponent = () => {
-  const accessToken = useSelector((state) => state.auth.accessToken);
+  const accessToken = localStorage.getItem('access_token');
 
   const [playlists, setPlaylists] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -43,10 +43,39 @@ const PlaylistComponent = () => {
     }
   }, [accessToken]);
 
-  if (isLoading) return <div>Loading...</div>; // loading bar here eventually??
   if (error) return <div>Error: {error}</div>;
 
-  return <PlaylistTable playlists={playlists} />;
+  const overlayStyle = { 
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    zIndex: 1000,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  };
+
+  const contentStyle = isLoading ? {
+    filter: 'blur(5px)',
+    pointerEvents: 'none',
+    userSelect: 'none',
+  } : {};
+
+  return (
+    <>
+      <div style={contentStyle}>
+        <PlaylistTable playlists={playlists} />
+      </div>
+      {isLoading && (
+        <div style={overlayStyle}>
+          <LoadingCircle />
+        </div>
+      )}
+    </>
+  );
 };
 
 export default PlaylistComponent;
