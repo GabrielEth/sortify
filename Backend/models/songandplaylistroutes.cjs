@@ -1,48 +1,11 @@
-/**
- * Spotify Liked Songs Fetcher
- * ===========================
- * This module provides functionality to fetch a user's liked songs from Spotify,
- * enrich them with detailed information including audio features and artist genres,
- * and compile this data for further application use, such as playlist creation or music analysis.
- *
- * Functions:
- * -----------
- * - fetchLikedSongs(accessToken): Fetches liked songs for a user given a Spotify access token.
- *   Returns an array of songs with basic information (name, id, and artist IDs).
- *
- * - fetchArtistsGenres(artistIds, accessToken): Fetches genres for a given list of artist IDs.
- *   Returns an array of objects, each containing an artist's ID and their associated genres.
- *
- * - fetchSongDetails(likedSongs, accessToken): Fetches detailed information for each liked song,
- *   including audio features and artist genres. Returns an enriched list of liked songs.
- *
- * Usage:
- * ------
- * 1. Obtain a valid Spotify access token with appropriate permissions to access user's liked songs.
- * 2. Call fetchLikedSongs with the access token to retrieve basic liked songs data.
- * 3. Call fetchSongDetails with the liked songs data and access token to enrich the songs with detailed information.
- *
- * Note:
- * -----
- * This module requires the 'node-fetch' library for making HTTP requests to the Spotify Web API.
- * Ensure that you handle authentication and token refresh appropriately, as this module does not cover token management.
- *
- * Example:
- * --------
- * const accessToken = 'YOUR_SPOTIFY_ACCESS_TOKEN_HERE';
- * fetchLikedSongs(accessToken)
- *   .then(likedSongs => fetchSongDetails(likedSongs, accessToken))
- *   .then(detailedSongs => console.log(detailedSongs))
- *   .catch(error => console.error('Error fetching song details:', error));
- *
+/*
  * Important:
  * ----------
  * - Ensure compliance with Spotify's Web API terms of use.
  * - Always secure user data if adapting this script for web applications.
  * 
  * For algorithm purposes:
- * ------------------------
- * // name: The title of the song.
+
  * - id: The Spotify ID for the track, a unique identifier used by Spotify to reference the song.
  * - artists: A list of the names of artists who performed or contributed to the song. Since a track can have multiple artists, this is mapped to an array.
  * - album: The name of the album on which the song appears.
@@ -70,28 +33,31 @@
  * - explicit: Indicates whether the song contains explicit content (true or false). This is useful for applications that wish to 
  * filter out songs with explicit lyrics.
  */
-const express = require('express');
+
+const express = require("express");
 const router = express.Router();
 const app = express();
 
 const fetchUserPlaylists = async (accessToken) => {
   const playlists = [];
-  let url = 'https://api.spotify.com/v1/me/playlists';
+  let url = "https://api.spotify.com/v1/me/playlists";
 
   while (url) {
     const response = await fetch(url, {
-      method: 'GET',
+      method: "GET",
       headers: {
-        'Authorization': `Bearer ${accessToken}`,
-        'Content-Type': 'application/json'
-      }
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
     });
     const data = await response.json();
-    playlists.push(...data.items.map(item => ({
-      playlistId: item.id,
-      name: item.name,
-      tracksHref: item.tracks.href
-    })));
+    playlists.push(
+      ...data.items.map((item) => ({
+        playlistId: item.id,
+        name: item.name,
+        tracksHref: item.tracks.href,
+      }))
+    );
     url = data.next;
   }
 
@@ -99,206 +65,218 @@ const fetchUserPlaylists = async (accessToken) => {
 };
 
 async function fetchLikedSongs(accessToken) {
-    let likedSongs = [];
-    let url = 'https://api.spotify.com/v1/me/tracks?limit=50'; // Starting URL, increased limit to 50
+  let likedSongs = [];
+  let url = "https://api.spotify.com/v1/me/tracks?limit=50"; // Starting URL, increased limit to 50
 
-    while (url) {
-        const response = await fetch(url, {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json'
-            }
-        });
+  while (url) {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const batchOfSongs = data.items.map(item => ({
-            name: item.track.name,
-            id: item.track.id,
-            artistIds: item.track.artists.map(artist => artist.id)
-        }));
-
-        likedSongs = likedSongs.concat(batchOfSongs);
-
-        url = data.next; // Update the URL for the next request
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
 
-    return likedSongs;
+    const data = await response.json();
+    const batchOfSongs = data.items.map((item) => ({
+      name: item.track.name,
+      id: item.track.id,
+      artistIds: item.track.artists.map((artist) => artist.id),
+    }));
+
+    likedSongs = likedSongs.concat(batchOfSongs);
+
+    url = data.next; // Update the URL for the next request
+  }
+
+  return likedSongs;
 }
 
 async function fetchArtistsGenres(artistIds, accessToken) {
-    // Function to split the artistIds array into chunks of 50 elements each
-    const chunkArray = (array, chunkSize) => {
-      const chunks = [];
-      for (let i = 0; i < array.length; i += chunkSize) {
-        chunks.push(array.slice(i, i + chunkSize));
-      }
-      return chunks;
-    };
-  
-    // Splitting artistIds into chunks of 50
-    const artistIdChunks = chunkArray(artistIds, 50);
-  
-    // Function to fetch genres for a chunk of artist IDs
-    const fetchGenresForChunk = async (idsChunk) => {
-      const endpoint = `https://api.spotify.com/v1/artists?ids=${idsChunk.join(',')}`;
-      const response = await fetch(endpoint, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-          'Content-Type': 'application/json'
-        }
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const data = await response.json();
-      return data.artists.map(artist => ({
-        id: artist.id,
-        genres: artist.genres // Each artist's genres
-      }));
-    };
-  
-    // Fetch genres for all chunks using Promise.all to handle them in parallel
-    const results = await Promise.all(artistIdChunks.map(idsChunk => fetchGenresForChunk(idsChunk)));
-  
-    // Flattening the results array as it will be an array of arrays
-    const flattenedResults = results.flat();
-  
-    return flattenedResults;
-  }
+  // Function to split the artistIds array into chunks of 50 elements each
+  const chunkArray = (array, chunkSize) => {
+    const chunks = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
+  };
+
+  // Splitting artistIds into chunks of 50
+  const artistIdChunks = chunkArray(artistIds, 50);
+
+  // Function to fetch genres for a chunk of artist IDs
+  const fetchGenresForChunk = async (idsChunk) => {
+    const endpoint = `https://api.spotify.com/v1/artists?ids=${idsChunk.join(
+      ","
+    )}`;
+    const response = await fetch(endpoint, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.artists.map((artist) => ({
+      id: artist.id,
+      genres: artist.genres, // Each artist's genres
+    }));
+  };
+
+  // Fetch genres for all chunks using Promise.all to handle them in parallel
+  const results = await Promise.all(
+    artistIdChunks.map((idsChunk) => fetchGenresForChunk(idsChunk))
+  );
+
+  // Flattening the results array as it will be an array of arrays
+  const flattenedResults = results.flat();
+
+  return flattenedResults;
+}
 
 async function fetchSongDetails(likedSongs, accessToken) {
-    const allArtistIds = [...new Set(likedSongs.flatMap(song => song.artistIds))];
-    const artistGenres = await fetchArtistsGenres(allArtistIds, accessToken);
+  const allArtistIds = [
+    ...new Set(likedSongs.flatMap((song) => song.artistIds)),
+  ];
+  const artistGenres = await fetchArtistsGenres(allArtistIds, accessToken);
 
-    // Helper function to map artist IDs to genres
-    const mapArtistIdToGenres = (artistId) => {
-        const artist = artistGenres.find(artist => artist.id === artistId);
-        return artist ? artist.genres : [];
-    };
+  // Helper function to map artist IDs to genres
+  const mapArtistIdToGenres = (artistId) => {
+    const artist = artistGenres.find((artist) => artist.id === artistId);
+    return artist ? artist.genres : [];
+  };
 
-    // Function to fetch details for a single song
-    const fetchDetailsForSong = async (song) => {
-        try {
-            const [trackResponse, featuresResponse] = await Promise.all([
-                fetch(`https://api.spotify.com/v1/tracks/${song.id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json'
-                    }
-                }),
-                fetch(`https://api.spotify.com/v1/audio-features/${song.id}`, {
-                    method: 'GET',
-                    headers: {
-                        'Authorization': `Bearer ${accessToken}`,
-                        'Content-Type': 'application/json'
-                    }
-                })
-            ]);
+  // Function to fetch details for a single song
+  const fetchDetailsForSong = async (song) => {
+    try {
+      const [trackResponse, featuresResponse] = await Promise.all([
+        fetch(`https://api.spotify.com/v1/tracks/${song.id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }),
+        fetch(`https://api.spotify.com/v1/audio-features/${song.id}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }),
+      ]);
 
-            if (!trackResponse.ok || !featuresResponse.ok) {
-                console.error(`Failed to fetch details for song ID ${song.id}`);
-                return null; // Skip this song or handle accordingly
-            }
+      if (!trackResponse.ok || !featuresResponse.ok) {
+        console.error(`Failed to fetch details for song ID ${song.id}`);
+        return null; // Skip this song or handle accordingly
+      }
 
-            const [trackData, featuresData] = await Promise.all([trackResponse.json(), featuresResponse.json()]);
+      const [trackData, featuresData] = await Promise.all([
+        trackResponse.json(),
+        featuresResponse.json(),
+      ]);
 
-            const genres = song.artistIds.flatMap(id => mapArtistIdToGenres(id))
-                                          .filter((value, index, self) => self.indexOf(value) === index)
-                                          .join(', ');
+      const genres = song.artistIds
+        .flatMap((id) => mapArtistIdToGenres(id))
+        .filter((value, index, self) => self.indexOf(value) === index)
+        .join(", ");
 
-            return {
-                name: song.name,
-                id: song.id,
-                artists: trackData.artists.map(artist => artist.name),
-                album: trackData.album.name,
-                release_date: trackData.album.release_date,
-                genre: genres,
-                bpm: featuresData.tempo,
-                danceability: featuresData.danceability,
-                energy: featuresData.energy,
-                acousticness: featuresData.acousticness,
-                instrumentalness: featuresData.instrumentalness,
-                liveness: featuresData.liveness,
-                loudness: featuresData.loudness,
-                speechiness: featuresData.speechiness,
-                valence: featuresData.valence,
-                duration_ms: trackData.duration_ms,
-                popularity: trackData.popularity,
-                explicit: trackData.explicit,
-            };
-        } catch (error) {
-            console.error(`Error fetching details for song ID ${song.id}:`, error);
-            return null; // Skip this song or handle accordingly
-        }
-    };
+      return {
+        name: song.name,
+        id: song.id,
+        artists: trackData.artists.map((artist) => artist.name),
+        album: trackData.album.name,
+        release_date: trackData.album.release_date,
+        genre: genres,
+        bpm: featuresData.tempo,
+        danceability: featuresData.danceability,
+        energy: featuresData.energy,
+        acousticness: featuresData.acousticness,
+        instrumentalness: featuresData.instrumentalness,
+        liveness: featuresData.liveness,
+        loudness: featuresData.loudness,
+        speechiness: featuresData.speechiness,
+        valence: featuresData.valence,
+        duration_ms: trackData.duration_ms,
+        popularity: trackData.popularity,
+        explicit: trackData.explicit,
+      };
+    } catch (error) {
+      console.error(`Error fetching details for song ID ${song.id}:`, error);
+      return null; // Skip this song or handle accordingly
+    }
+  };
 
-    // Fetch details for all songs in parallel, filtering out any null results
-    const detailedSongsPromises = likedSongs.map(song => fetchDetailsForSong(song));
-    const detailedSongsResults = await Promise.all(detailedSongsPromises);
-    const detailedSongs = detailedSongsResults.filter(song => song !== null);
+  // Fetch details for all songs in parallel, filtering out any null results
+  const detailedSongsPromises = likedSongs.map((song) =>
+    fetchDetailsForSong(song)
+  );
+  const detailedSongsResults = await Promise.all(detailedSongsPromises);
+  const detailedSongs = detailedSongsResults.filter((song) => song !== null);
 
-    return detailedSongs;
+  return detailedSongs;
 }
 
 // Route to fetch user playlists
-app.get('/fetch-playlists', async (accessToken) => {
+app.get("/fetch-playlists", async (accessToken) => {
   try {
     const playlists = await fetchUserPlaylists(accessToken);
     res.json({
       success: true,
-      playlists
+      playlists,
     });
   } catch (error) {
-    console.error('Error fetching user playlists:', error);
+    console.error("Error fetching user playlists:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to fetch user playlists'
+      message: "Failed to fetch user playlists",
     });
   }
 });
 
 // Route to fetch liked songs
-router.get('/fetch-liked-songs', async (req, res) => {
-  const accessToken = req.header('Authorization').split(' ')[1];
+router.get("/fetch-liked-songs", async (req, res) => {
+  const accessToken = req.header("Authorization").split(" ")[1];
   try {
     const likedSongs = await fetchLikedSongs(accessToken);
     res.json({
       success: true,
-      likedSongs
+      likedSongs,
     });
   } catch (error) {
-    console.error('Error fetching liked songs:', error);
+    console.error("Error fetching liked songs:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to fetch liked songs'
+      message: "Failed to fetch liked songs",
     });
   }
 });
 
 // Route to fetch song details
-router.get('/fetch-song-details', async (req, res) => {
-  const accessToken = req.header('Authorization').split(' ')[1];
+router.get("/fetch-song-details", async (req, res) => {
+  const accessToken = req.header("Authorization").split(" ")[1];
   try {
     const likedSongsArray = req.body.likedSongs;
     const songDetails = await fetchSongDetails(likedSongsArray, accessToken);
     res.json({
       success: true,
-      songDetails
+      songDetails,
     });
   } catch (error) {
-    console.error('Error fetching song details:', error);
+    console.error("Error fetching song details:", error);
     res.status(500).json({
       success: false,
-      message: 'Failed to fetch song details'
+      message: "Failed to fetch song details",
     });
   }
 });
