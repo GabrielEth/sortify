@@ -5,6 +5,7 @@ import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import Dashboard from "./dashboard/dashboard";
 import Callback from "./callback.jsx";
 import SettingsDrawer from "./settingsdrawer.tsx";
+import CreatePlaylist from "./components/createplaylist.jsx";
 
 const App = () => {
   const location = useLocation();
@@ -23,6 +24,7 @@ const App = () => {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
+        <Route path="/createplaylist" element={<CreatePlaylist />} />
         <Route path="/callback" element={<Callback />} />
         <Route path="/" element={<Navigate replace to="/dashboard" />} />
         <Route path="*" element={<Navigate replace to="/dashboard" />} />
