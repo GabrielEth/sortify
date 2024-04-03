@@ -23,7 +23,7 @@ var redirect_uri = "http://localhost:5555/callback";
 
 var stateKey = "spotify_auth_state";
 
-app.get("/callback", async (req, res) => {
+app.get("/callback", express.urlencoded({ extended: true }), async (req, res) => {
   const code = req.query.code || null;
   const state = req.query.state || null;
 
@@ -60,8 +60,8 @@ app.get("/callback", async (req, res) => {
   }
 });
 
-app.get('/refresh_token', async (req, res) => {
-  const refreshToken = req.query.refresh_token; // Assume the refresh token is passed as a query parameter
+app.get('/refresh_token', express.urlencoded({ extended: true }), async (req, res) => {
+  const { refreshToken} = req.body;
 
   const response = await fetch('https://accounts.spotify.com/api/token', {
     method: 'POST',
