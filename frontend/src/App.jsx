@@ -24,8 +24,8 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
         <Route path="/callback" element={<Callback />} />
-        <Route path="/" element={<Navigate replace to="/login" />} />
-        <Route path="*" element={<Navigate replace to="/login" />} />
+        <Route path="/" element={<Navigate replace to="/dashboard" />} />
+        <Route path="*" element={<Navigate replace to="/dashboard" />} />
       </Routes>
     </>
   );

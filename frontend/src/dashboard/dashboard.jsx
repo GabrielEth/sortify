@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
 import "./dashboard.css";
 import PlaylistComponent from "./playlist-component.jsx";
 
 export default function Dashboard({ isImportingMusic }) {
-  const accessToken = useSelector((state) => state.auth.accessToken);
-  const refreshToken = useSelector((state) => state.auth.refreshToken);
+  const accessToken = localStorage.getItem('access_token');
 
   const [profilePicture, setProfilePicture] = useState(null);
 
@@ -27,7 +25,7 @@ export default function Dashboard({ isImportingMusic }) {
       }
     }
     getSpotifyProfilePicture();
-  }, []);
+  }, [accessToken]);
 
   return (
     <div className="dashboard">
