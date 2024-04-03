@@ -40,7 +40,7 @@
  * - Ensure compliance with Spotify's Web API terms of use.
  * - Always secure user data if adapting this script for web applications.
  * 
- * For algorithm pourposes:
+ * For algorithm purposes:
  * ------------------------
  * // name: The title of the song.
  * - id: The Spotify ID for the track, a unique identifier used by Spotify to reference the song.
@@ -70,12 +70,9 @@
  * - explicit: Indicates whether the song contains explicit content (true or false). This is useful for applications that wish to 
  * filter out songs with explicit lyrics.
  */
-
-
 const express = require('express');
-const fetch = require('node-fetch');
+const router = express.Router();
 const app = express();
-const port = 3000;
 
 const fetchUserPlaylists = async (accessToken) => {
   const playlists = [];
@@ -101,32 +98,6 @@ const fetchUserPlaylists = async (accessToken) => {
   return playlists;
 };
 
-app.get('/fetch-playlists', async (req, res) => {
-  const accessToken = req.header('Authorization').split(' ')[1]; // Assuming the access token is passed in the Authorization header
-  try {
-    const playlists = await fetchUserPlaylists(accessToken);
-    res.json({
-      success: true,
-      playlists
-    });
-  } catch (error) {
-    console.error('Error fetching user playlists:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Failed to fetch user playlists'
-    });
-  }
-});
-
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-// Function to fetch the user's liked songs from Spotify
 async function fetchLikedSongs(accessToken) {
     let likedSongs = [];
     let url = 'https://api.spotify.com/v1/me/tracks?limit=50'; // Starting URL, increased limit to 50
@@ -158,9 +129,6 @@ async function fetchLikedSongs(accessToken) {
 
     return likedSongs;
 }
-
-  
-///////////////////////////////////////////////////////////////////////////////////////////////
 
 async function fetchArtistsGenres(artistIds, accessToken) {
     // Function to split the artistIds array into chunks of 50 elements each
@@ -205,9 +173,6 @@ async function fetchArtistsGenres(artistIds, accessToken) {
   
     return flattenedResults;
   }
-  
-
-///////////////////////////////////////////////////////////////////////////////////////////////
 
 async function fetchSongDetails(likedSongs, accessToken) {
     const allArtistIds = [...new Set(likedSongs.flatMap(song => song.artistIds))];
@@ -284,3 +249,58 @@ async function fetchSongDetails(likedSongs, accessToken) {
     return detailedSongs;
 }
 
+// Route to fetch user playlists
+app.get('/fetch-playlists', async (accessToken) => {
+  try {
+    const playlists = await fetchUserPlaylists(accessToken);
+    res.json({
+      success: true,
+      playlists
+    });
+  } catch (error) {
+    console.error('Error fetching user playlists:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch user playlists'
+    });
+  }
+});
+
+// Route to fetch liked songs
+router.get('/fetch-liked-songs', async (req, res) => {
+  const accessToken = req.header('Authorization').split(' ')[1];
+  try {
+    const likedSongs = await fetchLikedSongs(accessToken);
+    res.json({
+      success: true,
+      likedSongs
+    });
+  } catch (error) {
+    console.error('Error fetching liked songs:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch liked songs'
+    });
+  }
+});
+
+// Route to fetch song details
+router.get('/fetch-song-details', async (req, res) => {
+  const accessToken = req.header('Authorization').split(' ')[1];
+  try {
+    const likedSongsArray = req.body.likedSongs;
+    const songDetails = await fetchSongDetails(likedSongsArray, accessToken);
+    res.json({
+      success: true,
+      songDetails
+    });
+  } catch (error) {
+    console.error('Error fetching song details:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch song details'
+    });
+  }
+});
+
+module.exports = router;

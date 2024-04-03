@@ -2,28 +2,26 @@ import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import PlaylistTable from './playlist-table.jsx'; 
 import LoadingCircle from '../loading-circle.jsx';
-
+import axios from 'axios';
 
 const PlaylistComponent = () => {
   const accessToken = useSelector((state) => state.auth.accessToken);
-
   const [playlists, setPlaylists] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
   const fetchPlaylists = async () => {
-    const response = await fetch('http://localhost:5555/fetch-playlists', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+    try {
+      console.log("testing")
+      const response = await axios.get('/api/fetch-playlists', {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      });
+      console.log(response)
+    } catch (error) {
+      // Handle errors
     }
-
-    return await response.json();
   };
 
   useEffect(() => {

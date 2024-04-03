@@ -54,7 +54,7 @@ export default function Dashboard({ isImportingMusic }) {
         <h2 className="text-black">
           
         </h2>
-        <PlaylistComponent accessToken={accessToken} />
+        <PlaylistComponent />
       </div>
     </div>
   );

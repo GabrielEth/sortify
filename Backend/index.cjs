@@ -13,15 +13,17 @@ const corsOptions = {
   origin: 'http://localhost:5173',
   optionsSuccessStatus: 200,
 };
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
+const routes = require('./models/songandplaylistroutes.cjs');
+app.use('/api', routes);
+
 var client_id = "7de6fc918ba248768d83e1ed282527c6";
 var client_secret = "2e214f3d12904dd7ae816282230cb72b";
 var redirect_uri = "http://localhost:5555/callback";
-
-var stateKey = "spotify_auth_state";
 
 app.get("/callback", async (req, res) => {
   const code = req.query.code || null;
@@ -57,31 +59,6 @@ app.get("/callback", async (req, res) => {
     } catch (error) {
       res.redirect(`http://localhost:5173/error?message=${encodeURIComponent(error.message)}`);
     }
-  }
-});
-
-app.get("/refresh_token", async (req, res) => {
-  var refresh_token = req.query.refresh_token;
-
-  const authOptions = {
-    method: 'post',
-    url: "https://accounts.spotify.com/api/token",
-    data: querystring.stringify({
-      grant_type: "refresh_token",
-      refresh_token: refresh_token,
-    }),
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: "Basic " + Buffer.from(client_id + ":" + client_secret).toString("base64"),
-    },
-  };
-
-  try {
-    const response = await axios(authOptions);
-    res.json(response.data);
-  } catch (error) {
-    console.error("Error refreshing token:", error.message);
-    res.status(500).send("Server Error");
   }
 });
 
