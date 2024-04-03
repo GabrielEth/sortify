@@ -1,18 +1,23 @@
+import { useEffect, useState } from "react";
 import Login from "./Login";
 import ProtectedRoute from "./routeguard.jsx";
-import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
+import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import Dashboard from "./dashboard/dashboard";
 import Callback from "./callback.jsx";
-import { IoMdSettings } from "react-icons/io";
 import SettingsDrawer from "./settingsdrawer.tsx";
 
 const App = () => {
+  const location = useLocation();
+  const [showSettings, setShowSettings] = useState(false);
+
+  useEffect(() => {
+    const path = location.pathname;
+    setShowSettings(path !== "/login");
+  }, [location]);
+
   return (
-    <BrowserRouter>
-      <div className="header">
-        <img src={<IoMdSettings />} className="cog"></img>
-        <SettingsDrawer />
-      </div>
+    <>
+      {showSettings && <SettingsDrawer />}
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route element={<ProtectedRoute />}>
@@ -22,8 +27,7 @@ const App = () => {
         <Route path="/" element={<Navigate replace to="/login" />} />
         <Route path="*" element={<Navigate replace to="/login" />} />
       </Routes>
-      <div className="footer"></div>
-    </BrowserRouter>
+    </>
   );
 };
 

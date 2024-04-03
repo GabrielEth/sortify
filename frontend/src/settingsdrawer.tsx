@@ -1,68 +1,94 @@
-import PropTypes from "prop-types";
-import { Drawer } from '@mui/material';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import React from "react";
-
-type Anchor = 'right';
+import * as React from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 export default function SettingsDrawer() {
-  const [state, setState] = React.useState({
-    Settings: false,
-  });
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const toggleDrawer =
-    (anchor: Anchor, open: boolean) =>
-    (event: React.KeyboardEvent | React.MouseEvent) => {
+    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
-        event.type === 'keydown' &&
-        ((event as React.KeyboardEvent).key === 'Tab' ||
-          (event as React.KeyboardEvent).key === 'Shift')
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
       ) {
         return;
       }
 
-      setState({ ...state, [anchor]: open });
+      setIsOpen(open);
     };
 
-  const list = (anchor: Anchor) => (
+  const list = () => (
     <Box
-      sx={{ width: 250 }}
+      sx={{ width: 220 }}
       role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
     >
       <List>
-        {['Logout'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        <ListItem disablePadding>
+          <ListItemButton
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+              "&:hover": {
+                bgcolor: "#4AA478",
+              },
+            }}
+          >
+            <ListItemIcon sx={{ alignItems: "center", color: "#000000" }}>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Logout"
+              sx={{
+                color: "#000000",
+                "& .MuiTypography-root": {
+                  color: "inherit",
+                },
+              }}
+            />
+          </ListItemButton>
+        </ListItem>
       </List>
     </Box>
   );
-
   return (
-    <div>
-      {(['right'] as const).map((anchor) => (
-        <React.Fragment key={anchor}>
-          <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button>
-          <Drawer
-            anchor={anchor}
-            open={state[anchor]}
-            onClose={toggleDrawer(anchor, false)}
+    <>
+      <AppBar position="static" style={{ backgroundColor: "#52B788" }}>
+        <Toolbar>
+          <div style={{ flexGrow: 1 }} />
+          <IconButton
+            onClick={toggleDrawer(true)}
+            color="inherit"
+            size="large"
+            edge="end"
           >
-            {list(anchor)}
-          </Drawer>
-        </React.Fragment>
-      ))}
-    </div>
+            <SettingsIcon style={{ fontSize: 30, color: "#081C15" }} />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
+
+      <Drawer
+        anchor="right"
+        open={isOpen}
+        onClose={toggleDrawer(false)}
+        sx={{
+          "& .MuiDrawer-paper": { backgroundColor: "#52B788" },
+        }}
+      >
+        {list()}
+      </Drawer>
+    </>
   );
 }
