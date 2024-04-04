@@ -22,13 +22,13 @@ export default function Dashboard({ isImportingMusic }) {
       title: <strong>Create or Update Playlists</strong>
     },
     {
-      target: 'body', //to be changed to create new playlist card
+      target: '.create-new-playlist-card',
       content: 'Create a new playlist by selecting five songs from your library. These selections will serve as the foundation for the rest of your generated playlist.',
       placement: 'center',
       title: <strong>Create New Playlist</strong>
     },
     {
-      target: 'body', //to be changed to first imported playlist card
+      target: '.first-playlist-card', 
       content: 'Updating a playlist will asses the vibe of that existing playlist and add similar songs from your existing music library.',
       placement: 'center',
       title: <strong>Update Playlist</strong>
