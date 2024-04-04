@@ -10,14 +10,28 @@ export default function Dashboard({ isImportingMusic }) {
   const [runTutorial, setRunTutorial] = useState(true); // State to control the tutorial
   const [steps, setSteps] = useState([
     {
-      target: '.profile-section',
-      content: 'This is your profile section where you can see your Spotify profile picture.',
-      title: 'Profile Section',
+      target: 'body',
+      content: 'The app that allows you to sort your Spotify song library into customized playlists.',
+      placement: 'center',
+      title: <strong>Welcome to Sortify!</strong>,
     },
     {
-      target: '.instructions',
+      target: '.select-playlists',
       content: 'Here you can choose to create a new playlist or select one to update.',
-      title: 'Create or Update Playlists',
+      placement: 'right',
+      title: <strong>Create or Update Playlists</strong>
+    },
+    {
+      target: 'body', //to be changed to create new playlist card
+      content: 'Create a new playlist by selecting five songs from your library. These selections will serve as the foundation for the rest of your generated playlist.',
+      placement: 'center',
+      title: <strong>Create New Playlist</strong>
+    },
+    {
+      target: 'body', //to be changed to first imported playlist card
+      content: 'Updating a playlist will asses the vibe of that existing playlist and add similar songs from your existing music library.',
+      placement: 'center',
+      title: <strong>Update Playlist</strong>
     },
   ]);
 
