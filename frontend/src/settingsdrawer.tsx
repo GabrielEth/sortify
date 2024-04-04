@@ -11,11 +11,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
-import { useDispatch } from "react-redux";
-import { clearTokens } from "./state/authslice.jsx";
 
 export default function SettingsDrawer() {
-  const dispatch = useDispatch();
   const [isOpen, setIsOpen] = React.useState(false);
 
   const toggleDrawer =
@@ -34,7 +31,6 @@ export default function SettingsDrawer() {
   const logout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
-    dispatch(clearTokens());
     window.location.href = "/login";
   };
 

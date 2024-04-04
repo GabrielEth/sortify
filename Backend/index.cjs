@@ -23,7 +23,7 @@ var redirect_uri = "http://localhost:5555/callback";
 
 var stateKey = "spotify_auth_state";
 
-app.get("/callback", async (req, res) => {
+app.get("/callback", express.urlencoded({ extended: true }), async (req, res) => {
   const code = req.query.code || null;
   const state = req.query.state || null;
 
@@ -60,29 +60,30 @@ app.get("/callback", async (req, res) => {
   }
 });
 
-app.get("/refresh_token", async (req, res) => {
-  var refresh_token = req.query.refresh_token;
+app.get('/refresh_token', express.urlencoded({ extended: true }), async (req, res) => {
+  const { refreshToken} = req.body;
 
-  const authOptions = {
-    method: 'post',
-    url: "https://accounts.spotify.com/api/token",
-    data: querystring.stringify({
-      grant_type: "refresh_token",
-      refresh_token: refresh_token,
-    }),
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: "Basic " + Buffer.from(client_id + ":" + client_secret).toString("base64"),
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' + Buffer.from(`${clientId}:${clientSecret}`).toString('base64'),
     },
-  };
+    body: new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+    }),
+  });
 
-  try {
-    const response = await axios(authOptions);
-    res.json(response.data);
-  } catch (error) {
-    console.error("Error refreshing token:", error.message);
-    res.status(500).send("Server Error");
+  const data = await response.json();
+
+  if (!response.ok) {
+    return res.status(500).json({ error: 'Failed to refresh token', details: data });
   }
+
+  res.json({
+    access_token: data.access_token,
+  });
 });
 
 import("./config.js").then(({ PORT, mongoDBURL }) => {

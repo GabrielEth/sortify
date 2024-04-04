@@ -1,27 +1,23 @@
 import { useState, useEffect } from "react";
 import "./dashboard.css";
 import PlaylistComponent from "./playlist-component.jsx";
+import callSpotifyAPI from "./../services/apiservice.js";
 
 export default function Dashboard({ isImportingMusic }) {
-  const accessToken = localStorage.getItem('access_token');
-
+  const accessToken = localStorage.getItem("access_token");
   const [profilePicture, setProfilePicture] = useState(null);
 
   useEffect(() => {
     async function getSpotifyProfilePicture() {
       try {
-        const response = await fetch("https://api.spotify.com/v1/me", {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        });
-        const data = await response.json();
+        const data = await callSpotifyAPI("https://api.spotify.com/v1/me");
         if (data.images.length > 0) {
           const largestImage = data.images.sort((a, b) => b.width - a.width)[0];
           setProfilePicture(largestImage.url);
         }
       } catch (error) {
-        console.error("Error fetching Spotify profile picture:", error);
+        console.error("Failed to fetch user profile:", error);
+        // Handle the error
       }
     }
     getSpotifyProfilePicture();
