@@ -7,3 +7,14 @@
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2); /* This will create a subtle shadow effect */
   border: 2px solid #d8f3dc; /* Replace with your desired color */
 }
+
+.playlist-card {
+  flex: 0 0 auto; /* Prevent cards from growing or shrinking */
+  width: 20%; /* Each card takes up 20% of the container's width */
+}
+
+/* Adjust the padding for the cards, if necessary, to maintain consistent spacing */
+.row .playlist-card {
+  padding-right: 4px;
+  padding-left: 4px;
+}
