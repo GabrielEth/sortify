@@ -23,7 +23,8 @@ const PlaylistTable = ({ playlists }) => {
   return (
     <Container>
       <Row className="g-3">
-        <Col md={12 / cardsPerRow} className="playlist-card" onClick={handleCreateNewPlaylistClick} style={{ cursor: 'pointer' }}>
+        {/* Unique class for targeting in Joyride */}
+        <Col md={12 / cardsPerRow} className="create-new-playlist-card" onClick={handleCreateNewPlaylistClick} style={{ cursor: 'pointer' }}>
           <Card className="card-hover-effect">
             <Card.Img variant="top" src={newPlaylist} alt="Create New Playlist" />
             <Card.Body>
@@ -31,8 +32,10 @@ const PlaylistTable = ({ playlists }) => {
             </Card.Body>
           </Card>
         </Col>
+
         {playlists.map((playlist, index) => (
-          <Col key={index} md={12 / cardsPerRow} className="playlist-card" onClick={() => handlePlaylistClick(playlist.name)} style={{ cursor: 'pointer' }}>
+          // Add a unique class to the first playlist card for targeting in Joyride
+          <Col key={index} md={12 / cardsPerRow} className={`playlist-card ${index === 0 ? 'first-playlist-card' : ''}`} onClick={() => handlePlaylistClick(playlist.name)} style={{ cursor: 'pointer' }}>
             <Card className="card-hover-effect">
               <Card.Img variant="top" src={playlist.imageUrl || "path/to/your/placeholder_image.jpg"} alt={playlist.name} />
               <Card.Body>
