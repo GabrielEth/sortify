@@ -25,7 +25,9 @@ var client_id = "7de6fc918ba248768d83e1ed282527c6";
 var client_secret = "2e214f3d12904dd7ae816282230cb72b";
 var redirect_uri = "http://localhost:5555/callback";
 
-app.get("/callback", async (req, res) => {
+var stateKey = "spotify_auth_state";
+
+app.get("/callback", express.urlencoded({ extended: true }), async (req, res) => {
   const code = req.query.code || null;
   const state = req.query.state || null;
 
@@ -60,6 +62,32 @@ app.get("/callback", async (req, res) => {
       res.redirect(`http://localhost:5173/error?message=${encodeURIComponent(error.message)}`);
     }
   }
+});
+
+app.get('/refresh_token', express.urlencoded({ extended: true }), async (req, res) => {
+  const { refreshToken} = req.body;
+
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' + Buffer.from(`${clientId}:${clientSecret}`).toString('base64'),
+    },
+    body: new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    return res.status(500).json({ error: 'Failed to refresh token', details: data });
+  }
+
+  res.json({
+    access_token: data.access_token,
+  });
 });
 
 import("./config.js").then(({ PORT, mongoDBURL }) => {
