@@ -8,28 +8,10 @@ const client_id = "7de6fc918ba248768d83e1ed282527c6";
 const redirect_uri = "http://localhost:5555/callback";
 const scope = "user-read-private user-read-email user-library-read user-library-modify playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative";
 
-const generateRandomString = (length) => {
-  let result = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-};
 
 export default function Login() {
   const handleLogin = async () => {
-    const state = generateRandomString(16);
-    const queryParams = new URLSearchParams({
-      response_type: "code",
-      client_id: client_id,
-      scope: scope,
-      redirect_uri: redirect_uri,
-      state: state,
-    });
-    const authUrl = `https://accounts.spotify.com/authorize?${queryParams.toString()}`;
+    const authUrl = `http://localhost:5555/loginuser`;
     window.location.href = authUrl;
   };
 

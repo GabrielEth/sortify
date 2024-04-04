@@ -21,7 +21,34 @@ var client_id = "7de6fc918ba248768d83e1ed282527c6";
 var client_secret = "2e214f3d12904dd7ae816282230cb72b";
 var redirect_uri = "http://localhost:5555/callback";
 
+
 var stateKey = "spotify_auth_state";
+
+const generateRandomString = (length) => {
+  let result = "";
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+};
+
+app.get('/loginuser', function(req, res) {
+
+  var state = generateRandomString(16);
+  scope = "user-read-private user-read-email user-library-read user-library-modify playlist-modify-public playlist-modify-private playlist-read-private playlist-read-collaborative";
+
+  res.redirect('https://accounts.spotify.com/authorize?' +
+    querystring.stringify({
+      response_type: 'code',
+      client_id: client_id,
+      scope: scope,
+      redirect_uri: redirect_uri,
+      state: state
+    }));
+});
 
 app.get("/callback", express.urlencoded({ extended: true }), async (req, res) => {
   const code = req.query.code || null;
