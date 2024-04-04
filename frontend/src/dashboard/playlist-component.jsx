@@ -1,68 +1,67 @@
-import { useState, useEffect } from 'react';
-import PlaylistTable from './playlist-table.jsx'; 
-import LoadingCircle from '../loading-circle.jsx';
+import { useState, useEffect } from "react";
+import PlaylistTable from "./playlist-table.jsx";
+import LoadingCircle from "../loading-circle.jsx";
+import callSpotifyAPI from "../services/apiservice.js";
+import defaultPlaylistImage from "../../../Resources/defaultplaylistimage.png";
 
 const PlaylistComponent = () => {
-  const accessToken = localStorage.getItem('access_token');
+  const accessToken = localStorage.getItem("access_token");
 
   const [playlists, setPlaylists] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const fetchPlaylists = async () => {
-    const response = await fetch('http://localhost:5555/fetch-playlists', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${accessToken}`,
-      },
-    });
+    setIsLoading(true);
+    setError("");
 
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
+    try {
+      const response = await callSpotifyAPI("/api/fetch-playlists");
+      if (response && response.success) {
+        const playlistsWithImages = response.playlists.map((playlist) => ({
+          ...playlist,
+          imageUrl: (playlist.images && playlist.images.length > 0) ? playlist.images[0].url : defaultPlaylistImage,
+        }));
+        setPlaylists(playlistsWithImages);
+      } else {
+        setError("Failed to fetch playlists");
+      }
+    } catch (error) {
+      console.error("Error fetching playlists:", error);
+      setError("Error fetching playlists");
+    } finally {
+      setIsLoading(false);
     }
-
-    return await response.json();
   };
 
   useEffect(() => {
     if (accessToken) {
-      setIsLoading(true);
-      fetchPlaylists()
-        .then(data => {
-          setIsLoading(false);
-          if (data.success) {
-            setPlaylists(data.playlists);
-          } else {
-            setError('Failed to fetch playlists');
-          }
-        })
-        .catch(() => {
-          setIsLoading(false);
-          setError('Error fetching playlists');
-        });
+      fetchPlaylists();
     }
   }, [accessToken]);
 
   if (error) return <div>Error: {error}</div>;
 
-  const overlayStyle = { 
-    position: 'fixed',
+  const overlayStyle = {
+    position: "fixed",
     top: 0,
     left: 0,
-    width: '100%',
-    height: '100%',
-    backgroundColor: 'rgba(255, 255, 255, 0.7)',
+    width: "100%",
+    height: "100%",
+    backgroundColor: "rgba(255, 255, 255, 0.7)",
     zIndex: 1000,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   };
 
-  const contentStyle = isLoading ? {
-    filter: 'blur(5px)',
-    pointerEvents: 'none',
-    userSelect: 'none',
-  } : {};
+  const contentStyle = isLoading
+    ? {
+        filter: "blur(5px)",
+        pointerEvents: "none",
+        userSelect: "none",
+      }
+    : {};
 
   return (
     <>

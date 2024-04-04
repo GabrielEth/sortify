@@ -51,7 +51,6 @@ export default function Dashboard({ isImportingMusic }) {
         }
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
-        // Handle the error
       }
     }
     getSpotifyProfilePicture();

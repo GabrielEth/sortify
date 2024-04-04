@@ -1,14 +1,22 @@
-import React from 'react';
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Card from "react-bootstrap/Card";
 import { useNavigate } from 'react-router-dom';
-
+import PropTypes from 'prop-types';
 import "./playlist-table.css";
 import newPlaylist from "../../../Resources/newPlaylist.png";
 
 const PlaylistTable = ({ playlists }) => {
+  PlaylistTable.propTypes = {
+    playlists: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        description: PropTypes.string
+      })
+    ).isRequired,
+  };
+
   const cardsPerRow = 5;
   const navigate = useNavigate();
 
@@ -37,7 +45,7 @@ const PlaylistTable = ({ playlists }) => {
           // Add a unique class to the first playlist card for targeting in Joyride
           <Col key={index} md={12 / cardsPerRow} className={`playlist-card ${index === 0 ? 'first-playlist-card' : ''}`} onClick={() => handlePlaylistClick(playlist.name)} style={{ cursor: 'pointer' }}>
             <Card className="card-hover-effect">
-              <Card.Img variant="top" src={playlist.imageUrl || "path/to/your/placeholder_image.jpg"} alt={playlist.name} />
+              <Card.Img variant="top" src={playlist.imageUrl} alt={playlist.name} />
               <Card.Body>
                 <Card.Title>{playlist.name}</Card.Title>
                 <Card.Text>{playlist.description}</Card.Text>

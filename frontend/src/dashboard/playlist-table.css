@@ -1,5 +1,6 @@
 .card-hover-effect {
   transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  height: 225px;
 }
 
 .card-hover-effect:hover {
@@ -9,8 +10,19 @@
 }
 
 .playlist-card {
-  flex: 0 0 auto; /* Prevent cards from growing or shrinking */
   width: 20%; /* Each card takes up 20% of the container's width */
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.card-title, .card-text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Adjust the padding for the cards, if necessary, to maintain consistent spacing */
