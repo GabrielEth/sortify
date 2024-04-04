@@ -2,10 +2,24 @@ import { useState, useEffect } from "react";
 import "./dashboard.css";
 import PlaylistComponent from "./playlist-component.jsx";
 import callSpotifyAPI from "./../services/apiservice.js";
+import Joyride from 'react-joyride';
 
 export default function Dashboard({ isImportingMusic }) {
   const accessToken = localStorage.getItem("access_token");
   const [profilePicture, setProfilePicture] = useState(null);
+  const [runTutorial, setRunTutorial] = useState(true); // State to control the tutorial
+  const [steps, setSteps] = useState([
+    {
+      target: '.profile-section',
+      content: 'This is your profile section where you can see your Spotify profile picture.',
+      title: 'Profile Section',
+    },
+    {
+      target: '.instructions',
+      content: 'Here you can choose to create a new playlist or select one to update.',
+      title: 'Create or Update Playlists',
+    },
+  ]);
 
   useEffect(() => {
     async function getSpotifyProfilePicture() {
@@ -25,6 +39,20 @@ export default function Dashboard({ isImportingMusic }) {
 
   return (
     <div className="dashboard">
+
+<Joyride
+        continuous
+        run={runTutorial}
+        steps={steps}
+        showSkipButton={true}
+        showProgress={true}
+        styles={{
+          options: {
+            zIndex: 10000,
+          },
+        }}
+      />
+
       <div className="profile-section">
         <img
           src={profilePicture}
