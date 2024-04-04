@@ -2,10 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const crypto = require("crypto");
 const querystring = require("querystring");
 const axios = require("axios");
-const path = require("path");
 
 const app = express();
 
@@ -13,9 +11,13 @@ const corsOptions = {
   origin: 'http://localhost:5173',
   optionsSuccessStatus: 200,
 };
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+
+const routes = require('./models/songandplaylistroutes.cjs');
+app.use('/api', routes);
 
 var client_id = "7de6fc918ba248768d83e1ed282527c6";
 var client_secret = "2e214f3d12904dd7ae816282230cb72b";
