@@ -227,16 +227,20 @@ async function fetchSongDetails(likedSongs, accessToken) {
   return detailedSongs;
 }
 
-// Route to fetch user playlists
-app.get("/fetch-playlists", async (accessToken) => {
+app.get("/fetch-playlists", async (req, res) => {
   try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return res.status(401).json({ success: false, message: "No authorization token provided" });
+    }
+    const accessToken = authHeader.split(" ")[1];
+
     const playlists = await fetchUserPlaylists(accessToken);
     res.json({
       success: true,
       playlists,
     });
   } catch (error) {
-    console.error("Error fetching user playlists:", error);
     res.status(500).json({
       success: false,
       message: "Failed to fetch user playlists",
@@ -244,7 +248,6 @@ app.get("/fetch-playlists", async (accessToken) => {
   }
 });
 
-// Route to fetch liked songs
 router.get("/fetch-liked-songs", async (req, res) => {
   const accessToken = req.header("Authorization").split(" ")[1];
   try {

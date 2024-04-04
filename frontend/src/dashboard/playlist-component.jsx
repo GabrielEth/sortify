@@ -12,36 +12,40 @@ const PlaylistComponent = () => {
 
   const fetchPlaylists = async () => {
     try {
-      console.log("testing")
       const response = await axios.get('/api/fetch-playlists', {
         headers: {
           'Authorization': `Bearer ${accessToken}`
         }
       });
-      console.log(response)
+      console.log(response);
+      return response.data; // Assuming the server response format is { success: true, playlists: [...] }
     } catch (error) {
-      // Handle errors
+      console.error("Error fetching playlists:", error);
+      throw error; 
     }
-  };
+  };  
 
   useEffect(() => {
     if (accessToken) {
-      setIsLoading(true);
       fetchPlaylists()
         .then(data => {
-          setIsLoading(false);
+          setIsLoading(true);
           if (data.success) {
             setPlaylists(data.playlists);
-          } else {
+          } 
+          else {
+            // this is being hit
             setError('Failed to fetch playlists');
           }
         })
-        .catch(() => {
+        .catch((error) => {
+          console.error("Error in useEffect:", error);
           setIsLoading(false);
           setError('Error fetching playlists');
         });
     }
   }, [accessToken]);
+  
 
   if (error) return <div>Error: {error}</div>;
 
