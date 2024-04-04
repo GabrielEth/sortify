@@ -36,7 +36,6 @@
 
 const express = require("express");
 const router = express.Router();
-const app = express();
 
 const fetchUserPlaylists = async (accessToken) => {
   const playlists = [];
@@ -227,13 +226,13 @@ async function fetchSongDetails(likedSongs, accessToken) {
   return detailedSongs;
 }
 
-app.get("/fetch-playlists", async (req, res) => {
+router.get("/fetch-playlists", async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
       return res.status(401).json({ success: false, message: "No authorization token provided" });
     }
-    const accessToken = authHeader.split(" ")[1];
+    const accessToken = req.header("Authorization").split(" ")[1];
 
     const playlists = await fetchUserPlaylists(accessToken);
     res.json({
@@ -249,8 +248,13 @@ app.get("/fetch-playlists", async (req, res) => {
 });
 
 router.get("/fetch-liked-songs", async (req, res) => {
-  const accessToken = req.header("Authorization").split(" ")[1];
   try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return res.status(401).json({ success: false, message: "No authorization token provided" });
+    }
+    const accessToken = req.header("Authorization").split(" ")[1];
+    
     const likedSongs = await fetchLikedSongs(accessToken);
     res.json({
       success: true,
