@@ -20,28 +20,10 @@ const scope = [
   "playlist-read-collaborative"
 ];
 
-const generateRandomString = (length) => {
-  let result = "";
-  const characters =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-};
 
 export default function Login() {
   const handleLogin = async () => {
-    const state = generateRandomString(16);
-    const queryParams = new URLSearchParams({
-      response_type: "code",
-      client_id: client_id,
-      scope: scope,
-      redirect_uri: redirect_uri,
-      state: state,
-    });
-    const authUrl = `https://accounts.spotify.com/authorize?${queryParams.toString()}`;
+    const authUrl = `http://localhost:5555/loginuser`;
     window.location.href = authUrl;
   };
 
