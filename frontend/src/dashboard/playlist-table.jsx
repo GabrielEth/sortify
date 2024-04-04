@@ -32,7 +32,7 @@ const PlaylistTable = ({ playlists }) => {
     <Container>
       <Row className="g-3">
         {/* Unique class for targeting in Joyride */}
-        <Col md={12 / cardsPerRow} className="create-new-playlist-card" onClick={handleCreateNewPlaylistClick} style={{ cursor: 'pointer' }}>
+        <Col md={12 / cardsPerRow} className="create-new-playlist-card custom-col" onClick={handleCreateNewPlaylistClick} style={{ cursor: 'pointer' }}>
           <Card className="card-hover-effect">
             <Card.Img variant="top" src={newPlaylist} alt="Create New Playlist" />
             <Card.Body>

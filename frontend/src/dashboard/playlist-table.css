@@ -13,6 +13,11 @@
   width: 20%; /* Each card takes up 20% of the container's width */
 }
 
+.custom-col {
+  flex: 0 0 auto;
+  width: 20%;
+}
+
 .card-body {
   display: flex;
   flex-direction: column;
