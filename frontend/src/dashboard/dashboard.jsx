@@ -33,6 +33,12 @@ export default function Dashboard({ isImportingMusic }) {
       placement: 'center',
       title: <strong>Update Playlist</strong>
     },
+    {
+      target: 'body',
+      content: 'Start creating your personalized playlists now.',
+      placement: 'center',
+      title: <strong>You're all set!</strong>,
+    }
   ]);
 
   useEffect(() => {
@@ -63,6 +69,15 @@ export default function Dashboard({ isImportingMusic }) {
         styles={{
           options: {
             zIndex: 10000,
+            primaryColor: '#f04', // This changes the default color theme, affecting the Next button
+          },
+          buttonNext: {
+            backgroundColor: '#95D5B2', // Specific customization for the Next button's background color
+            color: '#fff', // Specific customization for the Next button's text color
+          },
+          buttonBack: {
+            backgroundColor: '#fff', // Setting the Back button's background to black
+            color: '#000', // Setting the Back button's text color to white
           },
         }}
       />
