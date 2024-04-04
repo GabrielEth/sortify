@@ -12,6 +12,8 @@ const Callback = () => {
     const params = new URLSearchParams(queryString);
     const accessToken = params.get("access_token");
     const refreshToken = params.get("refresh_token");
+    localStorage.setItem('access_token', accessToken);
+    localStorage.setItem('refresh_token', refreshToken);
 
     if (accessToken && refreshToken) {
       dispatch(setTokens({ accessToken, refreshToken }));
