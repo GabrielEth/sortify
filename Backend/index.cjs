@@ -2,10 +2,8 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-const crypto = require("crypto");
 const querystring = require("querystring");
 const axios = require("axios");
-const path = require("path");
 
 const app = express();
 
@@ -13,17 +11,19 @@ const corsOptions = {
   origin: 'http://localhost:5173',
   optionsSuccessStatus: 200,
 };
+
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
+
+const routes = require('./models/songandplaylistroutes.cjs');
+app.use('/api', routes);
 
 var client_id = "7de6fc918ba248768d83e1ed282527c6";
 var client_secret = "2e214f3d12904dd7ae816282230cb72b";
 var redirect_uri = "http://localhost:5555/callback";
 
-var stateKey = "spotify_auth_state";
-
-app.get("/callback", async (req, res) => {
+app.get("/callback", express.urlencoded({ extended: true }), async (req, res) => {
   const code = req.query.code || null;
   const state = req.query.state || null;
 
@@ -60,29 +60,30 @@ app.get("/callback", async (req, res) => {
   }
 });
 
-app.get("/refresh_token", async (req, res) => {
-  var refresh_token = req.query.refresh_token;
+app.get('/refresh_token', express.urlencoded({ extended: true }), async (req, res) => {
+  const { refreshToken} = req.body;
 
-  const authOptions = {
-    method: 'post',
-    url: "https://accounts.spotify.com/api/token",
-    data: querystring.stringify({
-      grant_type: "refresh_token",
-      refresh_token: refresh_token,
-    }),
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-      Authorization: "Basic " + Buffer.from(client_id + ":" + client_secret).toString("base64"),
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' + Buffer.from(`${clientId}:${clientSecret}`).toString('base64'),
     },
-  };
+    body: new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token: refreshToken,
+    }),
+  });
 
-  try {
-    const response = await axios(authOptions);
-    res.json(response.data);
-  } catch (error) {
-    console.error("Error refreshing token:", error.message);
-    res.status(500).send("Server Error");
+  const data = await response.json();
+
+  if (!response.ok) {
+    return res.status(500).json({ error: 'Failed to refresh token', details: data });
   }
+
+  res.json({
+    access_token: data.access_token,
+  });
 });
 
 import("./config.js").then(({ PORT, mongoDBURL }) => {

@@ -5,7 +5,7 @@ const {
   fetchArtistsGenres,
   fetchSongDetails,
   fetchUserPlaylists
-} = require('./fetchLikedPlaylist&Data.js'); // Adjust the path as necessary
+} = require('./../songandplaylistroutes.cjs'); // Adjust the path as necessary
 
 
 
