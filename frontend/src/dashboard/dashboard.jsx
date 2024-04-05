@@ -59,7 +59,7 @@ export default function Dashboard({ isImportingMusic }) {
   return (
     <div className="dashboard">
 
-<Joyride
+      <Joyride
         continuous
         run={runTutorial}
         steps={steps}

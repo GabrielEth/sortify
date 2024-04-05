@@ -11,9 +11,12 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import LogoutIcon from "@mui/icons-material/Logout";
 import SettingsIcon from "@mui/icons-material/Settings";
+import Logo from "./../../Resources/Logo.png";
+import "./buttonStyles.css";
 
 export default function SettingsDrawer() {
   const [isOpen, setIsOpen] = React.useState(false);
+  const [currentPage, setCurrentPage] = React.useState("dashboard");
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -34,47 +37,32 @@ export default function SettingsDrawer() {
     window.location.href = "/login";
   };
 
-  const list = () => (
-    <Box
-      sx={{ width: 220 }}
-      role="presentation"
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      <List>
-        <ListItem disablePadding>
-          <ListItemButton
-            onClick={logout}
-            sx={{
-              justifyContent: "center",
-              alignItems: "center",
-              "&:hover": {
-                bgcolor: "#4AA478",
-              },
-            }}
-          >
-            <ListItemIcon sx={{ alignItems: "center", color: "#000000" }}>
-              <LogoutIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Logout"
-              sx={{
-                color: "#000000",
-                "& .MuiTypography-root": {
-                  color: "inherit",
-                },
-              }}
-            />
-          </ListItemButton>
-        </ListItem>
-      </List>
-    </Box>
-  );
-
   return (
     <>
-      <AppBar position="static" style={{ backgroundColor: "#52B788" }}>
+      <AppBar position="static" style={{ backgroundColor: "#52B788", position: "relative" }}>
         <Toolbar>
+          <div style={{ position: "absolute", display: "flex", alignItems: "center", left: 10 }}>
+            <img src={Logo} alt="Sortify Logo" style={{ width: 50, height: 50, borderRadius: "50%", opacity: 0.8 }} />
+            <h1 style={{ fontFamily: "Montserrat-Bold", fontSize: 24, fontWeight: "bold", color: "#000000", marginLeft: 10 }}>SORTIFY</h1>
+          </div>
+          <div style={{ flexGrow: 1 }} />
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <a href="http://localhost:5173/dashboard" style={{ textDecoration: currentPage === "dashboard" ? "underline" : "none" }}>
+              <button className="button" onClick={() => setCurrentPage("dashboard")}>
+                Home
+              </button>
+            </a>
+            <a href="http://localhost:5173/createplaylist" style={{ textDecoration: currentPage === "createplaylist" ? "underline" : "none", marginLeft: 20 }}>
+              <button className="button" onClick={() => setCurrentPage("createplaylist")}>
+                Create Playlist
+              </button>
+            </a>
+            <a href="http://localhost:5173/updateplaylist" style={{ textDecoration: currentPage === "updateplaylist" ? "underline" : "none", marginLeft: 20 }}>
+              <button className="button" onClick={() => setCurrentPage("updateplaylist")}>
+                Update Playlist
+              </button>
+            </a>
+          </div>
           <div style={{ flexGrow: 1 }} />
           <IconButton
             onClick={toggleDrawer(true)}
@@ -95,7 +83,40 @@ export default function SettingsDrawer() {
           "& .MuiDrawer-paper": { backgroundColor: "#52B788" },
         }}
       >
-        {list()}
+        <Box
+          sx={{ width: 220 }}
+          role="presentation"
+          onClick={toggleDrawer(false)}
+          onKeyDown={toggleDrawer(false)}
+        >
+          <List>
+            <ListItem disablePadding>
+              <ListItemButton
+                onClick={logout}
+                sx={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  "&:hover": {
+                    bgcolor: "#4AA478",
+                  },
+                }}
+              >
+                <ListItemIcon sx={{ alignItems: "center", color: "#000000" }}>
+                  <LogoutIcon />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Logout"
+                  sx={{
+                    color: "#000000",
+                    "& .MuiTypography-root": {
+                      color: "inherit",
+                    },
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          </List>
+        </Box>
       </Drawer>
     </>
   );
