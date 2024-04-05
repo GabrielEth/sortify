@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import './createplaylist.css';
-import PlaylistComponent from "./../dashboard/playlist-component";
+import './createplaylist.css'; // Import CSS file for styling
 
-
-const UpdatePlaylist = () => {
+const CreatePlaylist = () => {
     const [selectedPlaylist, setSelectedPlaylist] = useState('');
     const [selectedSongs, setSelectedSongs] = useState([]);
     const [likedResult, setLikedResult] = useState(null);
-    const accessToken = localStorage.getItem("access_token");
 
     const playlists = ['Playlist 1', 'Playlist 2', 'Playlist 3']; // Placeholder for pre-existing playlists
     const placeholderSongs = ['Song 1', 'Song 2', 'Song 3', 'Song 4', 'Song 5']; // Placeholder for songs
@@ -48,13 +45,17 @@ const UpdatePlaylist = () => {
     return (
         <div className="create-playlist-container">
             <div className="content">
-                <h1 className="section-heading">Create Playlist</h1>
+                <h1 className="section-heading">Update Playlist</h1>
 
-                <div className="select-playlists">
-        <h2 className="text-black"></h2>
-        <PlaylistComponent accessToken={accessToken} />
-      </div>
-    </div>
+                <div className="playlist-section">
+                    <h2 className="subsection-heading">Choose The Playlist You Want To Update</h2>
+                    <select className="dropdown" value={selectedPlaylist} onChange={(e) => setSelectedPlaylist(e.target.value)}>
+                        <option value="">Select Playlist</option>
+                        {playlists.map((playlist, index) => (
+                            <option key={index} value={playlist}>{playlist}</option>
+                        ))}
+                    </select>
+                </div>
 
                 {selectedPlaylist && (
                     <div className="songs-section">
@@ -99,8 +100,8 @@ const UpdatePlaylist = () => {
                     </div>
                 )}
             </div>
-        
+        </div>
     );
 };
 
-export default UpdatePlaylist;
+export default CreatePlaylist;
