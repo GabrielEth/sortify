@@ -114,19 +114,19 @@ Objectives
 
 Gabriel Garza
 
--Scrum 118: Testing Exporting of Playlists
-    -Ensured the exported playlists correctly appeared in Spotify.
-    -Scrum 118
--Scrum 105: Exporting Generated Playlist to Spotify after creating or updating
-    -Developed and tested the functionality to export playlists to a user's Spotify account.
-    -Scrum 105
--Scrum 54: Unit Testing of Genres/Songs/Playlists
-    -Created unit tests for genres, songs, and playlists to ensure functionality under various conditions.
-    -Scrum 54
--Scrum 94: Pull User's Playlists function (Spotify API call)
-    -Implemented a function to retrieve a user's playlists from Spotify.
-    -Scrum 94
--Challenges faced included integrating the OAuth 2.0 flow within the app and resolving authorization errors such as the error 403. After extensive research and collaboration with Dylan Bladen, the functions were integrated and functioned as expected within the app environment.
+    -Scrum 118: Testing Exporting of Playlists
+        -Ensured the exported playlists correctly appeared in Spotify.
+        -Scrum 118
+    -Scrum 105: Exporting Generated Playlist to Spotify after creating or updating
+        -Developed and tested the functionality to export playlists to a user's Spotify account.
+        -Scrum 105
+    -Scrum 54: Unit Testing of Genres/Songs/Playlists
+        -Created unit tests for genres, songs, and playlists to ensure functionality under various conditions.
+        -Scrum 54
+    -Scrum 94: Pull User's Playlists function (Spotify API call)
+        -Implemented a function to retrieve a user's playlists from Spotify.
+        -Scrum 94
+    -Challenges faced included integrating the OAuth 2.0 flow within the app and resolving authorization errors such as the error 403. After extensive research and collaboration with Dylan Bladen, the functions were integrated and functioned as expected within the app environment.
 
 
 Bitbucket
