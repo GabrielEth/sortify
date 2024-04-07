@@ -6,6 +6,7 @@ import Dashboard from "./dashboard/dashboard";
 import Callback from "./callback.jsx";
 import SettingsDrawer from "./settingsdrawer.tsx";
 import CreatePlaylist from "./components/createplaylist.jsx";
+import UpdatePlaylist from "./components/updateplaylist.jsx";
 
 const App = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ const App = () => {
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
         <Route path="/createplaylist" element={<CreatePlaylist />} />
+        <Route path="/updateplaylist" element={<UpdatePlaylist />} />
         <Route path="/callback" element={<Callback />} />
         <Route path="/" element={<Navigate replace to="/dashboard" />} />
         <Route path="*" element={<Navigate replace to="/dashboard" />} />
