@@ -93,16 +93,85 @@ Mason Melead
 
 
 # SECOND SPRINT
+
+Dylan Bladen
+
+- Scrum 91: Login Page Redirect
+    - [Scrum 91](https://cs3398s24luna.atlassian.net/browse/SCRUM-91), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/17)
+- Scrum 112: Import Users icon when they log in
+    - [Scrum 112](https://cs3398s24luna.atlassian.net/browse/SCRUM-112), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/19)
+- Scrum 90: Fix route guard on dash board
+    - [Scrum 90](https://cs3398s24luna.atlassian.net/browse/SCRUM-90), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/24)
+- Scrum 79: Settings modal base
+    - [Scrum 79](https://cs3398s24luna.atlassian.net/browse/SCRUM-79), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/27)
+- Scrum 92: Auto fetch users song on dashboard
+    - [Scrum 92](https://cs3398s24luna.atlassian.net/browse/SCRUM-92), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/36)
+- Scrum 114: Access token persists on refresh
+    - [Scrum 114](https://cs3398s24luna.atlassian.net/browse/SCRUM-114), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/29)
+- Scrum 120: Intercept 401 Response & create new access token using refresh token 
+    - [Scrum 120](https://cs3398s24luna.atlassian.net/browse/SCRUM-120), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/32)
+- Scrum 96: Logout Functionality
+    - [Scrum 96](https://cs3398s24luna.atlassian.net/browse/SCRUM-96), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/28)
+
+
+Stormie Renevey
+
+- Scrum 104: User Tutorial 
+    - [Scrum 104](https://cs3398s24luna.atlassian.net/browse/SCRUM-104), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/34)
+- Scrum 103: Create and Update Redirect Routes
+    - [Scrum 103](https://cs3398s24luna.atlassian.net/browse/SCRUM-103), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/31)
+- Scrum 95: Dashboard Gallery & Card View
+    - [Scrum 95](https://cs3398s24luna.atlassian.net/browse/SCRUM-95), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/23)
+- Scrum 93: Loading Bar
+    - [Scrum 93](https://cs3398s24luna.atlassian.net/browse/SCRUM-93), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/26)
+
+
+Gabriel Garza
+
+- Scrum 118: Testing Expoting of Playlists 
+    - [Scrum 118](https://cs3398s24luna.atlassian.net/browse/SCRUM-118), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/38)
+- Scrum 105: Expoting generated playlists to spotify
+    - [Scrum 105](https://cs3398s24luna.atlassian.net/browse/SCRUM-105), [Bitbucket]()
+- Scrum 54: Unit Testing of Genres/Songs/Playlists
+    - [Scrum 54](https://cs3398s24luna.atlassian.net/browse/SCRUM-54), [Bitbucket]()
+- Scrum 94: Pull users playlists function (Spotify API)
+    - [Scrum 94](https://cs3398s24luna.atlassian.net/browse/SCRUM-94), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/20)
+
+
+
+
+Jason Fuller
+
+- Scrum 117: Research Open Source U/I Options
+    - [Scrum 117](https://cs3398s24luna.atlassian.net/browse/SCRUM-117), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/16)
+- Scrum 97: Login Page U/I Update
+    - [Scrum 97](https://cs3398s24luna.atlassian.net/browse/SCRUM-97), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/15)
+- Scrum 99: Create Playlist Page U/I
+    - [Scrum 99](https://cs3398s24luna.atlassian.net/browse/SCRUM-99), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/30)
+- Scrum 122: Refactor Login Logic
+    - [Scrum 122](https://cs3398s24luna.atlassian.net/browse/SCRUM-122), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/37)
+- Scrum 98: Update Playlist Page U/I
+    - [Scrum 98](https://cs3398s24luna.atlassian.net/browse/SCRUM-98), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/40)
+- Scrum 121: UPdate Dashboard Banner
+    - [Scrum 121](https://cs3398s24luna.atlassian.net/browse/SCRUM-121), [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/39)
+
+
+Mason Melead
+
+- Scrum 100: Research Music Sorting Algorithms
+    - [Scrum 100](https://cs3398s24luna.atlassian.net/browse/SCRUM-100), [Bitbucket](https://bitbucket.org/%7B%7D/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/18)
+
+
+# THIRD SPRINT
+
 Objectives
 
-- Fix redirect from login page
-- Unit testing
-- Route guard bug fix
-- Flesh out dashboard UI more
-- Replace dummy data with actual user playlist data
-- Further develop sorting algorithms based on the defined buckets
-- Database implementation
-- Database testing
+- One
+- Two
+- Three
+- Four
+- Five
+- Six
 
 # tbd
 *  Playlist generation based on user's existing song library
@@ -111,25 +180,6 @@ Objectives
 *  Ability to preview the playlist
 *  Ability to push new playlist to Spotify account or cancel
 
-
-Gabriel Garza
-
-    -Scrum 118: Testing Exporting of Playlists
-        -Ensured the exported playlists correctly appeared in Spotify.
-        -Scrum 118
-    -Scrum 105: Exporting Generated Playlist to Spotify after creating or updating
-        -Developed and tested the functionality to export playlists to a user's Spotify account.
-        -Scrum 105
-    -Scrum 54: Unit Testing of Genres/Songs/Playlists
-        -Created unit tests for genres, songs, and playlists to ensure functionality under various conditions.
-        -Scrum 54
-    -Scrum 94: Pull User's Playlists function (Spotify API call)
-        -Implemented a function to retrieve a user's playlists from Spotify.
-        -Scrum 94
-    -Challenges faced included integrating the OAuth 2.0 flow within the app and resolving authorization errors such as the error 403. After extensive research and collaboration with Dylan Bladen, the functions were integrated and functioned as expected within the app environment.
-
-
-Bitbucket
 
 
 ## Screenshots
