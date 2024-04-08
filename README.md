@@ -166,19 +166,12 @@ Mason Melead
 
 Objectives
 
-- One
-- Two
-- Three
-- Four
-- Five
-- Six
-
-# tbd
-*  Playlist generation based on user's existing song library
-*  User's generated playlist will update as user adds to their liked songs on spotify
-*  Filter on playlist creation
-*  Ability to preview the playlist
-*  Ability to push new playlist to Spotify account or cancel
+- Connect Backend Algorithms to Frontend U/I
+- Debug API (Unpreditably Fails to Work Sometimes)
+- Extensive Unit Testing of Playlist Generation 
+- Add Ability to Preview Generated Playlists Before Exporting 
+- Add "Report a Problem" Feature
+- Fine-tune the entire U/I
 
 
 
