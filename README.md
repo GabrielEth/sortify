@@ -160,6 +160,8 @@ Mason Melead
 
 - Scrum 100: Research Music Sorting Algorithms
     - [Scrum 100](https://cs3398s24luna.atlassian.net/browse/SCRUM-100), [Bitbucket](https://bitbucket.org/%7B%7D/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/18)
+- Scrum 101: Implement Music Sorting Algorithms
+    - [Scrum 101](https://cs3398s24luna.atlassian.net/browse/SCRUM-101), [Bitbucket](https://bitbucket.org/%7B%7D/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/41)
 
 
 # THIRD SPRINT
