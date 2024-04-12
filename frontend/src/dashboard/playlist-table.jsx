@@ -29,7 +29,7 @@ const PlaylistTable = ({ playlists }) => {
   };
 
   return (
-    <Container>
+    <Container style={{ maxHeight: 'calc(100vh - 100px)', overflowY: 'auto' }}>
       <Row className="g-3">
         {/* Unique class for targeting in Joyride */}
         <Col md={12 / cardsPerRow} className="create-new-playlist-card custom-col" onClick={handleCreateNewPlaylistClick} style={{ cursor: 'pointer' }}>
