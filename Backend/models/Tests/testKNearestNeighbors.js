@@ -1,12 +1,9 @@
 const { fetchSongDetails } = require("./models/songandplaylistroutes.cjs");
 const { kNearestNeighbors } = require("./models/sorting");
-const accessToken = "2e214f3d12904dd7ae816282230cb72b"; // Ensure this is securely handled
+const { fetchLikedSongs } = require("./models/songandplaylistroutes.cjs");
+const accessToken = "2e214f3d12904dd7ae816282230cb72b";
 
-// Example liked songs array (normally you would fetch this from your app's database or Spotify API)
-const likedSongs = [
-  { id: "3n3Ppam7vgaVa1iaRUc9Lp", artistIds: ["0oSGxfWSnnOXhD2fKuz2Gy"] },
-  { id: "2nLtzopw4rPReszdYBJU6h", artistIds: ["0oSGxfWSnnOXhD2fKuz2Gy"] },
-];
+const likedSongs = await fetchLikedSongs(accessToken);
 
 async function analyzeSongs() {
   try {
@@ -49,4 +46,4 @@ async function analyzeSongs() {
   }
 }
 
-analyzeSongsUsingAverage();
+analyzeSongs();
