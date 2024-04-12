@@ -1,12 +1,12 @@
-const { fetchSongDetails } = require("./models/songandplaylistroutes.cjs");
-const { kNearestNeighbors } = require("./models/sorting");
-const { fetchLikedSongs } = require("./models/songandplaylistroutes.cjs");
-const accessToken = "2e214f3d12904dd7ae816282230cb72b";
-
-const likedSongs = await fetchLikedSongs(accessToken);
+const { fetchSongDetails } = require("../songandplaylistroutes.cjs");
+const { kNearestNeighbors } = require("../sorting.cjs");
+const { fetchLikedSongs } = require("../songandplaylistroutes.cjs");
+const accessToken =
+  "BQDVEF3KFUTYGFWtlk-PIEWXc7UlhotuHgwL_1UhadxFn9Wlz1pT99iDcusDsGvU94LFxgshNR3bDneCyS_0okfenVoetgvX2w6ZgRuVtehmZsP7q27p-3nC7nRW-8ca8ZC9NGX2_U6yLTujy_0n1kl_ILAlq24gqNoSDtuuMj2Hv4VW9JC4Hg0NEleBu6uFvsvlw6Rpw7DZxTMVF_y4yZdWPQQHkYGF0HFScxkF8dhYhz0YK1buLYNAy-m2RApne6d1CshO-DGBtVvx4E0pagMZrGFGdQ";
 
 async function analyzeSongs() {
   try {
+    const likedSongs = await fetchLikedSongs(accessToken);
     const detailedSongs = await fetchSongDetails(likedSongs, accessToken);
     const features = detailedSongs.map((song) => [
       song.bpm,
