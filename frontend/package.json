@@ -31,7 +31,6 @@
     "typewriter-effect": "^2.21.0"
   },
   "devDependencies": {
-    "@fullhuman/postcss-purgecss": "^6.0.0",
     "@types/react": "^18.2.74",
     "@types/react-dom": "^18.2.19",
     "@vitejs/plugin-react": "^4.2.1",
