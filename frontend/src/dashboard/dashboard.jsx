@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import "./dashboard.css";
 import PlaylistComponent from "./playlist-component.jsx";
 import callSpotifyAPI from "./../services/apiservice.js";
-import Joyride from 'react-joyride';
+import Joyride from "react-joyride";
 
 export default function Dashboard({ isImportingMusic }) {
   const accessToken = localStorage.getItem("access_token");
@@ -10,35 +10,39 @@ export default function Dashboard({ isImportingMusic }) {
   const [runTutorial, setRunTutorial] = useState(true); // State to control the tutorial
   const [steps, setSteps] = useState([
     {
-      target: 'body',
-      content: 'The app that allows you to sort your Spotify song library into customized playlists.',
-      placement: 'center',
+      target: "body",
+      content:
+        "The app that allows you to sort your Spotify song library into customized playlists.",
+      placement: "center",
       title: <strong>Welcome to Sortify!</strong>,
     },
     {
-      target: '.select-playlists',
-      content: 'Here you can choose to create a new playlist or select one to update.',
-      placement: 'right',
-      title: <strong>Create or Update Playlists</strong>
+      target: ".select-playlists",
+      content:
+        "Here you can choose to create a new playlist or select one to update.",
+      placement: "right",
+      title: <strong>Create or Update Playlists</strong>,
     },
     {
-      target: '.create-new-playlist-card',
-      content: 'Create a new playlist by selecting five songs from your library. These selections will serve as the foundation for the rest of your generated playlist.',
-      placement: 'center',
-      title: <strong>Create New Playlist</strong>
+      target: ".create-new-playlist-card",
+      content:
+        "Create a new playlist by selecting five songs from your library. These selections will serve as the foundation for the rest of your generated playlist.",
+      placement: "center",
+      title: <strong>Create New Playlist</strong>,
     },
     {
-      target: '.first-playlist-card', 
-      content: 'Updating a playlist will asses the vibe of that existing playlist and add similar songs from your existing music library.',
-      placement: 'center',
-      title: <strong>Update Playlist</strong>
+      target: ".first-playlist-card",
+      content:
+        "Updating a playlist will asses the vibe of that existing playlist and add similar songs from your existing music library.",
+      placement: "center",
+      title: <strong>Update Playlist</strong>,
     },
     {
-      target: 'body',
-      content: 'Start creating your personalized playlists now.',
-      placement: 'center',
+      target: "body",
+      content: "Start creating your personalized playlists now.",
+      placement: "center",
       title: <strong>You're all set!</strong>,
-    }
+    },
   ]);
 
   useEffect(() => {
@@ -58,7 +62,6 @@ export default function Dashboard({ isImportingMusic }) {
 
   return (
     <div className="dashboard">
-
       <Joyride
         continuous
         run={runTutorial}
@@ -68,15 +71,15 @@ export default function Dashboard({ isImportingMusic }) {
         styles={{
           options: {
             zIndex: 10000,
-            primaryColor: '#f04', // This changes the default color theme, affecting the Next button
+            primaryColor: "#f04", // This changes the default color theme, affecting the Next button
           },
           buttonNext: {
-            backgroundColor: '#95D5B2', // Specific customization for the Next button's background color
-            color: '#fff', // Specific customization for the Next button's text color
+            backgroundColor: "#95D5B2", // Specific customization for the Next button's background color
+            color: "#fff", // Specific customization for the Next button's text color
           },
           buttonBack: {
-            backgroundColor: '#fff', // Setting the Back button's background to black
-            color: '#000', // Setting the Back button's text color to white
+            backgroundColor: "#fff", // Setting the Back button's background to black
+            color: "#000", // Setting the Back button's text color to white
           },
         }}
       />
@@ -89,7 +92,7 @@ export default function Dashboard({ isImportingMusic }) {
         />
       </div>
 
-      <div className="instructions">
+      <div className="instructions mb-0">
         <h1>Create A New Playlist OR Select One To Update!</h1>
       </div>
 
@@ -97,7 +100,7 @@ export default function Dashboard({ isImportingMusic }) {
         <div className="loading-progress"></div>
       </div>
 
-      <div className="select-playlists">
+      <div className="select-playlists mt-5">
         <h2 className="text-black"></h2>
         <PlaylistComponent accessToken={accessToken} />
       </div>
