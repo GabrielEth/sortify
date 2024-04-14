@@ -19,7 +19,7 @@
   border-radius: 50%;
 }
 
-.instructions h1 {
+.main-text {
   font-weight: bold; /* Makes text bold */
   font-size: 24px; /* Set the font size as needed */
   color: #52b788; /* Sets the color */
@@ -51,6 +51,53 @@
   text-align: center;
   margin-right: 0;
   width: 80%;
+  border: solid 1px #52b788;
+  box-shadow: 0px 0px 15px 3px #52b788;
+  position: relative;
+}
+.import-container {
+  align-items: center;
+}
+
+.sortify-music-btn {
+  transition: box-shadow 0.3s ease-in-out;
+  padding: 10px 20px;
+  width: 12rem;
+  background-color: #f0dcca;
+  color: #3a9f57;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.sortify-music-btn:hover {
+  box-shadow: 0 0 15px #06874f; /* Glowing effect */
+}
+
+.sortify-music-btn.staging-btn {
+  float: right;
+}
+
+.loading-bar {
+  width: 100%;
+  background-color: #f0dcca;
+  border-radius: 5px;
+}
+
+.loading-progress {
+  height: 20px;
+  width: 25%; /* will have to grow as loading progresses */
+  background-color: #f0dcca;
+  border-radius: 5px;
+}
+
+.select-playlists {
+  text-align: center;
+  padding: 3rem;
+  margin-top: 5rem;
+  margin-right: 0;
+  width: 70%;
   border: solid 1px #52b788;
   box-shadow: 0px 0px 15px 3px #52b788;
   position: relative;
