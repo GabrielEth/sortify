@@ -20,7 +20,7 @@ export default function Dashboard({ isImportingMusic }) {
       target: ".select-playlists",
       content:
         "Here you can choose to create a new playlist or select one to update.",
-      placement: "right",
+      placement: "center",
       title: <strong>Create or Update Playlists</strong>,
     },
     {
