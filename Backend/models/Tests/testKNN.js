@@ -1,8 +1,9 @@
-const { fetchSongDetails } = require("../songandplaylistroutes.cjs");
+const {
+  fetchSongDetails,
+  fetchLikedSongs,
+} = require("../songandplaylistroutes.cjs");
 const { kNearestNeighbors } = require("../sorting.cjs");
-const { fetchLikedSongs } = require("../songandplaylistroutes.cjs");
-const accessToken =
-  "BQCivnicXbCyx0899V1tZmyVLBDu0Y8M3m6wvVq9mo7BUpjdBKmYhLHskjxi2eB9KGZGJ8rflUZnLN3xRUsVnmVvpjMNh_fPgV2xYRgSsEEii4pQ5L1yzrUDTQJ07JGNDw6l1QbF9Yyyhrw9IsEIIP66VZtZv6hor59xHlS8NReubgnZSttHMDuP5qPJnX5DYgQZx5ad4yXGDszDw";
+const accessToken = "";
 
 async function analyzeSongs() {
   try {

@@ -19,3 +19,7 @@ function kNearestNeighbors(data, queryPoint, k) {
   // Return first k sorted points
   return distances.slice(0, k);
 }
+
+module.exports = {
+  kNearestNeighbors,
+};
