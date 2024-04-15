@@ -1,4 +1,5 @@
 //Update Existing playlist
+//exportPlaylist.js
 const fetch = require('node-fetch');
 
 /**
@@ -116,4 +117,7 @@ updatePlaylistOnSpotify(accessToken, playlistId, trackUris)
 .then(updatedPlaylistId => console.log(`Playlist updated successfully: ${updatedPlaylistId}`))
 .catch(error => console.error(error));
 
-module.exports = { exportPlaylistToSpotify, updatePlaylistOnSpotify };
+module.exports = {
+    exportPlaylistToSpotify,
+    updatePlaylistOnSpotify
+};
