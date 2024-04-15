@@ -4,6 +4,7 @@ import PlaylistComponent from "./playlist-component.jsx";
 import callSpotifyAPI from "./../services/apiservice.js";
 import Joyride from "react-joyride";
 import { useLikedSongs } from "../LikedSongsContext.jsx";
+import CircularIndeterminate from '../loading-circle.jsx';
 
 export default function Dashboard({ isImportingMusic }) {
   const { setLikedSongs } = useLikedSongs(); // Use the context to store liked songs
