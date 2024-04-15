@@ -19,6 +19,7 @@ const CreatePlaylist = () => {
     "Song 7",
   ]; // Placeholder for songs
   // to be filled with songs from dashboard
+  const placeHolderArists = ["test 1", "test 2"];
 
   const handleToggleSong = (song) => {
     if (selectedSongs.includes(song)) {
@@ -88,6 +89,7 @@ const CreatePlaylist = () => {
                       sx={{
                         color: "#000000",
                         "&.Mui-checked": { color: "#52b788" },
+                        marginRight: "2rem",
                       }}
                     />
                   </td>
