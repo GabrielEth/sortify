@@ -3,11 +3,13 @@ import "./dashboard.css";
 import PlaylistComponent from "./playlist-component.jsx";
 import callSpotifyAPI from "./../services/apiservice.js";
 import Joyride from "react-joyride";
+import { useLikedSongs } from "../LikedSongsContext.jsx";
 
 export default function Dashboard({ isImportingMusic }) {
+  const { setLikedSongs } = useLikedSongs(); // Use the context to store liked songs
   const accessToken = localStorage.getItem("access_token");
   const [profilePicture, setProfilePicture] = useState(null);
-  const [runTutorial, setRunTutorial] = useState(true); // State to control the tutorial
+  const [runTutorial, setRunTutorial] = useState(true);
   const [steps, setSteps] = useState([
     {
       target: "body",
@@ -33,7 +35,7 @@ export default function Dashboard({ isImportingMusic }) {
     {
       target: ".first-playlist-card",
       content:
-        "Updating a playlist will asses the vibe of that existing playlist and add similar songs from your existing music library.",
+        "Updating a playlist will assess the vibe of that existing playlist and add similar songs from your existing music library.",
       placement: "center",
       title: <strong>Update Playlist</strong>,
     },
@@ -57,8 +59,31 @@ export default function Dashboard({ isImportingMusic }) {
         console.error("Failed to fetch user profile:", error);
       }
     }
+
+    async function fetchLikedSongs() {
+      if (!accessToken) return;
+      try {
+        const response = await fetch('/api/fetch-liked-songs', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${accessToken}`,
+            'Content-Type': 'application/json'
+          }
+        });
+        const data = await response.json();
+        if (response.ok) {
+          setLikedSongs(data.likedSongs); // Update context with the fetched liked songs
+        } else {
+          throw new Error(data.message || "Failed to fetch liked songs");
+        }
+      } catch (error) {
+        console.error('Error fetching liked songs:', error);
+      }
+    }
+
     getSpotifyProfilePicture();
-  }, [accessToken]);
+    fetchLikedSongs();
+  }, [accessToken, setLikedSongs]);
 
   return (
     <div className="dashboard">
@@ -71,15 +96,15 @@ export default function Dashboard({ isImportingMusic }) {
         styles={{
           options: {
             zIndex: 10000,
-            primaryColor: "#f04", // This changes the default color theme, affecting the Next button
+            primaryColor: "#f04",
           },
           buttonNext: {
-            backgroundColor: "#95D5B2", // Specific customization for the Next button's background color
-            color: "#fff", // Specific customization for the Next button's text color
+            backgroundColor: "#95D5B2",
+            color: "#fff",
           },
           buttonBack: {
-            backgroundColor: "#fff", // Setting the Back button's background to black
-            color: "#000", // Setting the Back button's text color to white
+            backgroundColor: "#fff",
+            color: "#000",
           },
         }}
       />
