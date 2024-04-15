@@ -66,7 +66,6 @@ export default function Dashboard({ isImportingMusic }) {
       setIsLoading(true);
       try {
         const data = await callSpotifyAPI("/api/fetch-liked-songs");
-        console.log('Liked songs fetched:', data.likedSongs);
         setLikedSongs(data.likedSongs);
       } catch (error) {
         console.error('Error fetching liked songs:', error);
@@ -74,7 +73,7 @@ export default function Dashboard({ isImportingMusic }) {
       } finally {
         setIsLoading(false);
       }
-    };
+    }
 
     getSpotifyProfilePicture();
     fetchLikedSongs();

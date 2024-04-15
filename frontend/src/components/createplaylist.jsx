@@ -2,24 +2,16 @@ import { useState, useEffect } from "react";
 import "./createplaylist.css";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
+import { useLikedSongs } from "../LikedSongsContext";
 
 const CreatePlaylist = () => {
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [likedResult, setLikedResult] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const { likedSongs } = useLikedSongs().likedSongs.map(song => song);
 
   const chosenSongMax = 5;
-  const placeholderSongs = [
-    "Song 1",
-    "Song 2",
-    "Song 3",
-    "Song 4",
-    "Song 5",
-    "Song 6",
-    "Song 7",
-  ]; // Placeholder for songs
-  // to be filled with songs from dashboard
-  const placeHolderArists = ["test 1", "test 2"];
+  const placeholderArtists = ["test 1", "test 2"]; // Corrected typo in variable name
 
   const handleToggleSong = (song) => {
     if (selectedSongs.includes(song)) {
@@ -52,11 +44,12 @@ const CreatePlaylist = () => {
 
   // Call handleExportPrompt whenever likedResult changes
   useEffect(() => {
+    console.log(likedSongs);
     handleExportPrompt();
   }, [likedResult]);
 
-  const filteredSongs = placeholderSongs.filter((song) =>
-    song.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredSongs = likedSongs?.name?.filter((songName) =>
+    songName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -79,7 +72,7 @@ const CreatePlaylist = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredSongs.map((song, index) => (
+              {likedSongs.map((song, index) => (
                 <tr key={index} className="song-item">
                   <td>
                     <Checkbox
