@@ -2,7 +2,7 @@ const { fetchSongDetails } = require("../songandplaylistroutes.cjs");
 const { kNearestNeighbors } = require("../sorting.cjs");
 const { fetchLikedSongs } = require("../songandplaylistroutes.cjs");
 const accessToken =
-  "BQDVEF3KFUTYGFWtlk-PIEWXc7UlhotuHgwL_1UhadxFn9Wlz1pT99iDcusDsGvU94LFxgshNR3bDneCyS_0okfenVoetgvX2w6ZgRuVtehmZsP7q27p-3nC7nRW-8ca8ZC9NGX2_U6yLTujy_0n1kl_ILAlq24gqNoSDtuuMj2Hv4VW9JC4Hg0NEleBu6uFvsvlw6Rpw7DZxTMVF_y4yZdWPQQHkYGF0HFScxkF8dhYhz0YK1buLYNAy-m2RApne6d1CshO-DGBtVvx4E0pagMZrGFGdQ";
+  "BQCivnicXbCyx0899V1tZmyVLBDu0Y8M3m6wvVq9mo7BUpjdBKmYhLHskjxi2eB9KGZGJ8rflUZnLN3xRUsVnmVvpjMNh_fPgV2xYRgSsEEii4pQ5L1yzrUDTQJ07JGNDw6l1QbF9Yyyhrw9IsEIIP66VZtZv6hor59xHlS8NReubgnZSttHMDuP5qPJnX5DYgQZx5ad4yXGDszDw";
 
 async function analyzeSongs() {
   try {
@@ -30,7 +30,11 @@ async function analyzeSongs() {
     const k = 5; // Number of nearest neighbors to find
 
     // Execute the k-nearest neighbors function using average features as the query point
-    const nearestNeighbors = kNearestNeighbors(features, averageFeatures, k);
+    const nearestNeighbors = kNearestNeighbors(
+      detailedSongs,
+      averageFeatures,
+      k
+    );
 
     // Output the results
     console.log("Nearest Neighbors to the Average Song:");
