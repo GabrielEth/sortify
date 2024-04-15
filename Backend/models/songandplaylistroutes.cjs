@@ -39,7 +39,7 @@ const router = express.Router();
 
 const fetchUserPlaylists = async (accessToken) => {
   const playlists = [];
-  let url = "https://api.spotify.com/v1/me/playlists";
+  let url = "https://api.spotify.com/v1/me/playlists?limit=50";
 
   while (url) {
     const response = await fetch(url, {
