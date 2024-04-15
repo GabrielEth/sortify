@@ -9,6 +9,8 @@ export default function Dashboard({ isImportingMusic }) {
   const { setLikedSongs } = useLikedSongs(); // Use the context to store liked songs
   const accessToken = localStorage.getItem("access_token");
   const [profilePicture, setProfilePicture] = useState(null);
+  const [isLoading, setIsLoading] = useState(false); // Define isLoading state
+  const [error, setError] = useState(null); // Define error state
   const [runTutorial, setRunTutorial] = useState(true);
   const [steps, setSteps] = useState([
     {
@@ -61,29 +63,30 @@ export default function Dashboard({ isImportingMusic }) {
     }
 
     async function fetchLikedSongs() {
-      if (!accessToken) return;
+      setIsLoading(true);
       try {
-        const response = await fetch('/api/fetch-liked-songs', {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${accessToken}`,
-            'Content-Type': 'application/json'
-          }
-        });
-        const data = await response.json();
-        if (response.ok) {
-          setLikedSongs(data.likedSongs); // Update context with the fetched liked songs
-        } else {
-          throw new Error(data.message || "Failed to fetch liked songs");
-        }
+        const data = await callSpotifyAPI("/api/fetch-liked-songs");
+        console.log('Liked songs fetched:', data.likedSongs);
+        setLikedSongs(data.likedSongs);
       } catch (error) {
         console.error('Error fetching liked songs:', error);
+        setError(error.message || 'An unexpected error occurred');
+      } finally {
+        setIsLoading(false);
       }
-    }
+    };
 
     getSpotifyProfilePicture();
     fetchLikedSongs();
   }, [accessToken, setLikedSongs]);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // Show loading state
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>; // Show error message
+  }
 
   return (
     <div className="dashboard">
