@@ -81,7 +81,7 @@ export default function Dashboard({ isImportingMusic }) {
   }, [accessToken, setLikedSongs]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Show loading state
+    return <CircularIndeterminate />; // Show loading state
   }
 
   if (error) {
