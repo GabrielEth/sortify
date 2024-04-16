@@ -37,8 +37,6 @@
 const express = require("express");
 const router = express.Router();
 
-const { exportPlaylistToSpotify, updatePlaylistOnSpotify } = require('./exportPlaylist');
-
 const fetchUserPlaylists = async (accessToken) => {
   const playlists = [];
   let url = "https://api.spotify.com/v1/me/playlists?limit=50";

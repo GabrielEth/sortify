@@ -1,123 +1,136 @@
-//Update Existing playlist
-//exportPlaylist.js
-const fetch = require('node-fetch');
-
+const express = require("express");
+const router = express.Router();
 /**
  * Adds tracks to an existing playlist in the user's Spotify account.
- * 
+ *
  * @param {string} accessToken - The Spotify access token.
  * @param {string} playlistId - The Spotify ID of the playlist to update.
  * @param {string[]} trackUris - Array of Spotify track URIs to add to the playlist.
  */
 async function updatePlaylistOnSpotify(accessToken, playlistId, trackUris) {
-    try {
-        // Add tracks to the existing playlist
-        const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ uris: trackUris })
-        });
+  try {
+    // Add tracks to the existing playlist
+    const response = await fetch(
+      `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ uris: trackUris }),
+      }
+    );
 
-        if (!response.ok) {
-            throw new Error(`Failed to add tracks to playlist: ${response.statusText}`);
-        }
-
-        console.log(`Tracks added to the existing playlist. Playlist ID: ${playlistId}`);
-        return playlistId; // Return the updated playlist ID for further use
-    } catch (error) {
-        console.error('Error updating playlist on Spotify:', error);
+    if (!response.ok) {
+      throw new Error(
+        `Failed to add tracks to playlist: ${response.statusText}`
+      );
     }
+
+    console.log(
+      `Tracks added to the existing playlist. Playlist ID: ${playlistId}`
+    );
+    return playlistId; // Return the updated playlist ID for further use
+  } catch (error) {
+    console.error("Error updating playlist on Spotify:", error);
+  }
 }
-
-
-
-
-
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//Create and export playlist
-
-const fetch = require('node-fetch');
 
 /**
  * Creates a new playlist in the user's Spotify account and adds tracks to it.
- * 
+ *
  * @param {string} userId - The Spotify user ID.
  * @param {string} accessToken - The Spotify access token.
  * @param {Object} playlistDetails - Details of the playlist to create.
  * @param {string[]} trackUris - Array of Spotify track URIs to add to the playlist.
  */
-async function exportPlaylistToSpotify(userId, accessToken, playlistDetails, trackUris) {
-    try {
-        // Step 1: Create a new playlist
-        const createPlaylistResponse = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: playlistDetails.name,
-                description: playlistDetails.description || '',
-                public: playlistDetails.public || false
-            })
-        });
+async function exportPlaylistToSpotify(
+  userId,
+  accessToken,
+  playlistDetails,
+  trackUris
+) {
+  try {
+    // Step 1: Create a new playlist
+    const createPlaylistResponse = await fetch(
+      `https://api.spotify.com/v1/users/${userId}/playlists`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: playlistDetails.name,
+          description: playlistDetails.description || "",
+          public: playlistDetails.public || false,
+        }),
+      }
+    );
 
-        if (!createPlaylistResponse.ok) {
-            throw new Error(`Failed to create playlist: ${createPlaylistResponse.statusText}`);
-        }
-
-        const playlist = await createPlaylistResponse.json();
-
-        // Step 2: Add tracks to the playlist
-        const addTracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${playlist.id}/tracks`, {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                uris: trackUris
-            })
-        });
-
-        if (!addTracksResponse.ok) {
-            throw new Error(`Failed to add tracks to playlist: ${addTracksResponse.statusText}`);
-        }
-
-        console.log(`Playlist created and tracks added. Playlist ID: ${playlist.id}`);
-        return playlist.id; // Return the new playlist ID for further use
-    } catch (error) {
-        console.error('Error exporting playlist to Spotify:', error);
+    if (!createPlaylistResponse.ok) {
+      throw new Error(
+        `Failed to create playlist: ${createPlaylistResponse.statusText}`
+      );
     }
+
+    const playlist = await createPlaylistResponse.json();
+
+    // Step 2: Add tracks to the playlist
+    const addTracksResponse = await fetch(
+      `https://api.spotify.com/v1/playlists/${playlist.id}/tracks`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uris: trackUris,
+        }),
+      }
+    );
+
+    if (!addTracksResponse.ok) {
+      throw new Error(
+        `Failed to add tracks to playlist: ${addTracksResponse.statusText}`
+      );
+    }
+
+    console.log(
+      `Playlist created and tracks added. Playlist ID: ${playlist.id}`
+    );
+    return playlist.id; // Return the new playlist ID for further use
+  } catch (error) {
+    console.error("Error exporting playlist to Spotify:", error);
+  }
 }
 
 // Example usage
-const userId = 'spotify_user_id_here';
-const playlistId = 'your_existing_playlist_id_here';
-const accessToken = 'your_spotify_access_token_here';
+const userId = "spotify_user_id_here";
+const playlistId = "your_existing_playlist_id_here";
+const accessToken = "your_spotify_access_token_here";
 const playlistDetails = {
-    name: 'New Generated Playlist',
-    description: 'Playlist description here...',
-    public: true
+  name: "New Generated Playlist",
+  description: "Playlist description here...",
+  public: true,
 };
 const trackUris = [
-    'spotify:track:4iV5W9uYEdYUVa79Axb7Rh',
-    'spotify:track:1301WleyT98MSxVHPZCA6M'
+  "spotify:track:4iV5W9uYEdYUVa79Axb7Rh",
+  "spotify:track:1301WleyT98MSxVHPZCA6M",
 ];
 
-exportPlaylistToSpotify(userId, accessToken, playlistDetails, trackUris)
-    .then(playlistId => console.log(`Playlist exported successfully: ${playlistId}`))
-    .catch(error => console.error(error));
+// exportPlaylistToSpotify(userId, accessToken, playlistDetails, trackUris)
+//   .then((playlistId) =>
+//     console.log(`Playlist exported successfully: ${playlistId}`)
+//   )
+//   .catch((error) => console.error(error));
 
-updatePlaylistOnSpotify(accessToken, playlistId, trackUris)
-.then(updatedPlaylistId => console.log(`Playlist updated successfully: ${updatedPlaylistId}`))
-.catch(error => console.error(error));
+// updatePlaylistOnSpotify(accessToken, playlistId, trackUris)
+//   .then((updatedPlaylistId) =>
+//     console.log(`Playlist updated successfully: ${updatedPlaylistId}`)
+//   )
+//   .catch((error) => console.error(error));
 
-module.exports = {
-    exportPlaylistToSpotify,
-    updatePlaylistOnSpotify
-};
+module.exports = router;

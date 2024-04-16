@@ -16,13 +16,14 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser());
 
-const routes = require('./models/songandplaylistroutes.cjs');
-app.use('/api', routes);
+const songRoutes = require('./models/songandplaylistroutes.cjs');
+const playlistRoutes = require('./models/exportPlaylist.cjs');
+app.use('/api', songRoutes);
+app.use('/api', playlistRoutes);
 
 var client_id = "7de6fc918ba248768d83e1ed282527c6";
 var client_secret = "2e214f3d12904dd7ae816282230cb72b";
 var redirect_uri = "http://localhost:5555/callback";
-
 
 var stateKey = "spotify_auth_state";
 
