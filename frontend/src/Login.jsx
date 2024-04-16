@@ -4,23 +4,6 @@ import Background from "./../../Resources/Background.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Typewriter from "typewriter-effect";
 
-const client_id = "7de6fc918ba248768d83e1ed282527c6";
-const redirect_uri = "http://localhost:5555/callback";
-const scope = [
-  "user-read-playback-state",
-  "app-remote-control",
-  "user-modify-playback-state",
-  "user-read-private",
-  "user-read-email",
-  "user-library-read",
-  "user-library-modify",
-  "playlist-modify-public",
-  "playlist-modify-private",
-  "playlist-read-private",
-  "playlist-read-collaborative"
-];
-
-
 export default function Login() {
   const handleLogin = async () => {
     const authUrl = `http://localhost:5555/loginuser`;
