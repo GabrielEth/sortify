@@ -3,15 +3,15 @@ import "./createplaylist.css";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 import { useLikedSongs } from "../LikedSongsContext";
+import callSpotifyAPI from "../services/apiservice";
 
 const CreatePlaylist = () => {
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [likedResult, setLikedResult] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const { likedSongs } = useLikedSongs().likedSongs.map(song => song);
+  const { likedSongs } = useLikedSongs();
 
   const chosenSongMax = 5;
-  const placeholderArtists = ["test 1", "test 2"]; // Corrected typo in variable name
 
   const handleToggleSong = (song) => {
     if (selectedSongs.includes(song)) {
@@ -33,6 +33,10 @@ const CreatePlaylist = () => {
     // Export logic here
   };
 
+  const testFunction = () => {
+    console.log("sorting and generation of playlist")
+  }
+
   const handleExportPrompt = () => {
     // Recursive function to prompt user until they like the playlist
     if (likedResult === false) {
@@ -44,12 +48,21 @@ const CreatePlaylist = () => {
 
   // Call handleExportPrompt whenever likedResult changes
   useEffect(() => {
-    console.log(likedSongs);
     handleExportPrompt();
   }, [likedResult]);
 
-  const filteredSongs = likedSongs?.name?.filter((songName) =>
-    songName.toLowerCase().includes(searchTerm.toLowerCase())
+  async function getArtistName(artistId) {
+    try {
+      const data = await callSpotifyAPI(`https://api.spotify.com/v1/artists/${artistId}`);
+      return data.name;
+    } catch (error) {
+      console.error("Error fetching artist name:", error);
+      return "Unknown Artist";
+    }
+  }
+
+  const filteredSongs = likedSongs.filter((song) =>
+    song.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -69,10 +82,11 @@ const CreatePlaylist = () => {
               <tr>
                 <th>Select</th>
                 <th>Song</th>
+                {/* <th>Artist</th> */}
               </tr>
             </thead>
             <tbody>
-              {likedSongs.map((song, index) => (
+              {filteredSongs.map((song, index) => (
                 <tr key={index} className="song-item">
                   <td>
                     <Checkbox
@@ -86,7 +100,8 @@ const CreatePlaylist = () => {
                       }}
                     />
                   </td>
-                  <td>{song}</td>
+                  <td>{song.name}</td>
+                  {/* <td>{getArtistName(song.artistIds[0])}</td>  */}
                 </tr>
               ))}
             </tbody>
@@ -96,6 +111,9 @@ const CreatePlaylist = () => {
         {selectedSongs.length === 5 && (
           <div className="like-dislike-section">
             <h1 className="instructions">Preview Playlist</h1>
+            <button className="sortify-music-btn" onClick={testFunction}>
+              Generate
+            </button>
           </div>
         )}
 
