@@ -292,8 +292,4 @@ router.get("/fetch-song-details", async (req, res) => {
   }
 });
 
-module.exports = {
-  router,
-  fetchSongDetails,
-  fetchLikedSongs,
-};
+module.exports = [router, fetchSongDetails, fetchLikedSongs];
