@@ -35,6 +35,7 @@ export default function Login() {
           src={Logo}
           alt="Logo"
           style={{
+            marginTop: "2rem",
             width: 200,
             height: 200,
             borderRadius: 99,
@@ -44,7 +45,7 @@ export default function Login() {
         <div
           style={{
             fontSize: 17,
-            fontFamily: "montserrat",
+            fontFamily: "Arial, sans-serif",
             marginTop: 15,
             color: "black",
           }}
@@ -59,10 +60,11 @@ export default function Login() {
           />
         </div>
         <button
-          className="btn btn-success btn-lg throbbing-button"
+          className="sortify-music-btn throbbing-button"
           onClick={handleLogin}
           style={{
             padding: 16,
+            fontFamily: "Arial, sans-serif",
             borderRadius: 99,
             marginTop: 30,
           }}
