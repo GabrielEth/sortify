@@ -4,13 +4,14 @@ import PlaylistComponent from "./playlist-component.jsx";
 import callSpotifyAPI from "./../services/apiservice.js";
 import Joyride from "react-joyride";
 import { useLikedSongs } from "../LikedSongsContext.jsx";
+import CircularIndeterminate from '../loading-circle.jsx';
 
-export default function Dashboard({ isImportingMusic }) {
+export default function Dashboard() {
   const { setLikedSongs } = useLikedSongs(); // Use the context to store liked songs
   const accessToken = localStorage.getItem("access_token");
   const [profilePicture, setProfilePicture] = useState(null);
-  const [isLoading, setIsLoading] = useState(false); // Define isLoading state
-  const [error, setError] = useState(null); // Define error state
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [runTutorial, setRunTutorial] = useState(true);
   const [steps, setSteps] = useState([
     {
@@ -64,6 +65,7 @@ export default function Dashboard({ isImportingMusic }) {
 
     async function fetchLikedSongs() {
       setIsLoading(true);
+
       try {
         const data = await callSpotifyAPI("/api/fetch-liked-songs");
         setLikedSongs(data.likedSongs);
@@ -80,11 +82,15 @@ export default function Dashboard({ isImportingMusic }) {
   }, [accessToken, setLikedSongs]);
 
   if (isLoading) {
-    return <div>Loading...</div>; // Show loading state
+    return (
+      <>
+        <CircularIndeterminate />
+      </>
+    );
   }
 
   if (error) {
-    return <div>Error: {error}</div>; // Show error message
+    return <div>Error: {error}</div>;
   }
 
   return (
@@ -123,13 +129,9 @@ export default function Dashboard({ isImportingMusic }) {
         <h1>Create A New Playlist OR Select One To Update!</h1>
       </div>
 
-      <div className="loading-bar" hidden={!isImportingMusic}>
-        <div className="loading-progress"></div>
-      </div>
-
       <div className="select-playlists mt-5">
         <h2 className="text-black"></h2>
-        <PlaylistComponent accessToken={accessToken} />
+        <PlaylistComponent />
       </div>
     </div>
   );
