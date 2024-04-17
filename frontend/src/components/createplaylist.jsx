@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './createplaylist.css'; // Import CSS file for styling
+import callSpotifyAPI from "../services/apiservice.js";
+
 
 const CreatePlaylist = () => {
     const [selectedPlaylist, setSelectedPlaylist] = useState('');
     const [selectedSongs, setSelectedSongs] = useState([]);
     const [likedResult, setLikedResult] = useState(null);
+    const [userId, setUserId] = useState(null);
+    const [userData, setUserData] = useState(null);
+    const accessToken = localStorage.getItem("access_token");
+
+    
 
     const playlists = ['Playlist 1', 'Playlist 2', 'Playlist 3']; // Placeholder for pre-existing playlists
     const placeholderSongs = ['Song 1', 'Song 2', 'Song 3', 'Song 4', 'Song 5']; // Placeholder for songs
@@ -24,23 +31,95 @@ const CreatePlaylist = () => {
         setLikedResult(like);
     };
 
-    const handleExport = () => {
-        // Export logic here
-    };
+    useEffect(() => {
+        async function getSpotifyProfilePicture() {
+          try {
+            const data = await callSpotifyAPI("https://api.spotify.com/v1/me");
+            const userId = data.id;
+            setUserData(data);
+            setUserId(userId);
+          } catch (error) {
+            console.error("Failed to fetch user profile:", error);
+          }
+        }
+        getSpotifyProfilePicture();
+      }, [accessToken]);
+
+      
 
     const handleExportPrompt = () => {
-        // Recursive function to prompt user until they like the playlist
         if (likedResult === false) {
-            setLikedResult(null); // Reset likedResult
-            // Prompt the user again for liking the playlist
+            setLikedResult(null);
             handleLikeResult(window.confirm('Do you like your creation now?'));
         }
     };
 
-    // Call handleExportPrompt whenever likedResult changes
-    React.useEffect(() => {
+    useEffect(() => {
         handleExportPrompt();
     }, [likedResult]);
+    
+    useEffect(() => {
+        if (userData && likedResult === true) {
+            handleExport();
+        }
+    }, [userData, likedResult]);
+
+    function createSpotifyPlaylist(playlistName, playlistDescription, isPublic) {
+        
+        
+        if (!userData) {
+            console.error("User data not available.");
+            return;
+        }
+        const url = `https://api.spotify.com/v1/users/${userId}/playlists`;
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: playlistName,
+                description: playlistDescription,
+                public: isPublic
+            })
+        };
+
+        return fetch(url, requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to create playlist');
+                }
+                return response.json();
+            })
+            .catch(error => {
+                console.error('Error creating playlist:', error);
+                throw error;
+            });
+    }
+
+    const handleExport = () => {
+        const playlistName = 'New Playlist';
+        const playlistDescription = 'New playlist description';
+        const isPublic = false;
+    
+        if (!userData) {
+            console.error('User data not available!!');
+            return;
+        }
+        if (userData) {
+            createSpotifyPlaylist(playlistName, playlistDescription, isPublic)
+                .then(playlistData => {
+                    console.log('Playlist created:', playlistData);
+                })
+                .catch(error => {
+                    console.error('Failed to create playlist:', error);
+                });
+        } else {
+            console.error('User data not available. Cannot create playlist.');
+        }
+    };
+    
 
     return (
         <div className="create-playlist-container">
@@ -48,7 +127,7 @@ const CreatePlaylist = () => {
                 <h1 className="section-heading">Create Playlist</h1>
 
                 <div className="playlist-section">
-                    <h2 className="subsection-heading">Choose Existing Playlist</h2>
+                    <h2 className="subsection-heading">Choose The Playlist You Want To Create</h2>
                     <select className="dropdown" value={selectedPlaylist} onChange={(e) => setSelectedPlaylist(e.target.value)}>
                         <option value="">Select Playlist</option>
                         {playlists.map((playlist, index) => (
@@ -94,7 +173,7 @@ const CreatePlaylist = () => {
                     </div>
                 )}
 
-                {likedResult === true && (
+                {userData && likedResult === true && (
                     <div className="button-section">
                         <button className="export-button" onClick={handleExport}>EXPORT</button>
                     </div>
@@ -103,5 +182,6 @@ const CreatePlaylist = () => {
         </div>
     );
 };
+
 
 export default CreatePlaylist;

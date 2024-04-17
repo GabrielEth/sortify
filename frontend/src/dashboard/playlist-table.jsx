@@ -6,8 +6,14 @@ import { useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import "./playlist-table.css";
 import newPlaylist from "../../../Resources/newPlaylist.png";
+import Popup from "../components/Popup";
+import React, { useState } from 'react';
+
 
 const PlaylistTable = ({ playlists }) => {
+
+  const [openPopup, setOpenPopup] = useState(false);
+
   PlaylistTable.propTypes = {
     playlists: PropTypes.arrayOf(
       PropTypes.shape({
@@ -32,11 +38,11 @@ const PlaylistTable = ({ playlists }) => {
     <Container style={{ maxHeight: 'calc(100vh - 100px)', overflowY: 'auto' }}>
       <Row className="g-3">
         {/* Unique class for targeting in Joyride */}
-        <Col md={12 / cardsPerRow} className="create-new-playlist-card custom-col" onClick={handleCreateNewPlaylistClick} style={{ cursor: 'pointer' }}>
+        <Col md={12 / cardsPerRow} className="create-new-playlist-card custom-col" onClick={() => {setOpenPopup(true)}} style={{ cursor: 'pointer' }}>
           <Card className="card-hover-effect">
             <Card.Img variant="top" src={newPlaylist} alt="Create New Playlist" />
             <Card.Body>
-              <Card.Text className="card-text" style={{ fontSize: '1rem', fontWeight: '400' }}>Create New</Card.Text>
+              <Card.Text className="card-text" style={{ fontSize: '1rem', fontWeight: '400' }} >Create New</Card.Text>
             </Card.Body>
           </Card>
         </Col>
@@ -54,6 +60,10 @@ const PlaylistTable = ({ playlists }) => {
           </Col>
         ))}
       </Row>
+      <Popup>
+        openPopup = {openPopup}
+        setOpenPopup = {setOpenPopup}
+      </Popup>
     </Container>
   );
 };

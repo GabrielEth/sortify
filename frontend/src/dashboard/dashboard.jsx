@@ -3,11 +3,15 @@ import "./dashboard.css";
 import PlaylistComponent from "./playlist-component.jsx";
 import callSpotifyAPI from "./../services/apiservice.js";
 import Joyride from "react-joyride";
+import Popup from "../components/Popup";
+
 
 export default function Dashboard({ isImportingMusic }) {
   const accessToken = localStorage.getItem("access_token");
   const [profilePicture, setProfilePicture] = useState(null);
   const [runTutorial, setRunTutorial] = useState(true); // State to control the tutorial
+  const [openPopup, setOpenPopup] = useState(false);
+
   const [steps, setSteps] = useState([
     {
       target: "body",
@@ -53,6 +57,7 @@ export default function Dashboard({ isImportingMusic }) {
           const largestImage = data.images.sort((a, b) => b.width - a.width)[0];
           setProfilePicture(largestImage.url);
         }
+        const userId = data.id;
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
       }
@@ -93,7 +98,7 @@ export default function Dashboard({ isImportingMusic }) {
       </div>
 
       <div className="instructions mb-0">
-        <h1>Create A New Playlist OR Select One To Update!</h1>
+        <h1 onClick={() => setOpenPopup(true)}>Create A New Playlist OR Select One To Update!</h1>
       </div>
 
       <div className="loading-bar" hidden={!isImportingMusic}>
@@ -104,6 +109,9 @@ export default function Dashboard({ isImportingMusic }) {
         <h2 className="text-black"></h2>
         <PlaylistComponent accessToken={accessToken} />
       </div>
+      <Popup openPopup={openPopup} 
+      setOpenPopup={setOpenPopup} />
+
     </div>
   );
 }
