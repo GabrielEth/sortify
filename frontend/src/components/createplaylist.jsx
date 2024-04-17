@@ -50,7 +50,7 @@ const CreatePlaylist = () => {
   const isGenerateDisabled = false;
   // selectedSongs.length != chosenSongMax;
 
-  const handleGenerate = () => {
+  const handleGenerate = (selectedSongs) => {
     if (!isGenerateDisabled) {
       // Add logic to generate playlist
     }
@@ -113,7 +113,7 @@ const CreatePlaylist = () => {
             <button
               className="sortify-music-btn"
               disabled={isGenerateDisabled}
-              onClick={handleGenerate}
+              onClick={handleGenerate(selectedSongs)}
             >
               Generate
             </button>
