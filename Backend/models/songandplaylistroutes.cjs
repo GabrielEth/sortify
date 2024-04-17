@@ -288,4 +288,48 @@ router.get("/fetch-song-details", async (req, res) => {
   }
 });
 
+//routes for playlist creation and updating
+router.post('/create-playlist', async (req, res) => {
+  const userId = req.body.userId;
+  const accessToken = req.header("Authorization").split(" ")[1];
+  const playlistDetails = req.body.playlistDetails;
+  const trackUris = req.body.trackUris;
+
+  try {
+      const playlistId = await exportPlaylistToSpotify(userId, accessToken, playlistDetails, trackUris);
+      res.json({
+          success: true,
+          playlistId: playlistId,
+          message: "Playlist created successfully"
+      });
+  } catch (error) {
+      console.error("Error creating playlist:", error);
+      res.status(500).json({
+          success: false,
+          message: "Failed to create playlist"
+      });
+  }
+});
+
+router.post('/update-playlist', async (req, res) => {
+  const accessToken = req.header("Authorization").split(" ")[1];
+  const playlistId = req.body.playlistId;
+  const trackUris = req.body.trackUris;
+
+  try {
+      const updatedPlaylistId = await updatePlaylistOnSpotify(accessToken, playlistId, trackUris);
+      res.json({
+          success: true,
+          playlistId: updatedPlaylistId,
+          message: "Playlist updated successfully"
+      });
+  } catch (error) {
+      console.error("Error updating playlist:", error);
+      res.status(500).json({
+          success: false,
+          message: "Failed to update playlist"
+      });
+  }
+});
+
 module.exports = router;
