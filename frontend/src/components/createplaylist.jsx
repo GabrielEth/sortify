@@ -38,7 +38,7 @@ const CreatePlaylist = () => {
   const handleExport = () => {
     // Export logic here
   };
- 
+
   const filteredSongs = likedSongs.filter((song) =>
     song.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -58,53 +58,66 @@ const CreatePlaylist = () => {
 
   return (
     <>
-      <h1 className="instructions main">Select 5 songs to base your playlist on</h1>
+      <h1 className="instructions main">
+        Select 5 songs to base your playlist on
+      </h1>
       <div className="main">
+        <TextField
+          fullWidth
+          label="Search Songs"
+          variant="outlined"
+          onChange={handleSearchTermChange}
+          sx={{
+            fontFamily: "Arial, sans-serif",
+            backgroundColor: "#d8f3dc",
+            marginBottom: ".5rem",
+            borderRadius: ".75rem",
+            width: "89%",
+            display: "flex",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        />
         <div className="create-playlist-container">
-          <div className="scrollable-list">
-            <TextField
-              fullWidth
-              label="Search Songs"
-              variant="outlined"
-              onChange={handleSearchTermChange}
-              sx={{ marginBottom: "1rem", fontFamily: "Arial, sans-serif", backgroundColor: "#d8f3dc", border: "1px solid black"}}
-            />
-            <table className="playlist-table">
-              <thead>
-                <tr>
-                  <th>Select</th>
-                  <th>Song</th>
+          <table className="playlist-table">
+            <thead>
+              <tr>
+                <th>Select</th>
+                <th>Song</th>
+              </tr>
+            </thead>
+            <tbody>
+              {placeholderSongs.map((song, index) => (
+                <tr key={index}>
+                  <td>
+                    <Checkbox
+                      onChange={() => handleToggleSong(song)}
+                      checked={selectedSongs.includes(song)}
+                      color="primary"
+                      sx={{
+                        color: "#000000",
+                        "&.Mui-checked": { color: "#52b788" },
+                        marginRight: "2rem",
+                      }}
+                    />
+                  </td>
+                  <td>{song.name}</td>
                 </tr>
-              </thead>
-              <tbody>
-                {placeholderSongs.map((song, index) => (
-                  <tr key={index}>
-                    <td>
-                      <Checkbox
-                        onChange={() => handleToggleSong(song)}
-                        checked={selectedSongs.includes(song)}
-                        color="primary"
-                        sx={{
-                          color: "#000000",
-                          "&.Mui-checked": { color: "#52b788" },
-                          marginRight: "2rem",
-                        }}
-                      />
-                    </td>
-                    <td>{song.name}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
+        </div>
 
-          <div className="like-dislike-section main">
-            <span>
-              <button className="sortify-music-btn" disabled={isGenerateDisabled} onClick={handleGenerate}>
-                Generate
-              </button>
-            </span>
-          </div>
+        <div className="like-dislike-section main">
+          <span>
+            <button
+              className="sortify-music-btn"
+              disabled={isGenerateDisabled}
+              onClick={handleGenerate}
+            >
+              Generate
+            </button>
+          </span>
         </div>
       </div>
     </>

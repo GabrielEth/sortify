@@ -6,14 +6,9 @@
   background-color: #081c15;
   margin-left: 5rem;
   margin-right: 5rem;
-  margin-bottom: 5rem;
   margin-top: 0;
-}
-
-.scrollable-list {
   max-height: 75vh;
   overflow-y: auto;
-  background-color: #d8f3dc;
   border-radius: 0.75rem;
 }
 
@@ -83,7 +78,7 @@
   text-align: center;
   text-decoration: none;
   font-size: 1.2rem;
-  margin: 1rem 0.5rem;
+  margin: 1rem 5rem;
   transition-duration: 0.4s;
   cursor: pointer;
   float: right;
