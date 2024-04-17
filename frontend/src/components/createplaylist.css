@@ -3,7 +3,7 @@
 }
 
 .create-playlist-container {
-  background-color: #ffffff;
+  background-color: #081c15;
   margin-left: 5rem;
   margin-right: 5rem;
   margin-bottom: 5rem;
@@ -11,90 +11,32 @@
 }
 
 .scrollable-list {
-  max-height: 60vh;
+  max-height: 75vh;
   overflow-y: auto;
+  background-color: #d8f3dc;
+  border-radius: 0.75rem;
 }
 
 .like-dislike-section {
   text-align: center;
-}
-
-.like-dislike-label {
-  font-weight: bold;
-}
-
-.like-dislike-buttons {
-  margin-top: 10px;
-}
-
-.like-button,
-.dislike-button,
-.export-button {
-  background-color: #45a25e;
-  margin-top: 20px;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  margin-right: 10px;
-}
-
-.like-button:hover,
-.dislike-button:hover,
-.export-button:hover {
-  background-color: #66fc9f;
-  color: #1f2833;
+  min-height: 15vh;
 }
 
 .instructions {
-  font-weight: bold; /* Makes text bold */
-  font-size: 24px; /* Set the font size as needed */
-  color: #52b788; /* Sets the color */
+  font-weight: bold;
+  font-size: 24px;
+  color: #52b788;
   text-align: center;
   margin-top: 2rem;
-}
-
-.loading-bar {
-  width: 100%;
-  background-color: #f0dcca;
-  border-radius: 5px;
-}
-
-.loading-progress {
-  height: 20px;
-  width: 25%; /* will have to grow as loading progresses */
-  background-color: #f0dcca;
-  border-radius: 5px;
-}
-
-.select-playlists {
-  text-align: center;
-  padding: 3rem;
-  margin-top: 5rem;
-  margin-right: 0;
-  width: 70%;
-  border: solid 1px #52b788;
-  box-shadow: 0px 0px 15px 3px #52b788;
-  position: relative;
-}
-
-.select-playlists::after {
-  content: "";
-  position: absolute;
-  top: -4rem; /* Adjust to move the border further away */
-  left: -4rem; /* Adjust to move the border further away */
-  right: -4rem; /* Adjust to move the border further away */
-  bottom: -4rem; /* Adjust to move the border further away */
-  border: 2px solid black; /* Your detached border */
-  z-index: -1;
+  margin-bottom: 2rem;
+  user-select: none;
 }
 
 .playlist-table {
   overflow: scroll;
   width: 100%;
   margin: 0 auto;
+  background-color: #d8f3dc;
 }
 
 .playlist-table th:first-child {
@@ -102,13 +44,13 @@
 }
 
 .playlist-table th {
-  border-bottom: 1px solid #f0dcca;
+  border-bottom: 1px solid #000000;
   padding: 10px;
   text-align: left;
 }
 
 .playlist-table td {
-  border-bottom: 1px solid #f0dcca;
+  border-bottom: 1px solid #000000;
   padding: 10px;
   text-align: left;
 }
@@ -134,17 +76,26 @@
 }
 
 .sortify-music-btn {
-  transition: box-shadow 0.3s ease-in-out;
-  padding: 10px 20px;
-  width: 12rem;
-  background-color: #f0dcca;
-  color: #3a9f57;
+  background-color: #52b788;
+  color: black;
   border: none;
-  border-radius: 20px;
+  padding: 10px 15px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 1.2rem;
+  margin: 1rem 0.5rem;
+  transition-duration: 0.4s;
   cursor: pointer;
-  font-size: 16px;
-}
+  float: right;
+  opacity: 1;
+  pointer-events: auto;
 
-.sortify-music-btn:hover {
-  box-shadow: 0 0 15px #06874f; /* Glowing effect */
+  &:hover {
+    box-shadow: 0 0 2rem #d8f3dc;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    pointer-events: none;
+  }
 }

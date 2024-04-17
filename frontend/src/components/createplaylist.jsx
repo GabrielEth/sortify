@@ -1,12 +1,11 @@
-import { useState, useEffect } from "react";
-import "./createplaylist.css";
-import Checkbox from "@mui/material/Checkbox";
-import TextField from "@mui/material/TextField";
-import { useLikedSongs } from "../LikedSongsContext";
+import { useState } from "react"; // Import useState and useEffect from React
+import "./createplaylist.css"; // Import CSS file for styling
+import Checkbox from "@mui/material/Checkbox"; // Import Checkbox component from Material-UI
+import TextField from "@mui/material/TextField"; // Import TextField component from Material-UI
+import { useLikedSongs } from "../LikedSongsContext"; // Import custom hook for liked songs context
 
 const CreatePlaylist = () => {
   const [selectedSongs, setSelectedSongs] = useState([]);
-  const [likedResult, setLikedResult] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const { likedSongs } = useLikedSongs();
 
@@ -16,6 +15,10 @@ const CreatePlaylist = () => {
     { name: "Song 3" },
     { name: "Song 4" },
     { name: "Song 5" },
+    { name: "Song 6" },
+    { name: "Song 7" },
+    { name: "Song 8" },
+    { name: "Song 9" },
   ];
 
   const chosenSongMax = 5;
@@ -32,28 +35,10 @@ const CreatePlaylist = () => {
     }
   };
 
-  const handleLikeResult = (like) => {
-    setLikedResult(like);
-  };
-
   const handleExport = () => {
     // Export logic here
   };
-
-  const handleExportPrompt = () => {
-    // Recursive function to prompt user until they like the playlist
-    if (likedResult === false) {
-      setLikedResult(null); // Reset likedResult
-      // Prompt the user again for liking the playlist
-      handleLikeResult(window.confirm("Do you like your creation now?"));
-    }
-  };
-
-  // Call handleExportPrompt whenever likedResult changes
-  useEffect(() => {
-    handleExportPrompt();
-  }, [likedResult]);
-
+ 
   const filteredSongs = likedSongs.filter((song) =>
     song.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -62,9 +47,18 @@ const CreatePlaylist = () => {
     setSearchTerm(e.target.value);
   };
 
+  const isGenerateDisabled = false;
+  //  selectedSongs.length != chosenSongMax;
+
+  const handleGenerate = () => {
+    if (!isGenerateDisabled) {
+      // Add logic to generate playlist
+    }
+  };
+
   return (
     <>
-      <h1 className="instructions">Create a Playlist</h1>
+      <h1 className="instructions main">Select 5 songs to base your playlist on</h1>
       <div className="main">
         <div className="create-playlist-container">
           <div className="scrollable-list">
@@ -73,9 +67,9 @@ const CreatePlaylist = () => {
               label="Search Songs"
               variant="outlined"
               onChange={handleSearchTermChange}
-              sx={{ marginBottom: "1rem" }}
+              sx={{ marginBottom: "1rem", fontFamily: "Arial, sans-serif", backgroundColor: "#d8f3dc", border: "1px solid black"}}
             />
-            <table className="songs-table playlist-table">
+            <table className="playlist-table">
               <thead>
                 <tr>
                   <th>Select</th>
@@ -84,7 +78,7 @@ const CreatePlaylist = () => {
               </thead>
               <tbody>
                 {placeholderSongs.map((song, index) => (
-                  <tr key={index} className="song-item">
+                  <tr key={index}>
                     <td>
                       <Checkbox
                         onChange={() => handleToggleSong(song)}
@@ -105,11 +99,11 @@ const CreatePlaylist = () => {
           </div>
 
           <div className="like-dislike-section main">
-            {selectedSongs.length === 5 && (
-              <button className="sortify-music-btn" onClick={testFunction}>
+            <span>
+              <button className="sortify-music-btn" disabled={isGenerateDisabled} onClick={handleGenerate}>
                 Generate
               </button>
-            )}
+            </span>
           </div>
         </div>
       </div>
