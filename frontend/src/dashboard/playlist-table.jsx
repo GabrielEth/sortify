@@ -40,7 +40,7 @@ const PlaylistTable = ({ playlists }) => {
         <Col
           md={12 / cardsPerRow}
           className="create-new-playlist-card custom-col"
-          onClick={handleCreateNewPlaylistClick}
+          onClick={() => {setOpenPopup(true)}}
           style={{ cursor: "pointer" }}
         >
           <Card className="card-hover-effect">
@@ -94,10 +94,10 @@ const PlaylistTable = ({ playlists }) => {
           </Col>
         ))}
       </Row>
-      <Popup>
+      <Popup
         openPopup = {openPopup}
         setOpenPopup = {setOpenPopup}
-      </Popup>
+      />
     </Container>
   );
 };
