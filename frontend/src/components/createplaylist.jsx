@@ -48,7 +48,7 @@ const CreatePlaylist = () => {
   };
 
   const isGenerateDisabled = false;
-  //  selectedSongs.length != chosenSongMax;
+  // selectedSongs.length != chosenSongMax;
 
   const handleGenerate = () => {
     if (!isGenerateDisabled) {
@@ -87,7 +87,7 @@ const CreatePlaylist = () => {
               </tr>
             </thead>
             <tbody>
-              {placeholderSongs.map((song, index) => (
+              {filteredSongs.map((song, index) => (
                 <tr key={index}>
                   <td>
                     <Checkbox
