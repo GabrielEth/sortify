@@ -6,9 +6,10 @@ export const useLikedSongs = () => useContext(LikedSongsContext);
 
 export const LikedSongsProvider = ({ children }) => {
     const [likedSongs, setLikedSongs] = useState([]);
+    const [hasFetchedSongs, setHasFetchedSongs] = useState(false);  // Track if songs have been fetched
 
     return (
-        <LikedSongsContext.Provider value={{ likedSongs, setLikedSongs }}>
+        <LikedSongsContext.Provider value={{ likedSongs, setLikedSongs, hasFetchedSongs, setHasFetchedSongs }}>
             {children}
         </LikedSongsContext.Provider>
     );

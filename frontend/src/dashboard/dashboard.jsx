@@ -7,7 +7,7 @@ import { useLikedSongs } from "../LikedSongsContext.jsx";
 import CircularIndeterminate from '../loading-circle.jsx';
 
 export default function Dashboard() {
-  const { setLikedSongs } = useLikedSongs(); // Use the context to store liked songs
+  const { likedSongs, setLikedSongs, hasFetchedSongs, setHasFetchedSongs } = useLikedSongs();
   const accessToken = localStorage.getItem("access_token");
   const [profilePicture, setProfilePicture] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,22 +64,24 @@ export default function Dashboard() {
     }
 
     async function fetchLikedSongs() {
-      setIsLoading(true);
-
-      try {
-        const data = await callSpotifyAPI("/api/fetch-liked-songs");
-        setLikedSongs(data.likedSongs);
-      } catch (error) {
-        console.error('Error fetching liked songs:', error);
-        setError(error.message || 'An unexpected error occurred');
-      } finally {
-        setIsLoading(false);
+      if (!hasFetchedSongs && accessToken) {
+        setIsLoading(true);
+        try {
+          const data = await callSpotifyAPI("/api/fetch-liked-songs");
+          setLikedSongs(data.likedSongs);
+          setHasFetchedSongs(true);  // Mark songs as fetched
+        } catch (error) {
+          console.error('Error fetching liked songs:', error);
+          setError(error.message || 'An unexpected error occurred');
+        } finally {
+          setIsLoading(false);
+        }
       }
     }
 
     getSpotifyProfilePicture();
     fetchLikedSongs();
-  }, [accessToken, setLikedSongs]);
+  }, [accessToken, hasFetchedSongs, setLikedSongs, setHasFetchedSongs]);
 
   if (isLoading) {
     return (
