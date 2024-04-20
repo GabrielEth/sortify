@@ -4,10 +4,10 @@ import PlaylistComponent from "./playlist-component.jsx";
 import callSpotifyAPI from "./../services/apiservice.js";
 import Joyride from "react-joyride";
 import { useLikedSongs } from "../LikedSongsContext.jsx";
-import CircularIndeterminate from '../loading-circle.jsx';
+import CircularIndeterminate from "../loading-circle.jsx";
 
 export default function Dashboard() {
-  const { setLikedSongs } = useLikedSongs(); // Use the context to store liked songs
+  const { likedSongs, setLikedSongs } = useLikedSongs();
   const accessToken = localStorage.getItem("access_token");
   const [profilePicture, setProfilePicture] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -64,22 +64,26 @@ export default function Dashboard() {
     }
 
     async function fetchLikedSongs() {
-      setIsLoading(true);
-
-      try {
-        const data = await callSpotifyAPI("/api/fetch-liked-songs");
-        setLikedSongs(data.likedSongs);
-      } catch (error) {
-        console.error('Error fetching liked songs:', error);
-        setError(error.message || 'An unexpected error occurred');
-      } finally {
-        setIsLoading(false);
+      if (accessToken) {
+        setIsLoading(true);
+        try {
+          const data = await callSpotifyAPI("/api/fetch-liked-songs");
+          setLikedSongs(data.likedSongs);
+        } catch (error) {
+          console.error("Error fetching liked songs:", error);
+          setError(error.message || "An unexpected error occurred");
+        } finally {
+          setIsLoading(false);
+        }
       }
     }
-
     getSpotifyProfilePicture();
-    fetchLikedSongs();
-  }, [accessToken, setLikedSongs]);
+
+    let songs = localStorage.getItem("likedSongs");
+    if (songs.length != 0 && accessToken) {
+      fetchLikedSongs();
+    }
+  }, [accessToken, setLikedSongs]); // Fixed the parenthesis syntax error
 
   if (isLoading) {
     return (
