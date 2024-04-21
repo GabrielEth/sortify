@@ -11,13 +11,16 @@ export const LikedSongsProvider = ({ children }) => {
         const savedLikedSongs = localStorage.getItem('likedSongs');
         if (savedLikedSongs) {
           setLikedSongs(JSON.parse(savedLikedSongs));
+        } else {
+          setLikedSongs([]);
         }
       }, []);
     
       useEffect(() => {
-        localStorage.setItem('likedSongs', JSON.stringify(likedSongs));
+        if (likedSongs.length > 0) {
+          localStorage.setItem('likedSongs', JSON.stringify(likedSongs));
+        }
       }, [likedSongs]);
-    
 
     const value = {
         likedSongs, 
