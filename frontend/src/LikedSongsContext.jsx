@@ -1,36 +1,31 @@
-import { useEffect, createContext, useState, useContext } from 'react';
+import { useEffect, createContext, useState, useContext } from "react";
 
 const LikedSongsContext = createContext();
 
 export const useLikedSongs = () => useContext(LikedSongsContext);
 
 export const LikedSongsProvider = ({ children }) => {
-    const [likedSongs, setLikedSongs] = useState([]);
+  const [likedSongs, setLikedSongs] = useState([]);
 
-    useEffect(() => {
-        const savedLikedSongs = localStorage.getItem('likedSongs');
-        if (savedLikedSongs) {
-          setLikedSongs(JSON.parse(savedLikedSongs));
-        } else {
-          setLikedSongs([]);
-        }
-      }, []);
-    
-      useEffect(() => {
-        if (likedSongs.length > 0) {
-          localStorage.setItem('likedSongs', JSON.stringify(likedSongs));
-        }
-      }, [likedSongs]);
+  useEffect(() => {
+    const savedLikedSongs = localStorage.getItem("likedSongs");
+    if (savedLikedSongs) {
+      setLikedSongs(JSON.parse(savedLikedSongs));
+    }
+  }, []);
 
-    const value = {
-        likedSongs, 
-        setLikedSongs,
-    };
+  useEffect(() => {
+    localStorage.setItem("likedSongs", JSON.stringify(likedSongs));
+  }, [likedSongs]);
 
-    return (
-        <LikedSongsContext.Provider value={value}>
-            {children}
-        </LikedSongsContext.Provider>
-    );
+  const value = {
+    likedSongs,
+    setLikedSongs,
+  };
+
+  return (
+    <LikedSongsContext.Provider value={value}>
+      {children}
+    </LikedSongsContext.Provider>
+  );
 };
-
