@@ -1,186 +1,127 @@
-import React, { useState, useEffect } from 'react';
-import './createplaylist.css'; // Import CSS file for styling
-import callSpotifyAPI from "../services/apiservice.js";
-
+import { useState } from "react"; // Import useState and useEffect from React
+import "./createplaylist.css"; // Import CSS file for styling
+import Checkbox from "@mui/material/Checkbox"; // Import Checkbox component from Material-UI
+import TextField from "@mui/material/TextField"; // Import TextField component from Material-UI
+import { useLikedSongs } from "../LikedSongsContext"; // Import custom hook for liked songs context
 
 const CreatePlaylist = () => {
-    const [selectedPlaylist, setSelectedPlaylist] = useState('');
-    const [selectedSongs, setSelectedSongs] = useState([]);
-    const [likedResult, setLikedResult] = useState(null);
-    const [userId, setUserId] = useState(null);
-    const [userData, setUserData] = useState(null);
-    const accessToken = localStorage.getItem("access_token");
+  const [selectedSongs, setSelectedSongs] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const { likedSongs } = useLikedSongs();
 
-    
+  const placeholderSongs = [
+    { name: "Song 1" },
+    { name: "Song 2" },
+    { name: "Song 3" },
+    { name: "Song 4" },
+    { name: "Song 5" },
+    { name: "Song 6" },
+    { name: "Song 7" },
+    { name: "Song 8" },
+    { name: "Song 9" },
+  ];
 
-    const playlists = ['Playlist 1', 'Playlist 2', 'Playlist 3']; // Placeholder for pre-existing playlists
-    const placeholderSongs = ['Song 1', 'Song 2', 'Song 3', 'Song 4', 'Song 5']; // Placeholder for songs
-    const placeholderResult = ['Result 1', 'Result 2', 'Result 3', 'Result 4', 'Result 5']; // Placeholder for result
+  const chosenSongMax = 5;
 
-    const handleAddSong = (song) => {
-        if (selectedSongs.length < 5 && !selectedSongs.includes(song)) {
-            setSelectedSongs([...selectedSongs, song]);
-        }
-    };
-
-    const handleRemoveSong = (song) => {
-        setSelectedSongs(selectedSongs.filter(item => item !== song));
-    };
-
-    const handleLikeResult = (like) => {
-        setLikedResult(like);
-    };
-
-    useEffect(() => {
-        async function getSpotifyProfilePicture() {
-          try {
-            const data = await callSpotifyAPI("https://api.spotify.com/v1/me");
-            const userId = data.id;
-            setUserData(data);
-            setUserId(userId);
-          } catch (error) {
-            console.error("Failed to fetch user profile:", error);
-          }
-        }
-        getSpotifyProfilePicture();
-      }, [accessToken]);
-
-      
-
-    const handleExportPrompt = () => {
-        if (likedResult === false) {
-            setLikedResult(null);
-            handleLikeResult(window.confirm('Do you like your creation now?'));
-        }
-    };
-
-    useEffect(() => {
-        handleExportPrompt();
-    }, [likedResult]);
-    
-    useEffect(() => {
-        if (userData && likedResult === true) {
-            handleExport();
-        }
-    }, [userData, likedResult]);
-
-    function createSpotifyPlaylist(playlistName, playlistDescription, isPublic) {
-        
-        
-        if (!userData) {
-            console.error("User data not available.");
-            return;
-        }
-        const url = `https://api.spotify.com/v1/users/${userId}/playlists`;
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${accessToken}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: playlistName,
-                description: playlistDescription,
-                public: isPublic
-            })
-        };
-
-        return fetch(url, requestOptions)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Failed to create playlist');
-                }
-                return response.json();
-            })
-            .catch(error => {
-                console.error('Error creating playlist:', error);
-                throw error;
-            });
+  const handleToggleSong = (song) => {
+    if (selectedSongs.includes(song)) {
+      setSelectedSongs(selectedSongs.filter((item) => item !== song));
+    } else {
+      if (selectedSongs.length >= chosenSongMax) {
+        alert("You can only select up to 5 songs.");
+      } else {
+        setSelectedSongs([...selectedSongs, song]);
+      }
     }
+  };
 
-    const handleExport = () => {
-        const playlistName = 'New Playlist';
-        const playlistDescription = 'New playlist description';
-        const isPublic = false;
-    
-        if (!userData) {
-            console.error('User data not available!!');
-            return;
-        }
-        if (userData) {
-            createSpotifyPlaylist(playlistName, playlistDescription, isPublic)
-                .then(playlistData => {
-                    console.log('Playlist created:', playlistData);
-                })
-                .catch(error => {
-                    console.error('Failed to create playlist:', error);
-                });
-        } else {
-            console.error('User data not available. Cannot create playlist.');
-        }
-    };
-    
+  const handleExport = () => {
+    // Export logic here
+  };
 
-    return (
+  const filteredSongs = likedSongs.filter((song) =>
+    song.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleSearchTermChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const isGenerateDisabled = false;
+  // selectedSongs.length != chosenSongMax;
+
+  const handleGenerate = (selectedSongs) => {
+    if (!isGenerateDisabled) {
+      // Add logic to generate playlist
+    }
+  };
+
+  return (
+    <>
+      <h1 className="instructions main">
+        Select 5 songs to base your playlist on
+      </h1>
+      <div className="main">
+        <TextField
+          fullWidth
+          label="Search Songs"
+          variant="outlined"
+          onChange={handleSearchTermChange}
+          sx={{
+            fontFamily: "Arial, sans-serif",
+            backgroundColor: "#d8f3dc",
+            marginBottom: ".5rem",
+            borderRadius: ".75rem",
+            width: "89%",
+            display: "flex",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        />
         <div className="create-playlist-container">
-            <div className="content">
-                <h1 className="section-heading">Create Playlist</h1>
-
-                <div className="playlist-section">
-                    <h2 className="subsection-heading">Choose The Playlist You Want To Create</h2>
-                    <select className="dropdown" value={selectedPlaylist} onChange={(e) => setSelectedPlaylist(e.target.value)}>
-                        <option value="">Select Playlist</option>
-                        {playlists.map((playlist, index) => (
-                            <option key={index} value={playlist}>{playlist}</option>
-                        ))}
-                    </select>
-                </div>
-
-                {selectedPlaylist && (
-                    <div className="songs-section">
-                        <h2 className="subsection-heading">Pick 5 Songs</h2>
-                        <div className="scrollable-list">
-                            {placeholderSongs.map((song, index) => (
-                                <div key={index} className="song-item">
-                                    <label className="song-label">
-                                        <input type="checkbox" onChange={() => handleAddSong(song)} checked={selectedSongs.includes(song)} />
-                                        {song}
-                                    </label>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
-
-                {selectedSongs.length > 0 && (
-                    <div className="result-section">
-                        <h2 className="subsection-heading">Result</h2>
-                        <div className="scrollable-list">
-                            {selectedSongs.map((song, index) => (
-                                <div key={index} className="result-item">{song}</div>
-                            ))}
-                            {placeholderResult.map((result, index) => (
-                                <div key={index} className="result-item">{result}</div>
-                            ))}
-                        </div>
-                        <div className="like-dislike-section">
-                            <label className="like-dislike-label">Do You Like Your Creation?</label>
-                            <div className="like-dislike-buttons">
-                                <button className="like-button" onClick={() => handleLikeResult(true)}>Yes</button>
-                                <button className="dislike-button" onClick={() => handleLikeResult(false)}>No</button>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {userData && likedResult === true && (
-                    <div className="button-section">
-                        <button className="export-button" onClick={handleExport}>EXPORT</button>
-                    </div>
-                )}
-            </div>
+          <table className="playlist-table">
+            <thead>
+              <tr>
+                <th>Select</th>
+                <th>Song</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredSongs.map((song, index) => (
+                <tr key={index}>
+                  <td>
+                    <Checkbox
+                      onChange={() => handleToggleSong(song)}
+                      checked={selectedSongs.includes(song)}
+                      color="primary"
+                      sx={{
+                        color: "#000000",
+                        "&.Mui-checked": { color: "#52b788" },
+                        marginRight: "2rem",
+                      }}
+                    />
+                  </td>
+                  <td>{song.name}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-    );
+
+        <div className="like-dislike-section main">
+          <span>
+            <button
+              className="sortify-music-btn"
+              disabled={isGenerateDisabled}
+              onClick={handleGenerate(selectedSongs)}
+            >
+              Generate
+            </button>
+          </span>
+        </div>
+      </div>
+    </>
+  );
 };
 
 
