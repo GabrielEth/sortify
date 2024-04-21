@@ -13,5 +13,5 @@ async function testSorting(selectedSongs) {
   const source = await callSpotifyAPI("/api/fetch-liked-songs");
   const selected = selectedSongs;
 
-  kNearestNeighbors(source, selected);
+  return kNearestNeighbors(source, selected);
 }

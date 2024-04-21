@@ -69,17 +69,21 @@ function calculateCentroid(querySongs) {
 }
 
 function kNearestNeighbors(data, queryList, k) {
-  const centroid = calculateCentroid(queryList);
+  try {
+    const source = formatSongDetails(data);
+    const selected = formatSongDetails(queryList);
+    const centroid = calculateCentroid(selected);
 
-  // Calculate distance from queryPoint to all others
-  const distances = data.map((point, index) => ({
-    index,
-    distance: euclideanDistance(point.features, centroid),
-  }));
+    // Calculate distance from queryPoint to all others
+    const distances = data.map((point, index) => ({
+      index,
+      distance: euclideanDistance(point.features, centroid),
+    }));
 
-  // Sort by distance
-  distances.sort((a, b) => a.distance - b.distance);
+    // Sort by distance
+    distances.sort((a, b) => a.distance - b.distance);
 
-  // Return first k sorted points
-  return distances.slice(0, k);
+    // Return first k sorted points
+    return distances.slice(0, k);
+  } catch (error) {}
 }
