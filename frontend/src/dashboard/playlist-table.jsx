@@ -12,7 +12,7 @@ import React, { useState } from 'react';
 
 const PlaylistTable = ({ playlists }) => {
 
-  const [openPopup, setOpenPopup] = useState(false);
+   const [openPopup, setOpenPopup] = useState(false);
 
   PlaylistTable.propTypes = {
     playlists: PropTypes.arrayOf(
