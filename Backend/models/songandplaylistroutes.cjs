@@ -230,7 +230,9 @@ router.get("/fetch-playlists", async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      return res.status(401).json({ success: false, message: "No authorization token provided" });
+      return res
+        .status(401)
+        .json({ success: false, message: "No authorization token provided" });
     }
     const accessToken = req.header("Authorization").split(" ")[1];
 
@@ -251,10 +253,12 @@ router.get("/fetch-liked-songs", async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      return res.status(401).json({ success: false, message: "No authorization token provided" });
+      return res
+        .status(401)
+        .json({ success: false, message: "No authorization token provided" });
     }
     const accessToken = req.header("Authorization").split(" ")[1];
-    
+
     const likedSongs = await fetchLikedSongs(accessToken);
     res.json({
       success: true,
@@ -288,6 +292,7 @@ router.get("/fetch-song-details", async (req, res) => {
   }
 });
 
+module.exports = [router, fetchSongDetails, fetchLikedSongs];
 //routes for playlist creation and updating
 router.post('/create-playlist', async (req, res) => {
   const userId = req.body.userId;
