@@ -249,7 +249,7 @@ router.get("/fetch-playlists", async (req, res) => {
   }
 });
 
-router.get("/fetch-liked-songs", async (req, res) => {
+router.get("/fetch-liked-songs-and-details", async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -259,81 +259,75 @@ router.get("/fetch-liked-songs", async (req, res) => {
     }
     const accessToken = req.header("Authorization").split(" ")[1];
 
+    // Fetch liked songs
     const likedSongs = await fetchLikedSongs(accessToken);
+
+    // Fetch details for the liked songs
+    const songDetails = await fetchSongDetails(likedSongs, accessToken);
+
     res.json({
       success: true,
-      likedSongs,
+      likedSongs: songDetails, // Return the detailed liked songs
     });
   } catch (error) {
-    console.error("Error fetching liked songs:", error);
+    console.error("Error fetching liked songs and details:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to fetch liked songs",
+      message: "Failed to fetch liked songs and details",
     });
   }
 });
 
-// Route to fetch song details
-router.get("/fetch-song-details", async (req, res) => {
-  const accessToken = req.header("Authorization").split(" ")[1];
-  try {
-    const likedSongsArray = req.body.likedSongs;
-    const songDetails = await fetchSongDetails(likedSongsArray, accessToken);
-    res.json({
-      success: true,
-      songDetails,
-    });
-  } catch (error) {
-    console.error("Error fetching song details:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch song details",
-    });
-  }
-});
-
-module.exports = [router, fetchSongDetails, fetchLikedSongs];
 //routes for playlist creation and updating
-router.post('/create-playlist', async (req, res) => {
+router.post("/create-playlist", async (req, res) => {
   const userId = req.body.userId;
   const accessToken = req.header("Authorization").split(" ")[1];
   const playlistDetails = req.body.playlistDetails;
   const trackUris = req.body.trackUris;
 
   try {
-      const playlistId = await exportPlaylistToSpotify(userId, accessToken, playlistDetails, trackUris);
-      res.json({
-          success: true,
-          playlistId: playlistId,
-          message: "Playlist created successfully"
-      });
+    const playlistId = await exportPlaylistToSpotify(
+      userId,
+      accessToken,
+      playlistDetails,
+      trackUris
+    );
+    res.json({
+      success: true,
+      playlistId: playlistId,
+      message: "Playlist created successfully",
+    });
   } catch (error) {
-      console.error("Error creating playlist:", error);
-      res.status(500).json({
-          success: false,
-          message: "Failed to create playlist"
-      });
+    console.error("Error creating playlist:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to create playlist",
+    });
   }
 });
 
-router.post('/update-playlist', async (req, res) => {
+router.post("/update-playlist", async (req, res) => {
   const accessToken = req.header("Authorization").split(" ")[1];
   const playlistId = req.body.playlistId;
   const trackUris = req.body.trackUris;
 
   try {
-      const updatedPlaylistId = await updatePlaylistOnSpotify(accessToken, playlistId, trackUris);
-      res.json({
-          success: true,
-          playlistId: updatedPlaylistId,
-          message: "Playlist updated successfully"
-      });
+    const updatedPlaylistId = await updatePlaylistOnSpotify(
+      accessToken,
+      playlistId,
+      trackUris
+    );
+    res.json({
+      success: true,
+      playlistId: updatedPlaylistId,
+      message: "Playlist updated successfully",
+    });
   } catch (error) {
-      console.error("Error updating playlist:", error);
-      res.status(500).json({
-          success: false,
-          message: "Failed to update playlist"
-      });
+    console.error("Error updating playlist:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update playlist",
+    });
   }
 });
 
