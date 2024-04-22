@@ -37,6 +37,9 @@
 const express = require("express");
 const router = express.Router();
 
+function sleep(seconds) {
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+}
 const fetchUserPlaylists = async (accessToken) => {
   const playlists = [];
   let url = "https://api.spotify.com/v1/me/playlists?limit=50";
@@ -159,15 +162,20 @@ async function fetchSongDetails(songList, accessToken) {
   // Split songIds into chunks of 100
   const songIdChunks = chunkArray(songIds, 100);
 
+  // Limit to only the first chunk of up to 100 song IDs
+  const firstChunk = songIdChunks[0] ? songIdChunks[0] : [];
+
   // Now, songIdChunks is a 2d array, where each sub-array has up to 100 song IDs.
-  // You can map over songIdChunks to create comma-separated strings for each chunk if needed for API requests.
-  const trackIdStrings = songIdChunks.map((chunk) => chunk.join(","));
+  //  const trackIdStrings = songIdChunks.map((chunk) => chunk.join(","));
 
   // Initialize arrays to hold the responses for tracks and features
   let allTrackDetails = [];
   let allFeaturesDetails = [];
 
-  for (const trackIdString of trackIdStrings) {
+  //  for (let index = 0; index < trackIdStrings.length; index++) {
+  //    const trackIdString = trackIdStrings[index];
+  if (firstChunk.length > 0) {
+    const trackIdString = firstChunk.join(",");
     try {
       // Fetch track details for the current chunk
       const trackResponse = await fetch(
@@ -180,15 +188,11 @@ async function fetchSongDetails(songList, accessToken) {
           },
         }
       );
-
-      // Check if the track details response is OK
       if (!trackResponse.ok) {
         throw new Error(
           `HTTP error on fetching track details! status: ${trackResponse.status}`
         );
       }
-
-      // Fetch audio features for the current chunk
       const featuresResponse = await fetch(
         `https://api.spotify.com/v1/audio-features?ids=${trackIdString}`,
         {
@@ -199,8 +203,6 @@ async function fetchSongDetails(songList, accessToken) {
           },
         }
       );
-
-      // Check if the audio features response is OK
       if (!featuresResponse.ok) {
         throw new Error(
           `HTTP error on fetching audio features! status: ${featuresResponse.status}`
@@ -215,7 +217,7 @@ async function fetchSongDetails(songList, accessToken) {
       allTrackDetails.push(...trackData.tracks);
       allFeaturesDetails.push(...featuresData.audio_features);
     } catch (error) {
-      console.error(`Error fetching data for chunk: ${trackIdString}`, error);
+      console.error(`Error fetching data for chunk: `, error);
       // Handle error, for example by breaking the loop or continuing to the next chunk
     }
   }
