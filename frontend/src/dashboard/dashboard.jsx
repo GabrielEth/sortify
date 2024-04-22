@@ -1,14 +1,18 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import "./dashboard.css";
 import PlaylistComponent from "./playlist-component.jsx";
 import callSpotifyAPI from "./../services/apiservice.js";
 import Joyride from "react-joyride";
+import { useLikedSongs } from "../LikedSongsContext.jsx";
+import CircularIndeterminate from '../loading-circle.jsx';
 import Popup from "../components/Popup";
 
-
 export default function Dashboard({ isImportingMusic }) {
+  const { setLikedSongs } = useLikedSongs();
   const accessToken = localStorage.getItem("access_token");
   const [profilePicture, setProfilePicture] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [runTutorial, setRunTutorial] = useState(true); // State to control the tutorial
   const [openPopup, setOpenPopup] = useState(false);
 
@@ -17,7 +21,7 @@ export default function Dashboard({ isImportingMusic }) {
       target: "body",
       content:
         "The app that allows you to sort your Spotify song library into customized playlists.",
-      placement: "center",
+      placement: "right",
       title: <strong>Welcome to Sortify!</strong>,
     },
     {
@@ -37,7 +41,7 @@ export default function Dashboard({ isImportingMusic }) {
     {
       target: ".first-playlist-card",
       content:
-        "Updating a playlist will asses the vibe of that existing playlist and add similar songs from your existing music library.",
+        "Updating a playlist will assess the vibe of that existing playlist and add similar songs from your existing music library.",
       placement: "center",
       title: <strong>Update Playlist</strong>,
     },
@@ -50,6 +54,19 @@ export default function Dashboard({ isImportingMusic }) {
   ]);
 
   useEffect(() => {
+    async function fetchLikedSongs() {
+      setIsLoading(true);
+      try {
+        const data = await callSpotifyAPI("/api/fetch-liked-songs");
+        setLikedSongs(data.likedSongs);
+      } catch (error) {
+        console.error('Error fetching liked songs:', error);
+        setError(error.message || 'An unexpected error occurred');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
     async function getSpotifyProfilePicture() {
       try {
         const data = await callSpotifyAPI("https://api.spotify.com/v1/me");
@@ -57,13 +74,22 @@ export default function Dashboard({ isImportingMusic }) {
           const largestImage = data.images.sort((a, b) => b.width - a.width)[0];
           setProfilePicture(largestImage.url);
         }
-        const userId = data.id;
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
       }
     }
+
+    fetchLikedSongs();
     getSpotifyProfilePicture();
-  }, [accessToken]);
+  }, [accessToken, setLikedSongs]);
+
+  if (isLoading) {
+    return <CircularIndeterminate />;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="dashboard">
@@ -109,9 +135,7 @@ export default function Dashboard({ isImportingMusic }) {
         <h2 className="text-black"></h2>
         <PlaylistComponent accessToken={accessToken} />
       </div>
-      <Popup openPopup={openPopup} 
-      setOpenPopup={setOpenPopup} />
-
+      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup} />
     </div>
   );
 }
