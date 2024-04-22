@@ -1,14 +1,34 @@
 import React, { useState } from 'react';
 import './createplaylist.css'; // Import CSS file for styling
+import callSpotifyAPI from "../services/apiservice.js";
+
 
 const CreatePlaylist = () => {
+    const accessToken = localStorage.getItem("access_token");
     const [selectedPlaylist, setSelectedPlaylist] = useState('');
     const [selectedSongs, setSelectedSongs] = useState([]);
     const [likedResult, setLikedResult] = useState(null);
+    const [userId, setUserId] = useState(null);
+
 
     const playlists = ['Playlist 1', 'Playlist 2', 'Playlist 3']; // Placeholder for pre-existing playlists
     const placeholderSongs = ['Song 1', 'Song 2', 'Song 3', 'Song 4', 'Song 5']; // Placeholder for songs
     const placeholderResult = ['Result 1', 'Result 2', 'Result 3', 'Result 4', 'Result 5']; // Placeholder for result
+
+    useEffect(() => {
+      async function getSpotifyProfilePicture() {
+        try {
+          const data = await callSpotifyAPI("https://api.spotify.com/v1/me");
+          
+            userId = data.id;
+            setUserId(userId);
+          
+        } catch (error) {
+          console.error("Failed to fetch user profile:", error);
+        }
+      }
+      getSpotifyProfilePicture();
+    }, [accessToken]);
 
     const handleAddSong = (song) => {
         if (selectedSongs.length < 5 && !selectedSongs.includes(song)) {
