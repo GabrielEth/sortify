@@ -78,6 +78,20 @@ const CreatePlaylist = () => {
             marginRight: "auto",
           }}
         />
+        <div
+          className="selected-songs-box"
+          style={{
+            backgroundColor: "#081c15",
+            padding: "1rem",
+            borderRadius: ".75rem",
+            color: "#ffffff",
+            marginLeft: "4rem",
+          }}
+        >
+          <p style={{ color: "#d8f3dc", fontWeight: "bold" }}>
+            Selected Songs: {selectedSongs.map((song) => song.name).join(", ")}
+          </p>
+        </div>
         <div className="create-playlist-container">
           <table className="playlist-table">
             <thead>
