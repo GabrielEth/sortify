@@ -170,7 +170,7 @@ async function fetchSongDetails(songList, accessToken) {
   for (const trackIdString of trackIdStrings) {
     try {
       // Fetch track details for the current chunk
-      const trackResponsePromise = fetch(
+      const trackResponse = await fetch(
         `https://api.spotify.com/v1/tracks?ids=${trackIdString}`,
         {
           method: "GET",
@@ -181,8 +181,15 @@ async function fetchSongDetails(songList, accessToken) {
         }
       );
 
+      // Check if the track details response is OK
+      if (!trackResponse.ok) {
+        throw new Error(
+          `HTTP error on fetching track details! status: ${trackResponse.status}`
+        );
+      }
+
       // Fetch audio features for the current chunk
-      const featuresResponsePromise = fetch(
+      const featuresResponse = await fetch(
         `https://api.spotify.com/v1/audio-features?ids=${trackIdString}`,
         {
           method: "GET",
@@ -193,16 +200,10 @@ async function fetchSongDetails(songList, accessToken) {
         }
       );
 
-      // Wait for both promises to resolve
-      const [trackResponse, featuresResponse] = await Promise.all([
-        trackResponsePromise,
-        featuresResponsePromise,
-      ]);
-
-      // Check if both responses are OK
-      if (!trackResponse.ok || !featuresResponse.ok) {
+      // Check if the audio features response is OK
+      if (!featuresResponse.ok) {
         throw new Error(
-          `HTTP error! status: ${trackResponse.status} or ${featuresResponse.status}`
+          `HTTP error on fetching audio features! status: ${featuresResponse.status}`
         );
       }
 
