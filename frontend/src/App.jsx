@@ -7,12 +7,9 @@ import Dashboard from "./dashboard/dashboard";
 import Callback from "./callback.jsx";
 import SettingsDrawer from "./settingsdrawer.tsx";
 import CreatePlaylist from "./components/createplaylist.jsx";
-import UpdatePlaylist from "./components/updateplaylist.jsx";
 import ContactPage from "./Contact/ContactPage.jsx";
 
-const theme = createTheme({
-  // You can customize your theme settings here
-});
+const theme = createTheme({});
 
 const App = () => {
   const location = useLocation();
@@ -32,12 +29,11 @@ const App = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
           </Route>
-          <Route path="/contact" element={<ContactPage />} />
           <Route element={<ProtectedRoute />}>
-            <Route path="/createplaylist" element={<CreatePlaylist />} />
+            <Route path="/contact" element={<ContactPage />} />
           </Route>
           <Route element={<ProtectedRoute />}>
-            <Route path="/updateplaylist" element={<UpdatePlaylist />} />
+            <Route path="/createplaylist" element={<CreatePlaylist />} />
           </Route>
           <Route path="/callback" element={<Callback />} />
           <Route path="/" element={<Navigate replace to="/dashboard" />} />

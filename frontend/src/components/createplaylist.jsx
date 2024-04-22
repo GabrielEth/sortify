@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import { useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 import { useLikedSongs } from "../LikedSongsContext";
-import callSpotifyAPI from "../services/apiservice";
 import CircularIndeterminate from "../loading-circle";
+import './createplaylist.css';
 
 const CreatePlaylist = () => {
   const { likedSongs } = useLikedSongs();
@@ -11,6 +11,8 @@ const CreatePlaylist = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [cancelRequested, setCancelRequested] = useState(false);
+  const [songsForPlaylist, setSongsForPlaylist] = useState([]);
+  const [generatedPlaylist, setGeneratedPlaylist] = useState();
 
   const placeholderSongs = [
     { name: "Song 1" },
@@ -23,12 +25,14 @@ const CreatePlaylist = () => {
     { name: "Song 8" },
     { name: "Song 9" },
   ];
+
   const chosenSongMax = 5;
+
   const handleToggleSong = (song) => {
     if (selectedSongs.includes(song)) {
       setSelectedSongs(selectedSongs.filter((item) => item !== song));
     } else {
-      if (selectedSongs.length < 5) {
+      if (selectedSongs.length < chosenSongMax) {
         setSelectedSongs([...selectedSongs, song]);
       } else {
         alert("You can only select up to 5 songs.");
@@ -40,41 +44,63 @@ const CreatePlaylist = () => {
     setSearchTerm(e.target.value);
   };
 
-  const handleGenerate = async () => {
+  const generatePlaylist = async (songsForPlaylist) => {
     setIsLoading(true);
     setCancelRequested(false);
 
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     try {
-      await generatePlaylist(selectedSongs);
+      const response = await fetch(`https://api.spotify.com/v1/playlists`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer 1POdFZRZbvb...qqillRxMr2z",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: "My New Playlist",
+          public: false,
+          description: "Playlist description",
+          tracks: songsForPlaylist.map((song) => song.uri),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to create playlist");
+      }
+
+      const data = await response.json();
+
+      const playlistId = data.id;
+
+      const addTracksResponse = await fetch(
+        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer 1POdFZRZbvb...qqillRxMr2z",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            uris: songsForPlaylist.map((song) => song.uri),
+          }),
+        }
+      );
+
+      if (!addTracksResponse.ok) {
+        throw new Error("Failed to add tracks to playlist");
+      }
+
+      console.log("Tracks added to playlist successfully.");
     } catch (error) {
-      console.error("Error generating playlist:", error);
+      console.error("Error creating or updating playlist:", error);
     } finally {
       setIsLoading(false);
     }
-  };
-
-  const generatePlaylist = async (selectedSongs) => {
-    // Simulate API call delay
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
-    // Check for cancellation at various points during the generation process
-    for (let i = 0; i < selectedSongs.length; i++) {
-      if (cancelRequested) {
-        console.log("Generation cancelled.");
-        return;
-      }
-
-      // Simulate generating playlist for each selected song
-      console.log("Generating playlist for song:", selectedSongs[i]);
-      // Your playlist generation logic goes here
-    }
 
     if (cancelRequested) {
-      console.log("Generation cancelled.");
       return;
     }
-
-    console.log("Playlist generation completed successfully.");
   };
 
   const cancelGeneration = () => {
@@ -146,7 +172,7 @@ const CreatePlaylist = () => {
                   </td>
                   <td>{song.name}</td>
                 </tr>
-              ))} 
+              ))}
             </tbody>
           </table>
         </div>
@@ -156,14 +182,14 @@ const CreatePlaylist = () => {
             <button
               className="sortify-music-btn"
               disabled={isLoading}
-              onClick={handleGenerate}
+              onClick={() => generatePlaylist(songsForPlaylist)} 
             >
               Generate
             </button>
             {isLoading && (
               <button
                 className="sortify-music-btn"
-                onClick={cancelGeneration}
+                onClick={() => cancelGeneration()}
               >
                 Cancel
               </button>
@@ -171,11 +197,12 @@ const CreatePlaylist = () => {
           </span>
         </div>
 
-        {isLoading && <CircularIndeterminate message="Generating you playlist" />}
+        {isLoading && (
+          <CircularIndeterminate message="Generating your playlist" />
+        )}
       </div>
     </>
   );
 };
-
 
 export default CreatePlaylist;

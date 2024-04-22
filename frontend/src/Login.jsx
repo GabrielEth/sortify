@@ -3,6 +3,7 @@ import Logo from "./../../Resources/Logo.png";
 import Background from "./../../Resources/Background.jpg";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Typewriter from "typewriter-effect";
+import '../../frontend/src/buttonStyles.css';
 
 export default function Login() {
   const handleLogin = async () => {
