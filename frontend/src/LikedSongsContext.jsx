@@ -17,15 +17,9 @@ export const LikedSongsProvider = ({ children }) => {
       useEffect(() => {
         localStorage.setItem('likedSongs', JSON.stringify(likedSongs));
       }, [likedSongs]);
-    
-
-    const value = {
-        likedSongs, 
-        setLikedSongs,
-    };
 
     return (
-        <LikedSongsContext.Provider value={value}>
+        <LikedSongsContext.Provider value={[likedSongs, setLikedSongs]}>
             {children}
         </LikedSongsContext.Provider>
     );
