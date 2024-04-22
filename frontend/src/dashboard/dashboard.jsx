@@ -57,9 +57,17 @@ export default function Dashboard() {
       if (accessToken) {
         setIsLoading(true);
         try {
-          const data = await callSpotifyAPI(
-            "/api/fetch-liked-songs-and-details"
-          );
+          const response = await fetch("/api/fetch-liked-songs-and-details", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+          if (!response.ok) {
+            throw new Error(`Failed to fetch liked songs: ${response.status}`);
+          }
+          const data = await response.json();
           setLikedSongs(data.likedSongs);
         } catch (error) {
           console.error("Error fetching liked songs:", error);
@@ -69,7 +77,6 @@ export default function Dashboard() {
         }
       }
     }
-
     async function getSpotifyProfilePicture() {
       try {
         const data = await callSpotifyAPI("https://api.spotify.com/v1/me");

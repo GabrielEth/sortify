@@ -147,6 +147,7 @@ async function fetchArtistsGenres(artistIds, accessToken) {
 }
 
 async function fetchSongDetails(songList, accessToken) {
+  console.log("entering song details");
   // Function to chunk an array into smaller arrays of a specified size
   const chunkArray = (array, chunkSize) => {
     const chunks = [];
@@ -189,9 +190,18 @@ async function fetchSongDetails(songList, accessToken) {
         }
       );
       if (!trackResponse.ok) {
-        throw new Error(
-          `HTTP error on fetching track details! status: ${trackResponse.status}`
-        );
+        console.log("status: ", `${trackResponse.status}`)
+        const retryAfter = trackResponse.headers.get("Retry-After");
+        console.log(retryAfter);
+        if (retryAfter) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, retryAfter * 1000)
+          );
+        } else {
+          throw new Error(
+            `HTTP error on fetching track details! status: ${trackResponse.status}`
+          );
+        }
       }
       const featuresResponse = await fetch(
         `https://api.spotify.com/v1/audio-features?ids=${trackIdString}`,
@@ -204,13 +214,23 @@ async function fetchSongDetails(songList, accessToken) {
         }
       );
       if (!featuresResponse.ok) {
-        throw new Error(
-          `HTTP error on fetching audio features! status: ${featuresResponse.status}`
-        );
+        const retryAfter = featuresResponse.headers.get("Retry-After");
+        if (retryAfter) {
+          console.log("entering retry after");
+          await new Promise((resolve) =>
+            setTimeout(resolve, retryAfter * 1000)
+          );
+          return fetchTrackDetails(trackIdString, accessToken);
+        } else {
+          throw new Error(
+            `HTTP error on fetching audio features! status: ${featuresResponse.status}`
+          );
+        }
       }
 
-      // Parse JSON responses
+      console.log("getting track data");
       const trackData = await trackResponse.json();
+      console.log("getting features data");
       const featuresData = await featuresResponse.json();
 
       // Accumulate the results
@@ -266,15 +286,15 @@ router.get("/fetch-liked-songs-and-details", async (req, res) => {
     }
     const accessToken = req.header("Authorization").split(" ")[1];
 
-    // Fetch liked songs
+    console.log("getting liked songs");
     const likedSongs = await fetchLikedSongs(accessToken);
 
-    // Fetch details for the liked songs
+    console.log("getting song details");
     const songDetails = await fetchSongDetails(likedSongs, accessToken);
 
     res.json({
       success: true,
-      likedSongs: songDetails, // Return the detailed liked songs
+      likedSongs: songDetails, 
     });
   } catch (error) {
     console.error("Error fetching liked songs and details:", error);
