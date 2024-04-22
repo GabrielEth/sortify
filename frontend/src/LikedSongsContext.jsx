@@ -7,7 +7,7 @@ export const useLikedSongs = () => useContext(LikedSongsContext);
 export const LikedSongsProvider = ({ children }) => {
   const [likedSongs, setLikedSongs] = useState(() => {
     const storedLikedSongs = localStorage.getItem("likedSongs");
-    return storedLikedSongs ? JSON.parse(storedLikedSongs) : [];
+    return storedLikedSongs && storedLikedSongs !== "undefined" ? JSON.parse(storedLikedSongs) : [];
   });
 
   useEffect(() => {
