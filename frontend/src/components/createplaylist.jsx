@@ -101,7 +101,7 @@ const CreatePlaylist = () => {
               </tr>
             </thead>
             <tbody>
-              {placeholderSongs.map((song, index) => (
+              {filteredSongs.map((song, index) => (
                 <tr key={index}>
                   <td>
                     <Checkbox
