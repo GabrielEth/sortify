@@ -4,28 +4,30 @@ import PlaylistComponent from "./playlist-component.jsx";
 import callSpotifyAPI from "./../services/apiservice.js";
 import Joyride from "react-joyride";
 import { useLikedSongs } from "../LikedSongsContext.jsx";
-import CircularIndeterminate from '../loading-circle.jsx';
+import CircularIndeterminate from "../loading-circle.jsx";
+import Popup from "../components/Popup";
 
 export default function Dashboard() {
-  const { setLikedSongs } = useLikedSongs(); // Use the context to store liked songs
+  const { likedSongs, setLikedSongs } = useLikedSongs();
   const accessToken = localStorage.getItem("access_token");
   const [profilePicture, setProfilePicture] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [runTutorial, setRunTutorial] = useState(true);
+  const [runTutorial, setRunTutorial] = useState(true); // State to control the tutorial
+  const [openPopup, setOpenPopup] = useState(false);
   const [steps, setSteps] = useState([
     {
       target: "body",
       content:
         "The app that allows you to sort your Spotify song library into customized playlists.",
-      placement: "center",
+      placement: "right",
       title: <strong>Welcome to Sortify!</strong>,
     },
     {
       target: ".select-playlists",
       content:
         "Here you can choose to create a new playlist or select one to update.",
-      placement: "center",
+      placement: "right",
       title: <strong>Create or Update Playlists</strong>,
     },
     {
@@ -51,6 +53,19 @@ export default function Dashboard() {
   ]);
 
   useEffect(() => {
+    async function fetchLikedSongs() {
+      setIsLoading(true);
+      try {
+        const data = await callSpotifyAPI("/api/fetch-liked-songs");
+        setLikedSongs(data.likedSongs);
+      } catch (error) {
+        console.error("Error fetching liked songs:", error);
+        setError(error.message || "An unexpected error occurred");
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
     async function getSpotifyProfilePicture() {
       try {
         const data = await callSpotifyAPI("https://api.spotify.com/v1/me");
@@ -63,23 +78,12 @@ export default function Dashboard() {
       }
     }
 
-    async function fetchLikedSongs() {
-      setIsLoading(true);
-
-      try {
-        const data = await callSpotifyAPI("/api/fetch-liked-songs");
-        setLikedSongs(data.likedSongs);
-      } catch (error) {
-        console.error('Error fetching liked songs:', error);
-        setError(error.message || 'An unexpected error occurred');
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
     getSpotifyProfilePicture();
-    fetchLikedSongs();
-  }, [accessToken, setLikedSongs]);
+
+    if (likedSongs.length == 0 && accessToken) {
+      fetchLikedSongs();
+    }
+  }, [accessToken, setLikedSongs, likedSongs]);
 
   if (isLoading) {
     return (
@@ -105,15 +109,15 @@ export default function Dashboard() {
         styles={{
           options: {
             zIndex: 10000,
-            primaryColor: "#f04",
+            primaryColor: "#f04", // This changes the default color theme, affecting the Next button
           },
           buttonNext: {
-            backgroundColor: "#95D5B2",
-            color: "#fff",
+            backgroundColor: "#95D5B2", // Specific customization for the Next button's background color
+            color: "#fff", // Specific customization for the Next button's text color
           },
           buttonBack: {
-            backgroundColor: "#fff",
-            color: "#000",
+            backgroundColor: "#fff", // Setting the Back button's background to black
+            color: "#000", // Setting the Back button's text color to white
           },
         }}
       />
@@ -127,13 +131,16 @@ export default function Dashboard() {
       </div>
 
       <div className="instructions mb-0">
-        <h1>Create A New Playlist OR Select One To Update!</h1>
+        <h1 onClick={() => setOpenPopup(true)}>
+          Create A New Playlist OR Select One To Update!
+        </h1>
       </div>
 
       <div className="select-playlists mt-5">
         <h2 className="text-black"></h2>
-        <PlaylistComponent />
+        <PlaylistComponent accessToken={accessToken} />
       </div>
+      <Popup title="Update Playlist" openPopup={openPopup} setOpenPopup={setOpenPopup} />
     </div>
   );
 }
