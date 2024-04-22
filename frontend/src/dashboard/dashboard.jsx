@@ -54,31 +54,6 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetchLikedSongs() {
-      setIsLoading(true);
-      try {
-        const data = await callSpotifyAPI("/api/fetch-liked-songs");
-        setLikedSongs(data.likedSongs);
-      } catch (error) {
-        console.error("Error fetching liked songs:", error);
-        setError(error.message || "An unexpected error occurred");
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    async function getSpotifyProfilePicture() {
-      try {
-        const data = await callSpotifyAPI("https://api.spotify.com/v1/me");
-        if (data.images.length > 0) {
-          const largestImage = data.images.sort((a, b) => b.width - a.width)[0];
-          setProfilePicture(largestImage.url);
-        }
-      } catch (error) {
-        console.error("Failed to fetch user profile:", error);
-      }
-    }
-
-    async function fetchLikedSongs() {
       if (accessToken) {
         setIsLoading(true);
         try {
@@ -92,6 +67,18 @@ export default function Dashboard() {
         } finally {
           setIsLoading(false);
         }
+      }
+    }
+
+    async function getSpotifyProfilePicture() {
+      try {
+        const data = await callSpotifyAPI("https://api.spotify.com/v1/me");
+        if (data.images.length > 0) {
+          const largestImage = data.images.sort((a, b) => b.width - a.width)[0];
+          setProfilePicture(largestImage.url);
+        }
+      } catch (error) {
+        console.error("Failed to fetch user profile:", error);
       }
     }
 
@@ -154,7 +141,11 @@ export default function Dashboard() {
         <h2 className="text-black"></h2>
         <PlaylistComponent accessToken={accessToken} />
       </div>
-      <Popup title="Update Playlist" openPopup={openPopup} setOpenPopup={setOpenPopup} />
+      <Popup
+        title="Update Playlist"
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+      />
     </div>
   );
 }
