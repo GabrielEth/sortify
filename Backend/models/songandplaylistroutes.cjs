@@ -40,18 +40,38 @@ const router = express.Router();
 function sleep(seconds) {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 }
+
+async function fetchWithRetry(url, accessToken) {
+  let response = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok && response.status === 429) { // 429 is the status code for rate limiting
+    const retryAfter = parseInt(response.headers.get("Retry-After"));
+    if (retryAfter) {
+      await sleep(retryAfter);
+      return fetchWithRetry(url, accessToken); // Recursively retry the request after the specified delay
+    }
+  }
+
+  return response;
+}
+
+
+
+
+
+
 const fetchUserPlaylists = async (accessToken) => {
   const playlists = [];
   let url = "https://api.spotify.com/v1/me/playlists?limit=50";
 
   while (url) {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetchWithRetry(url, accessToken);
     const data = await response.json();
     playlists.push(
       ...data.items.map((item) => ({
@@ -71,13 +91,8 @@ async function fetchLikedSongs(accessToken) {
   let url = "https://api.spotify.com/v1/me/tracks?limit=50"; // Starting URL, increased limit to 50
 
   while (url) {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetchWithRetry(url, accessToken);
+
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -116,13 +131,8 @@ async function fetchArtistsGenres(artistIds, accessToken) {
     const endpoint = `https://api.spotify.com/v1/artists?ids=${idsChunk.join(
       ","
     )}`;
-    const response = await fetch(endpoint, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetchWithRetry(endpoint, accessToken);
+
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -179,16 +189,10 @@ async function fetchSongDetails(songList, accessToken) {
     const trackIdString = firstChunk.join(",");
     try {
       // Fetch track details for the current chunk
-      const trackResponse = await fetch(
-        `https://api.spotify.com/v1/tracks?ids=${trackIdString}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }
+      const trackResponse = await fetchWithRetry(
+        `https://api.spotify.com/v1/tracks?ids=${trackIdString}`, accessToken
       );
+      
       if (!trackResponse.ok) {
         console.log("status: ", `${trackResponse.status}`)
         const retryAfter = trackResponse.headers.get("Retry-After");
@@ -203,16 +207,10 @@ async function fetchSongDetails(songList, accessToken) {
           );
         }
       }
-      const featuresResponse = await fetch(
-        `https://api.spotify.com/v1/audio-features?ids=${trackIdString}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }
+      const featuresResponse = await fetchWithRetry(
+        `https://api.spotify.com/v1/audio-features?ids=${trackIdString}`, accessToken
       );
+      
       if (!featuresResponse.ok) {
         const retryAfter = featuresResponse.headers.get("Retry-After");
         if (retryAfter) {
