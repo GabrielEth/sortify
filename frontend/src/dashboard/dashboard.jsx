@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "./dashboard.css";
 import PlaylistComponent from "./playlist-component.jsx";
 import callSpotifyAPI from "./../services/apiservice.js";
 import Joyride from "react-joyride";
 import { useLikedSongs } from "../LikedSongsContext.jsx";
-import CircularIndeterminate from '../loading-circle.jsx';
+import CircularIndeterminate from "../loading-circle.jsx";
 import Popup from "../components/Popup";
 
 export default function Dashboard() {
-  const { setLikedSongs } = useLikedSongs();
+  const { likedSongs, setLikedSongs } = useLikedSongs();
   const accessToken = localStorage.getItem("access_token");
   const [profilePicture, setProfilePicture] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,8 +59,8 @@ export default function Dashboard() {
         const data = await callSpotifyAPI("/api/fetch-liked-songs");
         setLikedSongs(data.likedSongs);
       } catch (error) {
-        console.error('Error fetching liked songs:', error);
-        setError(error.message || 'An unexpected error occurred');
+        console.error("Error fetching liked songs:", error);
+        setError(error.message || "An unexpected error occurred");
       } finally {
         setIsLoading(false);
       }
@@ -78,9 +78,12 @@ export default function Dashboard() {
       }
     }
 
-    fetchLikedSongs();
     getSpotifyProfilePicture();
-  }, [accessToken, setLikedSongs]);
+
+    if (likedSongs.length == 0 && accessToken) {
+      fetchLikedSongs();
+    }
+  }, [accessToken, setLikedSongs, likedSongs]);
 
   if (isLoading) {
     return <CircularIndeterminate />;
@@ -123,14 +126,16 @@ export default function Dashboard() {
       </div>
 
       <div className="instructions mb-0">
-        <h1 onClick={() => setOpenPopup(true)}>Create A New Playlist OR Select One To Update!</h1>
+        <h1 onClick={() => setOpenPopup(true)}>
+          Create A New Playlist OR Select One To Update!
+        </h1>
       </div>
 
       <div className="select-playlists mt-5">
         <h2 className="text-black"></h2>
         <PlaylistComponent accessToken={accessToken} />
       </div>
-      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup} />
+      <Popup title="Update Playlist" openPopup={openPopup} setOpenPopup={setOpenPopup} />
     </div>
   );
 }
