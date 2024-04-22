@@ -12,6 +12,18 @@ const CreatePlaylist = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [cancelRequested, setCancelRequested] = useState(false);
 
+  const placeholderSongs = [
+    { name: "Song 1" },
+    { name: "Song 2" },
+    { name: "Song 3" },
+    { name: "Song 4" },
+    { name: "Song 5" },
+    { name: "Song 6" },
+    { name: "Song 7" },
+    { name: "Song 8" },
+    { name: "Song 9" },
+  ];
+  const chosenSongMax = 5;
   const handleToggleSong = (song) => {
     if (selectedSongs.includes(song)) {
       setSelectedSongs(selectedSongs.filter((item) => item !== song));
@@ -134,7 +146,7 @@ const CreatePlaylist = () => {
                   </td>
                   <td>{song.name}</td>
                 </tr>
-              ))}
+              ))} 
             </tbody>
           </table>
         </div>
