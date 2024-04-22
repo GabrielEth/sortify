@@ -5,7 +5,7 @@ const CreatePlaylist = () => {
     const [selectedPlaylist, setSelectedPlaylist] = useState('');
     const [selectedSongs, setSelectedSongs] = useState([]);
     const [likedResult, setLikedResult] = useState(null);
-
+    const accessToken = localStorage.getItem("access_token");
     const playlists = ['Playlist 1', 'Playlist 2', 'Playlist 3']; // Placeholder for pre-existing playlists
     const placeholderSongs = ['Song 1', 'Song 2', 'Song 3', 'Song 4', 'Song 5']; // Placeholder for songs
     const placeholderResult = ['Result 1', 'Result 2', 'Result 3', 'Result 4', 'Result 5']; // Placeholder for result
@@ -24,9 +24,44 @@ const CreatePlaylist = () => {
         setLikedResult(like);
     };
 
-    const handleExport = () => {
-        // Export logic here
-    };
+    const handleExport = async () => {
+        if (!selectedPlaylist) {
+          console.error("No playlist selected.");
+          return;
+        }
+      
+        try {
+          const playlistId = selectedPlaylist; // Assuming playlistId is directly set from selectedPlaylist
+      
+          // Extract URIs of the selected songs
+          const songURIs = selectedSongs.map((song) => {
+            // Assuming each song object has a URI property
+            return song.uri;
+          });
+      
+          const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+            method: "PUT",
+            headers: {
+              Authorization: "Bearer 1POdFZRZbvb...qqillRxMr2z",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              uris: songURIs
+            })
+          });
+      
+          if (!response.ok) {
+            throw new Error("Failed to update playlist");
+          }
+      
+          const data = await response.json();
+          console.log("Playlist updated:", data);
+        } catch (error) {
+          console.error("Error updating playlist:", error);
+        }
+      };
+      
+      
 
     const handleExportPrompt = () => {
         // Recursive function to prompt user until they like the playlist
