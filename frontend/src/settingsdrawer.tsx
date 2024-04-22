@@ -10,13 +10,18 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import LogoutIcon from "@mui/icons-material/Logout";
+import ContactPageIcon from '@mui/icons-material/ContactPage';
 import SettingsIcon from "@mui/icons-material/Settings";
 import Logo from "./../../Resources/Logo.png";
 import "./buttonStyles.css";
+import { useNavigate } from 'react-router-dom';
+
 
 export default function SettingsDrawer() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [currentPage, setCurrentPage] = React.useState("dashboard");
+  const navigate = useNavigate();
+
 
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
@@ -105,7 +110,33 @@ export default function SettingsDrawer() {
                 />
               </ListItemButton>
             </ListItem>
+            <ListItem disablePadding>
+            <ListItemButton
+               onClick={() => navigate('/contact')}
+              sx={{
+                justifyContent: "center",
+                alignItems: "center",
+                "&:hover": {
+                  bgcolor: "#4AA478",
+                },
+              }}
+            >
+              <ListItemIcon sx={{ alignItems: "center", color: "#000000" }}>
+                <ContactPageIcon /> 
+              </ListItemIcon>
+              <ListItemText
+                primary="Contact"
+                sx={{
+                  color: "#000000",
+                  "& .MuiTypography-root": {
+                    color: "inherit",
+                  },
+                }}
+              />
+           </ListItemButton>
+          </ListItem>
           </List>
+          
         </Box>
       </Drawer>
     </>
