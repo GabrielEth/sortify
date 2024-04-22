@@ -14,13 +14,6 @@ export const LikedSongsProvider = ({ children }) => {
     localStorage.setItem("likedSongs", JSON.stringify(likedSongs));
   }, [likedSongs]);
 
-  useEffect(() => {
-    const storedLikedSongs = JSON.parse(localStorage.getItem("likedSongs"));
-    if (storedLikedSongs) {
-      setLikedSongs(storedLikedSongs);
-    }
-  }, []);
-
   return (
     <LikedSongsContext.Provider value={{likedSongs, setLikedSongs}}>
       {children}
