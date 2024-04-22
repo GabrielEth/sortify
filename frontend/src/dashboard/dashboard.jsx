@@ -80,11 +80,10 @@ export default function Dashboard() {
 
     getSpotifyProfilePicture();
 
-    let songs = localStorage.getItem("likedSongs");
-    if (songs.length != 0 && accessToken) {
+    if (likedSongs.length == 0 && accessToken) {
       fetchLikedSongs();
     }
-  }, [accessToken, setLikedSongs]); // Fixed the parenthesis syntax error
+  }, [accessToken, setLikedSongs, likedSongs]);
 
   if (isLoading) {
     return <CircularIndeterminate />;
@@ -136,7 +135,7 @@ export default function Dashboard() {
         <h2 className="text-black"></h2>
         <PlaylistComponent accessToken={accessToken} />
       </div>
-      <Popup openPopup={openPopup} setOpenPopup={setOpenPopup} />
+      <Popup title="Update Playlist" openPopup={openPopup} setOpenPopup={setOpenPopup} />
     </div>
   );
 }
