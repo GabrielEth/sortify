@@ -7,6 +7,7 @@ import Callback from "./callback.jsx";
 import SettingsDrawer from "./settingsdrawer.tsx";
 import CreatePlaylist from "./components/createplaylist.jsx";
 import UpdatePlaylist from "./components/updateplaylist.jsx";
+import ContactPage from "./Contact/ContactPage.jsx"
 
 const App = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ const App = () => {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
+        <Route path="/contact" element={<ContactPage />} />
         <Route element={<ProtectedRoute />}>
           <Route path="/createplaylist" element={<CreatePlaylist />} />
         </Route>
