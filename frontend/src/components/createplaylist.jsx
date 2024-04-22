@@ -1,60 +1,77 @@
-import { useState } from "react"; // Import useState and useEffect from React
-import "./createplaylist.css"; // Import CSS file for styling
-import Checkbox from "@mui/material/Checkbox"; // Import Checkbox component from Material-UI
-import TextField from "@mui/material/TextField"; // Import TextField component from Material-UI
-import { useLikedSongs } from "../LikedSongsContext"; // Import custom hook for liked songs context
+import React, { useState, useEffect } from "react";
+import Checkbox from "@mui/material/Checkbox";
+import TextField from "@mui/material/TextField";
+import { useLikedSongs } from "../LikedSongsContext";
+import callSpotifyAPI from "../services/apiservice";
+import CircularIndeterminate from "../loading-circle";
 
 const CreatePlaylist = () => {
+  const { likedSongs } = useLikedSongs();
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const { likedSongs } = useLikedSongs();
-
-  const placeholderSongs = [
-    { name: "Song 1" },
-    { name: "Song 2" },
-    { name: "Song 3" },
-    { name: "Song 4" },
-    { name: "Song 5" },
-    { name: "Song 6" },
-    { name: "Song 7" },
-    { name: "Song 8" },
-    { name: "Song 9" },
-  ];
-
-  const chosenSongMax = 5;
+  const [isLoading, setIsLoading] = useState(false);
+  const [cancelRequested, setCancelRequested] = useState(false);
 
   const handleToggleSong = (song) => {
     if (selectedSongs.includes(song)) {
       setSelectedSongs(selectedSongs.filter((item) => item !== song));
     } else {
-      if (selectedSongs.length >= chosenSongMax) {
-        alert("You can only select up to 5 songs.");
-      } else {
+      if (selectedSongs.length < 5) {
         setSelectedSongs([...selectedSongs, song]);
+      } else {
+        alert("You can only select up to 5 songs.");
       }
     }
   };
-
-  const handleExport = () => {
-    // Export logic here
-  };
-
-  const filteredSongs = likedSongs.filter((song) =>
-    song.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const handleSearchTermChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-  const isGenerateDisabled = false;
-  // selectedSongs.length != chosenSongMax;
+  const handleGenerate = async () => {
+    setIsLoading(true);
+    setCancelRequested(false);
 
-  const handleGenerate = (selectedSongs) => {
-    if (!isGenerateDisabled) {
-      // Add logic to generate playlist
+    try {
+      await generatePlaylist(selectedSongs);
+    } catch (error) {
+      console.error("Error generating playlist:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
+
+  const generatePlaylist = async (selectedSongs) => {
+    // Simulate API call delay
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // Check for cancellation at various points during the generation process
+    for (let i = 0; i < selectedSongs.length; i++) {
+      if (cancelRequested) {
+        console.log("Generation cancelled.");
+        return;
+      }
+
+      // Simulate generating playlist for each selected song
+      console.log("Generating playlist for song:", selectedSongs[i]);
+      // Your playlist generation logic goes here
+    }
+
+    if (cancelRequested) {
+      console.log("Generation cancelled.");
+      return;
+    }
+
+    console.log("Playlist generation completed successfully.");
+  };
+
+  const cancelGeneration = () => {
+    setCancelRequested(true);
+  };
+
+  const filteredSongs = likedSongs.filter((song) =>
+    song.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <>
@@ -126,13 +143,23 @@ const CreatePlaylist = () => {
           <span>
             <button
               className="sortify-music-btn"
-              disabled={isGenerateDisabled}
-              onClick={handleGenerate(selectedSongs)}
+              disabled={isLoading}
+              onClick={handleGenerate}
             >
               Generate
             </button>
+            {isLoading && (
+              <button
+                className="sortify-music-btn"
+                onClick={cancelGeneration}
+              >
+                Cancel
+              </button>
+            )}
           </span>
         </div>
+
+        {isLoading && <CircularIndeterminate message="Generating you playlist" />}
       </div>
     </>
   );

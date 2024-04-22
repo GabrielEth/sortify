@@ -86,8 +86,13 @@ export default function Dashboard() {
   }, [accessToken, setLikedSongs, likedSongs]);
 
   if (isLoading) {
-    return <CircularIndeterminate />;
+    return (
+      <>
+        <CircularIndeterminate message="Getting your music" />
+      </>
+    );
   }
+  
 
   if (error) {
     return <div>Error: {error}</div>;

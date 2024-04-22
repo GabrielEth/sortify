@@ -1,20 +1,23 @@
+import React from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography'; 
+import Typography from '@mui/material/Typography';
 
-export default function CircularIndeterminate() {
+export default function CircularIndeterminate({ message }) {
   return (
-    <Box sx={{ 
-      display: 'flex', 
-      flexDirection: 'column', 
-      alignItems: 'center',   
-      justifyContent: 'center', 
-      height: '100vh',         
-      color: '#52b788',        
-    }}>
-      <CircularProgress size={60} color="inherit" />  
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+        color: '#52b788',
+      }}
+    >
+      <CircularProgress size={60} color="inherit" />
       <Typography variant="h4" sx={{ mt: 3, fontFamily: 'Comic Sans MS', color: 'inherit' }}>
-        Getting your music!
+        {message}
       </Typography>
     </Box>
   );
