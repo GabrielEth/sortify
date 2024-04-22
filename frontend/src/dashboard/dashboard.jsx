@@ -84,10 +84,11 @@ export default function Dashboard() {
   if (isLoading) {
     return (
       <>
-        <CircularIndeterminate />
+        <CircularIndeterminate message="Getting your music" />
       </>
     );
   }
+  
 
   if (error) {
     return <div>Error: {error}</div>;
