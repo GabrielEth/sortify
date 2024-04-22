@@ -67,7 +67,9 @@ export default function Dashboard() {
       if (accessToken) {
         setIsLoading(true);
         try {
-          const data = await callSpotifyAPI("/api/fetch-liked-songs");
+          const data = await callSpotifyAPI(
+            "/api/fetch-liked-songs-and-details"
+          );
           setLikedSongs(data.likedSongs);
         } catch (error) {
           console.error("Error fetching liked songs:", error);
