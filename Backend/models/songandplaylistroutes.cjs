@@ -143,85 +143,89 @@ async function fetchArtistsGenres(artistIds, accessToken) {
   return flattenedResults;
 }
 
-async function fetchSongDetails(likedSongs, accessToken) {
-  const allArtistIds = [
-    ...new Set(likedSongs.flatMap((song) => song.artistIds)),
-  ];
-  const artistGenres = await fetchArtistsGenres(allArtistIds, accessToken);
-
-  // Helper function to map artist IDs to genres
-  const mapArtistIdToGenres = (artistId) => {
-    const artist = artistGenres.find((artist) => artist.id === artistId);
-    return artist ? artist.genres : [];
+async function fetchSongDetails(songList, accessToken) {
+  // Function to chunk an array into smaller arrays of a specified size
+  const chunkArray = (array, chunkSize) => {
+    const chunks = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
+    }
+    return chunks;
   };
 
-  // Function to fetch details for a single song
-  const fetchDetailsForSong = async (song) => {
+  // Get an array of song ids from likedSongs
+  const songIds = songList.map((song) => song.id);
+
+  // Split songIds into chunks of 100
+  const songIdChunks = chunkArray(songIds, 100);
+
+  // Now, songIdChunks is a 2d array, where each sub-array has up to 100 song IDs.
+  // You can map over songIdChunks to create comma-separated strings for each chunk if needed for API requests.
+  const trackIdStrings = songIdChunks.map((chunk) => chunk.join(","));
+
+  // Initialize arrays to hold the responses for tracks and features
+  let allTrackDetails = [];
+  let allFeaturesDetails = [];
+
+  for (const trackIdString of trackIdStrings) {
     try {
+      // Fetch track details for the current chunk
+      const trackResponsePromise = fetch(
+        `https://api.spotify.com/v1/tracks?ids=${trackIdString}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // Fetch audio features for the current chunk
+      const featuresResponsePromise = fetch(
+        `https://api.spotify.com/v1/audio-features?ids=${trackIdString}`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // Wait for both promises to resolve
       const [trackResponse, featuresResponse] = await Promise.all([
-        fetch(`https://api.spotify.com/v1/tracks/${song.id}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }),
-        fetch(`https://api.spotify.com/v1/audio-features/${song.id}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }),
+        trackResponsePromise,
+        featuresResponsePromise,
       ]);
 
+      // Check if both responses are OK
       if (!trackResponse.ok || !featuresResponse.ok) {
-        console.error(`Failed to fetch details for song ID ${song.id}`);
-        return null; // Skip this song or handle accordingly
+        throw new Error(
+          `HTTP error! status: ${trackResponse.status} or ${featuresResponse.status}`
+        );
       }
 
-      const [trackData, featuresData] = await Promise.all([
-        trackResponse.json(),
-        featuresResponse.json(),
-      ]);
+      // Parse JSON responses
+      const trackData = await trackResponse.json();
+      const featuresData = await featuresResponse.json();
 
-      const genres = song.artistIds
-        .flatMap((id) => mapArtistIdToGenres(id))
-        .filter((value, index, self) => self.indexOf(value) === index)
-        .join(", ");
-
-      return {
-        name: song.name,
-        id: song.id,
-        artists: trackData.artists.map((artist) => artist.name),
-        album: trackData.album.name,
-        release_date: trackData.album.release_date,
-        genre: genres,
-        bpm: featuresData.tempo,
-        danceability: featuresData.danceability,
-        energy: featuresData.energy,
-        acousticness: featuresData.acousticness,
-        instrumentalness: featuresData.instrumentalness,
-        liveness: featuresData.liveness,
-        loudness: featuresData.loudness,
-        speechiness: featuresData.speechiness,
-        valence: featuresData.valence,
-        duration_ms: trackData.duration_ms,
-        popularity: trackData.popularity,
-        explicit: trackData.explicit,
-      };
+      // Accumulate the results
+      allTrackDetails.push(...trackData.tracks);
+      allFeaturesDetails.push(...featuresData.audio_features);
     } catch (error) {
-      console.error(`Error fetching details for song ID ${song.id}:`, error);
-      return null; // Skip this song or handle accordingly
+      console.error(`Error fetching data for chunk: ${trackIdString}`, error);
+      // Handle error, for example by breaking the loop or continuing to the next chunk
     }
-  };
+  }
 
-  // Fetch details for all songs in parallel, filtering out any null results
-  const detailedSongsPromises = likedSongs.map((song) =>
-    fetchDetailsForSong(song)
-  );
-  const detailedSongsResults = await Promise.all(detailedSongsPromises);
-  const detailedSongs = detailedSongsResults.filter((song) => song !== null);
+  // At this point, allTrackDetails and allFeaturesDetails contain the details and features for all tracks
+  const detailedSongs = allTrackDetails.map((track, index) => {
+    return {
+      ...track,
+      features: allFeaturesDetails[index],
+    };
+  });
 
   return detailedSongs;
 }
