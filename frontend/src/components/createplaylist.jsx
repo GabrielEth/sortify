@@ -1,4 +1,4 @@
-import { useState } from "react"; // Import useState and useEffect from React
+import { useState, useEffect  } from "react"; // Import useState and useEffect from React
 import "./createplaylist.css"; // Import CSS file for styling
 import callSpotifyAPI from "../services/apiservice.js";
 
@@ -38,6 +38,8 @@ const CreatePlaylist = () => {
   };
     const accessToken = localStorage.getItem("access_token");
     const [selectedPlaylist, setSelectedPlaylist] = useState('');
+    const [playlistId, setPlaylistId] = useState('');
+
     const [likedResult, setLikedResult] = useState(null);
     const [userId, setUserId] = useState(null);
 
@@ -46,18 +48,16 @@ const CreatePlaylist = () => {
     const placeholderResult = ['Result 1', 'Result 2', 'Result 3', 'Result 4', 'Result 5']; // Placeholder for result
 
     useEffect(() => {
-      async function getSpotifyProfilePicture() {
+      async function getSpotifyUserId() {
         try {
           const data = await callSpotifyAPI("https://api.spotify.com/v1/me");
-          
-            userId = data.id;
-            setUserId(userId);
-          
+          const spotifyUserId = data.id;
+          setUserId(spotifyUserId);
         } catch (error) {
           console.error("Failed to fetch user profile:", error);
         }
       }
-      getSpotifyProfilePicture();
+      getSpotifyUserId();
     }, [accessToken]);
 
     const handleAddSong = (song) => {
@@ -74,9 +74,61 @@ const CreatePlaylist = () => {
         setLikedResult(like);
     };
 
-  const handleExport = () => {
-    // Export logic here
-  };
+    const handleExport = async () => {
+      if (!userId) {
+        console.error("User ID is not available.");
+        return;
+      }
+    
+      try {
+        //Creating a new playlist
+        const createPlaylistResponse = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer 1POdFZRZbvb...qqillRxMr2z",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            name: "Discover Sortify",
+            description: "Highly personalized with Sortify based on your chosen songs",
+            public: false
+          })
+        });
+    
+        if (!createPlaylistResponse.ok) {
+          throw new Error("Failed to create playlist");
+        }
+    
+        const createdPlaylistData = await createPlaylistResponse.json();
+        const newPlaylistId = createdPlaylistData.id;
+    
+        console.log("Playlist created:", createdPlaylistData);
+    
+        //Add songs to the new playlist
+        const addTracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${newPlaylistId}/tracks`, {
+          method: "POST",
+          headers: {
+            Authorization: "Bearer 1POdFZRZbvb...qqillRxMr2z",
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            uris: selectedSongs.map(song => song.uri),
+            position: 0
+          })
+        });
+    
+        if (!addTracksResponse.ok) {
+          throw new Error("Failed to add tracks to playlist");
+        }
+    
+        const addedTracksData = await addTracksResponse.json();
+        console.log("Tracks added to playlist:", addedTracksData);
+    
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+    
 
   const filteredSongs = likedSongs.filter((song) =>
     song.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -155,6 +207,17 @@ const CreatePlaylist = () => {
               onClick={handleGenerate(selectedSongs)}
             >
               Generate
+            </button>
+          </span>
+        </div>
+        <div className="like-dislike-section main">
+          <span>
+            <button
+              className="sortify-music-btn"
+              disabled={isGenerateDisabled}
+              onClick={handleExport}
+            >
+              EXPORT
             </button>
           </span>
         </div>
