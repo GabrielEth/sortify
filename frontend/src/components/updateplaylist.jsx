@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './createplaylist.css'; // Import CSS file for styling
 
-const CreatePlaylist = () => {
+const UpdatePlaylist = () => {
     const [selectedPlaylist, setSelectedPlaylist] = useState('');
     const [selectedSongs, setSelectedSongs] = useState([]);
     const [likedResult, setLikedResult] = useState(null);
@@ -104,4 +104,4 @@ const CreatePlaylist = () => {
     );
 };
 
-export default CreatePlaylist;
+export default UpdatePlaylist;
