@@ -36,6 +36,9 @@ const App = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/createplaylist" element={<CreatePlaylist />} />
           </Route>
+          <Route element={<ProtectedRoute />}>
+            <Route path="/updateplaylist" element={<UpdatePlaylist />} />
+          </Route>
           <Route path="/callback" element={<Callback />} />
           <Route path="/" element={<Navigate replace to="/dashboard" />} />
           <Route path="*" element={<Navigate replace to="/dashboard" />} />
