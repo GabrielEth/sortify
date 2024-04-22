@@ -3,11 +3,16 @@ import "./dashboard.css";
 import PlaylistComponent from "./playlist-component.jsx";
 import callSpotifyAPI from "./../services/apiservice.js";
 import Joyride from "react-joyride";
+import { useLikedSongs } from "../LikedSongsContext.jsx";
+import CircularIndeterminate from '../loading-circle.jsx';
 
-export default function Dashboard({ isImportingMusic }) {
+export default function Dashboard() {
+  const { setLikedSongs } = useLikedSongs(); // Use the context to store liked songs
   const accessToken = localStorage.getItem("access_token");
   const [profilePicture, setProfilePicture] = useState(null);
-  const [runTutorial, setRunTutorial] = useState(true); // State to control the tutorial
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [runTutorial, setRunTutorial] = useState(true);
   const [steps, setSteps] = useState([
     {
       target: "body",
@@ -20,7 +25,7 @@ export default function Dashboard({ isImportingMusic }) {
       target: ".select-playlists",
       content:
         "Here you can choose to create a new playlist or select one to update.",
-      placement: "right",
+      placement: "center",
       title: <strong>Create or Update Playlists</strong>,
     },
     {
@@ -33,7 +38,7 @@ export default function Dashboard({ isImportingMusic }) {
     {
       target: ".first-playlist-card",
       content:
-        "Updating a playlist will asses the vibe of that existing playlist and add similar songs from your existing music library.",
+        "Updating a playlist will assess the vibe of that existing playlist and add similar songs from your existing music library.",
       placement: "center",
       title: <strong>Update Playlist</strong>,
     },
@@ -57,8 +62,36 @@ export default function Dashboard({ isImportingMusic }) {
         console.error("Failed to fetch user profile:", error);
       }
     }
+
+    async function fetchLikedSongs() {
+      setIsLoading(true);
+
+      try {
+        const data = await callSpotifyAPI("/api/fetch-liked-songs");
+        setLikedSongs(data.likedSongs);
+      } catch (error) {
+        console.error('Error fetching liked songs:', error);
+        setError(error.message || 'An unexpected error occurred');
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
     getSpotifyProfilePicture();
-  }, [accessToken]);
+    fetchLikedSongs();
+  }, [accessToken, setLikedSongs]);
+
+  if (isLoading) {
+    return (
+      <>
+        <CircularIndeterminate />
+      </>
+    );
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <div className="dashboard">
@@ -71,15 +104,15 @@ export default function Dashboard({ isImportingMusic }) {
         styles={{
           options: {
             zIndex: 10000,
-            primaryColor: "#f04", // This changes the default color theme, affecting the Next button
+            primaryColor: "#f04",
           },
           buttonNext: {
-            backgroundColor: "#95D5B2", // Specific customization for the Next button's background color
-            color: "#fff", // Specific customization for the Next button's text color
+            backgroundColor: "#95D5B2",
+            color: "#fff",
           },
           buttonBack: {
-            backgroundColor: "#fff", // Setting the Back button's background to black
-            color: "#000", // Setting the Back button's text color to white
+            backgroundColor: "#fff",
+            color: "#000",
           },
         }}
       />
@@ -96,13 +129,9 @@ export default function Dashboard({ isImportingMusic }) {
         <h1>Create A New Playlist OR Select One To Update!</h1>
       </div>
 
-      <div className="loading-bar" hidden={!isImportingMusic}>
-        <div className="loading-progress"></div>
-      </div>
-
       <div className="select-playlists mt-5">
         <h2 className="text-black"></h2>
-        <PlaylistComponent accessToken={accessToken} />
+        <PlaylistComponent />
       </div>
     </div>
   );
