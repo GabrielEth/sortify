@@ -7,7 +7,7 @@ import { useLikedSongs } from "../LikedSongsContext.jsx";
 import CircularIndeterminate from '../loading-circle.jsx';
 import Popup from "../components/Popup";
 
-export default function Dashboard({ isImportingMusic }) {
+export default function Dashboard() {
   const { setLikedSongs } = useLikedSongs();
   const accessToken = localStorage.getItem("access_token");
   const [profilePicture, setProfilePicture] = useState(null);
@@ -15,7 +15,6 @@ export default function Dashboard({ isImportingMusic }) {
   const [error, setError] = useState(null);
   const [runTutorial, setRunTutorial] = useState(true); // State to control the tutorial
   const [openPopup, setOpenPopup] = useState(false);
-
   const [steps, setSteps] = useState([
     {
       target: "body",
@@ -125,10 +124,6 @@ export default function Dashboard({ isImportingMusic }) {
 
       <div className="instructions mb-0">
         <h1 onClick={() => setOpenPopup(true)}>Create A New Playlist OR Select One To Update!</h1>
-      </div>
-
-      <div className="loading-bar" hidden={!isImportingMusic}>
-        <div className="loading-progress"></div>
       </div>
 
       <div className="select-playlists mt-5">
