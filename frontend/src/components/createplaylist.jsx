@@ -134,7 +134,7 @@ const CreatePlaylist = () => {
                   </td>
                   <td>{song.name}</td>
                 </tr>
-              ))}
+              ))} 
             </tbody>
           </table>
         </div>
