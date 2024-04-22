@@ -6,8 +6,14 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./playlist-table.css";
 import newPlaylist from "../../../Resources/newPlaylist.png";
+import Popup from "../components/Popup";
+import React, { useState } from 'react';
+
 
 const PlaylistTable = ({ playlists }) => {
+
+   const [openPopup, setOpenPopup] = useState(false);
+
   PlaylistTable.propTypes = {
     playlists: PropTypes.arrayOf(
       PropTypes.shape({
@@ -34,7 +40,7 @@ const PlaylistTable = ({ playlists }) => {
         <Col
           md={12 / cardsPerRow}
           className="create-new-playlist-card custom-col"
-          onClick={handleCreateNewPlaylistClick}
+          onClick={() => {setOpenPopup(true)}}
           style={{ cursor: "pointer" }}
         >
           <Card className="card-hover-effect">
@@ -88,6 +94,10 @@ const PlaylistTable = ({ playlists }) => {
           </Col>
         ))}
       </Row>
+      <Popup
+        openPopup = {openPopup}
+        setOpenPopup = {setOpenPopup}
+      />
     </Container>
   );
 };
