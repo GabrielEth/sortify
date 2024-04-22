@@ -35,10 +35,10 @@ const PlaylistComponent = () => {
   };
 
   useEffect(() => {
-    if (accessToken) {
+    if (playlists.length == 0 && accessToken) {
       fetchPlaylists();
     }
-  }, [accessToken]);
+  }, [accessToken, playlists]);
 
   if (error) return <div>Error: {error}</div>;
 

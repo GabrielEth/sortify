@@ -94,12 +94,15 @@ export default function Dashboard() {
         }
       }
     }
-    getSpotifyProfilePicture();
+
+    if (!profilePicture) {
+      getSpotifyProfilePicture();
+    }
 
     if (likedSongs.length == 0 && accessToken) {
       fetchLikedSongs();
     }
-  }, [accessToken, setLikedSongs, likedSongs]);
+  }, [accessToken, setLikedSongs, likedSongs, profilePicture]);
 
   if (isLoading) {
     return <CircularIndeterminate />;
