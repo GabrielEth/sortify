@@ -6,8 +6,14 @@ import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./playlist-table.css";
 import newPlaylist from "../../../Resources/newPlaylist.png";
+import Popup from "../components/Popup";
+import { useState } from 'react';
+
 
 const PlaylistTable = ({ playlists }) => {
+
+   const [openPopup, setOpenPopup] = useState(false);
+
   PlaylistTable.propTypes = {
     playlists: PropTypes.arrayOf(
       PropTypes.shape({
@@ -24,17 +30,13 @@ const PlaylistTable = ({ playlists }) => {
     navigate("/createplaylist");
   };
 
-  const handlePlaylistClick = (playlistName) => {
-    navigate("/updateplaylist", { state: { playlistName } });
-  };
-
   return (
     <Container style={{ maxHeight: "calc(100vh - 100px)", overflowY: "auto" }}>
       <Row className="g-3">
         <Col
           md={12 / cardsPerRow}
           className="create-new-playlist-card custom-col"
-          onClick={handleCreateNewPlaylistClick}
+          onClick={() => {handleCreateNewPlaylistClick()}}
           style={{ cursor: "pointer" }}
         >
           <Card className="card-hover-effect">
@@ -61,7 +63,7 @@ const PlaylistTable = ({ playlists }) => {
             className={`playlist-card ${
               index === 0 ? "first-playlist-card" : ""
             }`}
-            onClick={() => handlePlaylistClick(playlist.name)}
+            onClick={() => {setOpenPopup(true)}}
             style={{ cursor: "pointer" }}
           >
             <Card className="card-hover-effect">
@@ -88,6 +90,10 @@ const PlaylistTable = ({ playlists }) => {
           </Col>
         ))}
       </Row>
+      <Popup
+        openPopup = {openPopup}
+        setOpenPopup = {setOpenPopup}
+      />
     </Container>
   );
 };
