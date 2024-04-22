@@ -3,7 +3,7 @@ import Checkbox from "@mui/material/Checkbox";
 import TextField from "@mui/material/TextField";
 import { useLikedSongs } from "../LikedSongsContext";
 import CircularIndeterminate from "../loading-circle";
-import './createplaylist.css';
+import "./createplaylist.css";
 
 const CreatePlaylist = () => {
   const { likedSongs } = useLikedSongs();
@@ -181,8 +181,11 @@ const CreatePlaylist = () => {
           <span>
             <button
               className="sortify-music-btn"
-              disabled={isLoading}
-              onClick={() => generatePlaylist(songsForPlaylist)} 
+              disabled={selectedSongs.length != chosenSongMax}
+              onClick={() => generatePlaylist(songsForPlaylist)}
+              style={{
+                opacity: selectedSongs.length != chosenSongMax ? 0.2 : 1,
+              }}
             >
               Generate
             </button>

@@ -13,7 +13,7 @@ export default function Dashboard() {
   const [profilePicture, setProfilePicture] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [runTutorial, setRunTutorial] = useState(true); // State to control the tutorial
+  const [runTutorial, setRunTutorial] = useState(true);
   const [openPopup, setOpenPopup] = useState(false);
   const [steps, setSteps] = useState([
     {
