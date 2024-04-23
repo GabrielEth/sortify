@@ -16,18 +16,15 @@ function ContactPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Construct the mailto link with form data
-    const mailtoLink = `mailto:info@txstate.com?subject=Message from ${encodeURIComponent(form.name)}&body=${encodeURIComponent(form.message)}`;
-    // Open the mail client
-    window.location.href = mailtoLink;
+    const mailtoLink = `mailto:Sortify2024@gmail.com?&subject=Sortify Feedback&body=${encodeURIComponent(form.message)}`;
+    window.open(mailtoLink, '_blank');
   };
 
   return (
     <div className="contact-container">
       <h1 className="contact-title">Get in Touch</h1>
       <div className="contact-info">
-        <p>Email: info@txstate.com</p>
-        <p>Phone: 111-111-1111</p>
+        <p>Email: Sortify2024@gmail.com</p>
         <p>Feel free to reach out to us with any questions or comments!</p>
       </div>
       <form className="contact-form" onSubmit={handleSubmit}>

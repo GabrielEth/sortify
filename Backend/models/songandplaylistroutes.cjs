@@ -42,7 +42,6 @@ function sleep(seconds) {
 }
 
 async function fetchWithRetry(url, accessToken) {
-  console.log("fetching", url);
   let response = await fetch(url, {
     method: "GET",
     headers: {
@@ -113,7 +112,6 @@ async function fetchLikedSongs(accessToken) {
 }
 
 async function fetchArtistsGenres(artistIds, accessToken) {
-  // Function to split the artistIds array into chunks of 50 elements each
   const chunkArray = (array, chunkSize) => {
     const chunks = [];
     for (let i = 0; i < array.length; i += chunkSize) {
@@ -125,7 +123,6 @@ async function fetchArtistsGenres(artistIds, accessToken) {
   // Splitting artistIds into chunks of 50
   const artistIdChunks = chunkArray(artistIds, 50);
 
-  // Function to fetch genres for a chunk of artist IDs
   const fetchGenresForChunk = async (idsChunk) => {
     const endpoint = `https://api.spotify.com/v1/artists?ids=${idsChunk.join(
       ","
@@ -139,7 +136,7 @@ async function fetchArtistsGenres(artistIds, accessToken) {
     const data = await response.json();
     return data.artists.map((artist) => ({
       id: artist.id,
-      genres: artist.genres, // Each artist's genres
+      genres: artist.genres,
     }));
   };
 
@@ -155,7 +152,6 @@ async function fetchArtistsGenres(artistIds, accessToken) {
 }
 
 async function fetchSongDetails(songList, accessToken) {
-  console.log("entering song details");
   // Function to chunk an array into smaller arrays of a specified size
   const chunkArray = (array, chunkSize) => {
     const chunks = [];
@@ -184,58 +180,20 @@ async function fetchSongDetails(songList, accessToken) {
   for (let index = 0; index < trackIdStrings.length; index++) {
     const trackIdString = trackIdStrings[index];
     try {
-      console.log("fetching ");
       // Fetch track details for the current chunk
       const trackResponse = await fetchWithRetry(
         `https://api.spotify.com/v1/tracks?ids=${trackIdString}`,
         accessToken
       );
 
-      if (!trackResponse.ok) {
-        console.log("status: ", `${trackResponse.status}`);
-        const retryAfter = trackResponse.headers.get("Retry-After");
-        console.log(retryAfter);
-        if (retryAfter) {
-          console.log("retrying after ", retryAfter);
-          await new Promise((resolve) =>
-            setTimeout(resolve, retryAfter * 1000)
-          );
-        } else {
-          throw new Error(
-            `HTTP error on fetching track details! status: ${trackResponse.status}`
-          );
-        }
-      }
-      console.log(
-        `Request URL: https://api.spotify.com/v1/audio-features?ids=${trackIdString}`,
-        accessToken
-      );
       const featuresResponse = await fetchWithRetry(
         `https://api.spotify.com/v1/audio-features?ids=${trackIdString}`,
         accessToken
       );
 
-      if (!featuresResponse.ok) {
-        const retryAfter = featuresResponse.headers.get("Retry-After");
-        if (retryAfter) {
-          console.log("entering retry after");
-          await new Promise((resolve) =>
-            setTimeout(resolve, retryAfter * 1000)
-          );
-          return fetchTrackDetails(trackIdString, accessToken);
-        } else {
-          throw new Error(
-            `HTTP error on fetching audio features! status: ${featuresResponse.status}`
-          );
-        }
-      }
-
-      console.log("getting track data");
       const trackData = await trackResponse.json();
-      console.log("getting features data");
       const featuresData = await featuresResponse.json();
 
-      // Accumulate the results
       allTrackDetails.push(...trackData.tracks);
       allFeaturesDetails.push(...featuresData.audio_features);
     } catch (error) {
@@ -295,7 +253,6 @@ router.get("/fetch-liked-songs-and-details", async (req, res) => {
     }
     const accessToken = req.header("Authorization").split(" ")[1];
 
-    console.log("getting liked songs");
     const likedSongs = await fetchLikedSongs(accessToken);
 
     console.log("getting song details");
@@ -314,7 +271,6 @@ router.get("/fetch-liked-songs-and-details", async (req, res) => {
   }
 });
 
-//routes for playlist creation and updating
 router.post("/create-playlist", async (req, res) => {
   const userId = req.body.userId;
   const accessToken = req.header("Authorization").split(" ")[1];

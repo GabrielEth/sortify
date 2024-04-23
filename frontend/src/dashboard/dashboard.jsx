@@ -5,7 +5,7 @@ import callSpotifyAPI from "./../services/apiservice.js";
 import Joyride from "react-joyride";
 import { useLikedSongs } from "../LikedSongsContext.jsx";
 import CircularIndeterminate from "../loading-circle.jsx";
-import Popup from "../components/Popup";
+import Popup from "../playlistcreation/Popup.jsx";
 
 export default function Dashboard() {
   const { likedSongs, setLikedSongs } = useLikedSongs();
@@ -13,7 +13,7 @@ export default function Dashboard() {
   const [profilePicture, setProfilePicture] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [runTutorial, setRunTutorial] = useState(true); // State to control the tutorial
+  const [runTutorial, setRunTutorial] = useState(true);
   const [openPopup, setOpenPopup] = useState(false);
   const [steps, setSteps] = useState([
     {
@@ -105,7 +105,6 @@ export default function Dashboard() {
       </>
     );
   }
-  
 
   if (error) {
     return <div>Error: {error}</div>;
