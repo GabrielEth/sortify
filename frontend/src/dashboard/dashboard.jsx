@@ -20,14 +20,14 @@ export default function Dashboard() {
       target: "body",
       content:
         "The app that allows you to sort your Spotify song library into customized playlists.",
-      placement: "right",
+      placement: "center",
       title: <strong>Welcome to Sortify!</strong>,
     },
     {
-      target: ".select-playlists",
+      target: "body",
       content:
         "Here you can choose to create a new playlist or select one to update.",
-      placement: "right",
+      placement: "center",
       title: <strong>Create or Update Playlists</strong>,
     },
     {
