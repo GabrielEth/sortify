@@ -6,7 +6,7 @@ import { Route, Routes, Navigate, useLocation } from "react-router-dom";
 import Dashboard from "./dashboard/dashboard";
 import Callback from "./callback.jsx";
 import SettingsDrawer from "./settingsdrawer.tsx";
-import CreatePlaylist from "./components/createplaylist.jsx";
+import CreatePlaylist from "./playlistcreation/createplaylist.jsx";
 import ContactPage from "./Contact/ContactPage.jsx";
 
 const theme = createTheme({});

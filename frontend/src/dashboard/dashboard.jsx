@@ -5,7 +5,7 @@ import callSpotifyAPI from "./../services/apiservice.js";
 import Joyride from "react-joyride";
 import { useLikedSongs } from "../LikedSongsContext.jsx";
 import CircularIndeterminate from "../loading-circle.jsx";
-import Popup from "../components/Popup";
+import Popup from "../playlistcreation/Popup.jsx";
 
 export default function Dashboard() {
   const { likedSongs, setLikedSongs } = useLikedSongs();
@@ -92,7 +92,6 @@ export default function Dashboard() {
       </>
     );
   }
-  
 
   if (error) {
     return <div>Error: {error}</div>;
@@ -140,7 +139,11 @@ export default function Dashboard() {
         <h2 className="text-black"></h2>
         <PlaylistComponent accessToken={accessToken} />
       </div>
-      <Popup title="Update Playlist" openPopup={openPopup} setOpenPopup={setOpenPopup} />
+      <Popup
+        title="Update Playlist"
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+      />
     </div>
   );
 }
