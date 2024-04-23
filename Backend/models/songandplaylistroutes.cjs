@@ -42,6 +42,7 @@ function sleep(seconds) {
 }
 
 async function fetchWithRetry(url, accessToken) {
+  console.log("fetching", url);
   let response = await fetch(url, {
     method: "GET",
     headers: {
@@ -50,7 +51,12 @@ async function fetchWithRetry(url, accessToken) {
     },
   });
 
-  if (!response.ok && response.status === 429) { // 429 is the status code for rate limiting
+  if (response.status === 429) {
+    // 429 is the status code for rate limiting
+    console.log(
+      "fetching failed - 429 error retry-after is ",
+      response.headers.get("Retry-After")
+    );
     const retryAfter = parseInt(response.headers.get("Retry-After"));
     if (retryAfter) {
       await sleep(retryAfter);
@@ -60,11 +66,6 @@ async function fetchWithRetry(url, accessToken) {
 
   return response;
 }
-
-
-
-
-
 
 const fetchUserPlaylists = async (accessToken) => {
   const playlists = [];
@@ -88,11 +89,12 @@ const fetchUserPlaylists = async (accessToken) => {
 
 async function fetchLikedSongs(accessToken) {
   let likedSongs = [];
+  let counter = 0;
   let url = "https://api.spotify.com/v1/me/tracks?limit=50"; // Starting URL, increased limit to 50
 
-  while (url) {
+  while (url && counter != 3) {
+    counter++;
     const response = await fetchWithRetry(url, accessToken);
-
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -133,7 +135,6 @@ async function fetchArtistsGenres(artistIds, accessToken) {
     )}`;
     const response = await fetchWithRetry(endpoint, accessToken);
 
-
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
@@ -171,7 +172,7 @@ async function fetchSongDetails(songList, accessToken) {
   const songIds = songList.map((song) => song.id);
 
   // Split songIds into chunks of 100
-  const songIdChunks = chunkArray(songIds, 100);
+  const songIdChunks = chunkArray(songIds, 20);
 
   // Limit to only the first chunk of up to 100 song IDs
   const firstChunk = songIdChunks[0] ? songIdChunks[0] : [];
@@ -188,16 +189,19 @@ async function fetchSongDetails(songList, accessToken) {
   if (firstChunk.length > 0) {
     const trackIdString = firstChunk.join(",");
     try {
+      console.log("fetching ");
       // Fetch track details for the current chunk
       const trackResponse = await fetchWithRetry(
-        `https://api.spotify.com/v1/tracks?ids=${trackIdString}`, accessToken
+        `https://api.spotify.com/v1/tracks?ids=${trackIdString}`,
+        accessToken
       );
-      
+
       if (!trackResponse.ok) {
-        console.log("status: ", `${trackResponse.status}`)
+        console.log("status: ", `${trackResponse.status}`);
         const retryAfter = trackResponse.headers.get("Retry-After");
         console.log(retryAfter);
         if (retryAfter) {
+          console.log("retrying after ", retryAfter);
           await new Promise((resolve) =>
             setTimeout(resolve, retryAfter * 1000)
           );
@@ -207,10 +211,15 @@ async function fetchSongDetails(songList, accessToken) {
           );
         }
       }
-      const featuresResponse = await fetchWithRetry(
-        `https://api.spotify.com/v1/audio-features?ids=${trackIdString}`, accessToken
+      console.log(
+        `Request URL: https://api.spotify.com/v1/audio-features?ids=${trackIdString}`,
+        accessToken
       );
-      
+      const featuresResponse = await fetchWithRetry(
+        `https://api.spotify.com/v1/audio-features?ids=${trackIdString}`,
+        accessToken
+      );
+
       if (!featuresResponse.ok) {
         const retryAfter = featuresResponse.headers.get("Retry-After");
         if (retryAfter) {
@@ -292,7 +301,7 @@ router.get("/fetch-liked-songs-and-details", async (req, res) => {
 
     res.json({
       success: true,
-      likedSongs: songDetails, 
+      likedSongs: songDetails,
     });
   } catch (error) {
     console.error("Error fetching liked songs and details:", error);
