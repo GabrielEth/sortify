@@ -89,11 +89,8 @@ const fetchUserPlaylists = async (accessToken) => {
 
 async function fetchLikedSongs(accessToken) {
   let likedSongs = [];
-  let counter = 0;
   let url = "https://api.spotify.com/v1/me/tracks?limit=50"; // Starting URL, increased limit to 50
-
-  while (url && counter != 3) {
-    counter++;
+  while (url) {
     const response = await fetchWithRetry(url, accessToken);
 
     if (!response.ok) {
@@ -172,22 +169,20 @@ async function fetchSongDetails(songList, accessToken) {
   const songIds = songList.map((song) => song.id);
 
   // Split songIds into chunks of 100
-  const songIdChunks = chunkArray(songIds, 20);
+  const songIdChunks = chunkArray(songIds, 50);
 
   // Limit to only the first chunk of up to 100 song IDs
-  const firstChunk = songIdChunks[0] ? songIdChunks[0] : [];
+  // const firstChunk = songIdChunks[0] ? songIdChunks[0] : [];
 
   // Now, songIdChunks is a 2d array, where each sub-array has up to 100 song IDs.
-  //  const trackIdStrings = songIdChunks.map((chunk) => chunk.join(","));
+  const trackIdStrings = songIdChunks.map((chunk) => chunk.join(","));
 
   // Initialize arrays to hold the responses for tracks and features
   let allTrackDetails = [];
   let allFeaturesDetails = [];
 
-  //  for (let index = 0; index < trackIdStrings.length; index++) {
-  //    const trackIdString = trackIdStrings[index];
-  if (firstChunk.length > 0) {
-    const trackIdString = firstChunk.join(",");
+  for (let index = 0; index < trackIdStrings.length; index++) {
+    const trackIdString = trackIdStrings[index];
     try {
       console.log("fetching ");
       // Fetch track details for the current chunk
@@ -244,15 +239,22 @@ async function fetchSongDetails(songList, accessToken) {
       allTrackDetails.push(...trackData.tracks);
       allFeaturesDetails.push(...featuresData.audio_features);
     } catch (error) {
-      console.error(`Error fetching data for chunk: `, error);
+      console.error(`Error fetching data for chunk: `, index, error);
       // Handle error, for example by breaking the loop or continuing to the next chunk
     }
   }
 
-  // At this point, allTrackDetails and allFeaturesDetails contain the details and features for all tracks
+  // At this point, allTrackDetails and allFeaturesDetails contain the details and features for all tracks// At this point, allTrackDetails and allFeaturesDetails contain the details and features for all tracks
   const detailedSongs = allTrackDetails.map((track, index) => {
+    const { album, available_markets, duration_ms, ...rest } = track;
+    // Map over the artists to include only their name and id
+    const simplifiedArtists = track.artists.map(({ name, id }) => ({
+      name,
+      id,
+    }));
     return {
-      ...track,
+      ...rest,
+      artists: simplifiedArtists,
       features: allFeaturesDetails[index],
     };
   });
