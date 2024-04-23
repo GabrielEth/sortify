@@ -186,37 +186,10 @@ async function fetchSongDetails(songList, accessToken) {
         accessToken
       );
 
-      if (!trackResponse.ok) {
-        const retryAfter = trackResponse.headers.get("Retry-After");
-        if (retryAfter) {
-          console.log("retrying after ", retryAfter);
-          await new Promise((resolve) =>
-            setTimeout(resolve, retryAfter * 1000)
-          );
-        } else {
-          throw new Error(
-            `HTTP error on fetching track details! status: ${trackResponse.status}`
-          );
-        }
-      }
       const featuresResponse = await fetchWithRetry(
         `https://api.spotify.com/v1/audio-features?ids=${trackIdString}`,
         accessToken
       );
-
-      if (!featuresResponse.ok) {
-        const retryAfter = featuresResponse.headers.get("Retry-After");
-        if (retryAfter) {
-          await new Promise((resolve) =>
-            setTimeout(resolve, retryAfter * 1000)
-          );
-          return fetchTrackDetails(trackIdString, accessToken);
-        } else {
-          throw new Error(
-            `HTTP error on fetching audio features! status: ${featuresResponse.status}`
-          );
-        }
-      }
 
       const trackData = await trackResponse.json();
       const featuresData = await featuresResponse.json();
@@ -298,7 +271,6 @@ router.get("/fetch-liked-songs-and-details", async (req, res) => {
   }
 });
 
-//routes for playlist creation and updating
 router.post("/create-playlist", async (req, res) => {
   const userId = req.body.userId;
   const accessToken = req.header("Authorization").split(" ")[1];
@@ -352,4 +324,3 @@ router.post("/update-playlist", async (req, res) => {
 });
 
 module.exports = router;
-
