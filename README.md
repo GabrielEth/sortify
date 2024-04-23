@@ -9,7 +9,7 @@
 * [Setup](#setup)
 * [Usage](#usage)
 * [Project Status](#project-status)
-* [Room for Improvement](#room-for-improvement)
+* [To Do](#room-for-improvement)
 
 
 ## General Information
@@ -240,14 +240,10 @@ Objectives
 - Fine-tune the entire U/I
 
 
-
 ## Screenshots
 
 
-
 ## Setup
-What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
-
 Dependencies can be installed via npm install.
 Use 'npm install --legacy-peer-deps' within the frontend directory.
 
@@ -263,9 +259,8 @@ Playlist Creation and Updating
 Project is: _in progress_
 
 
-## To do:
-- Feature to be added 1
-- Feature to be added 2
+## To Do:
+- TBD
 
 
 ## Acknowledgements
