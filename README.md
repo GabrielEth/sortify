@@ -260,7 +260,9 @@ Project is: _in progress_
 
 
 ## To Do:
-- TBD
+- Ability to update a playlist
+- Alternative solution to storing song data (not in sessionStorage)
+- Filters when creating a playlist
 
 
 ## Acknowledgements
