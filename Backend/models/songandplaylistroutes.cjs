@@ -42,7 +42,6 @@ function sleep(seconds) {
 }
 
 async function fetchWithRetry(url, accessToken) {
-  console.log("fetching", url);
   let response = await fetch(url, {
     method: "GET",
     headers: {
@@ -113,7 +112,6 @@ async function fetchLikedSongs(accessToken) {
 }
 
 async function fetchArtistsGenres(artistIds, accessToken) {
-  // Function to split the artistIds array into chunks of 50 elements each
   const chunkArray = (array, chunkSize) => {
     const chunks = [];
     for (let i = 0; i < array.length; i += chunkSize) {
@@ -125,7 +123,6 @@ async function fetchArtistsGenres(artistIds, accessToken) {
   // Splitting artistIds into chunks of 50
   const artistIdChunks = chunkArray(artistIds, 50);
 
-  // Function to fetch genres for a chunk of artist IDs
   const fetchGenresForChunk = async (idsChunk) => {
     const endpoint = `https://api.spotify.com/v1/artists?ids=${idsChunk.join(
       ","
@@ -139,7 +136,7 @@ async function fetchArtistsGenres(artistIds, accessToken) {
     const data = await response.json();
     return data.artists.map((artist) => ({
       id: artist.id,
-      genres: artist.genres, // Each artist's genres
+      genres: artist.genres,
     }));
   };
 
@@ -190,9 +187,7 @@ async function fetchSongDetails(songList, accessToken) {
       );
 
       if (!trackResponse.ok) {
-        console.log("status: ", `${trackResponse.status}`);
         const retryAfter = trackResponse.headers.get("Retry-After");
-        console.log(retryAfter);
         if (retryAfter) {
           console.log("retrying after ", retryAfter);
           await new Promise((resolve) =>
@@ -285,7 +280,6 @@ router.get("/fetch-liked-songs-and-details", async (req, res) => {
     }
     const accessToken = req.header("Authorization").split(" ")[1];
 
-    console.log("getting liked songs");
     const likedSongs = await fetchLikedSongs(accessToken);
 
     console.log("getting song details");
@@ -358,3 +352,4 @@ router.post("/update-playlist", async (req, res) => {
 });
 
 module.exports = router;
+
