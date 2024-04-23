@@ -14,18 +14,6 @@ const CreatePlaylist = () => {
   const [songsForPlaylist, setSongsForPlaylist] = useState([]);
   const [generatedPlaylist, setGeneratedPlaylist] = useState();
 
-  const placeholderSongs = [
-    { name: "Song 1" },
-    { name: "Song 2" },
-    { name: "Song 3" },
-    { name: "Song 4" },
-    { name: "Song 5" },
-    { name: "Song 6" },
-    { name: "Song 7" },
-    { name: "Song 8" },
-    { name: "Song 9" },
-  ];
-
   const chosenSongMax = 5;
 
   const handleToggleSong = (song) => {
@@ -90,8 +78,6 @@ const CreatePlaylist = () => {
       if (!addTracksResponse.ok) {
         throw new Error("Failed to add tracks to playlist");
       }
-
-      console.log("Tracks added to playlist successfully.");
     } catch (error) {
       console.error("Error creating or updating playlist:", error);
     } finally {
@@ -176,7 +162,6 @@ const CreatePlaylist = () => {
             </tbody>
           </table>
         </div>
-
         <div className="like-dislike-section main">
           <span>
             <button
@@ -199,7 +184,6 @@ const CreatePlaylist = () => {
             )}
           </span>
         </div>
-
         {isLoading && (
           <CircularIndeterminate message="Generating your playlist" />
         )}
