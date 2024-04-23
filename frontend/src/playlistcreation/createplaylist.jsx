@@ -94,7 +94,8 @@ const CreatePlaylist = () => {
   };
 
   const filteredSongs = likedSongs.filter((song) =>
-    song.name.toLowerCase().includes(searchTerm.toLowerCase())
+    song.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    song.artists[0].name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -105,7 +106,7 @@ const CreatePlaylist = () => {
       <div className="main">
         <TextField
           fullWidth
-          label="Search Songs"
+          label="Search Songs or Artists"
           variant="outlined"
           onChange={handleSearchTermChange}
           sx={{
@@ -134,11 +135,12 @@ const CreatePlaylist = () => {
           </p>
         </div>
         <div className="create-playlist-container">
-          <table className="playlist-table">
+          <table className="playlist-table" style={{ position: "sticky" }}>
             <thead>
               <tr>
                 <th>Select</th>
                 <th>Song</th>
+                <th style={{ position: "sticky", left: 2 }}>Artist</th>
               </tr>
             </thead>
             <tbody>
@@ -157,6 +159,7 @@ const CreatePlaylist = () => {
                     />
                   </td>
                   <td>{song.name}</td>
+                  <td>{song.artists[0].name}</td>
                 </tr>
               ))}
             </tbody>

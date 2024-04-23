@@ -155,7 +155,6 @@ async function fetchArtistsGenres(artistIds, accessToken) {
 }
 
 async function fetchSongDetails(songList, accessToken) {
-  console.log("entering song details");
   // Function to chunk an array into smaller arrays of a specified size
   const chunkArray = (array, chunkSize) => {
     const chunks = [];
@@ -184,7 +183,6 @@ async function fetchSongDetails(songList, accessToken) {
   for (let index = 0; index < trackIdStrings.length; index++) {
     const trackIdString = trackIdStrings[index];
     try {
-      console.log("fetching ");
       // Fetch track details for the current chunk
       const trackResponse = await fetchWithRetry(
         `https://api.spotify.com/v1/tracks?ids=${trackIdString}`,
@@ -206,10 +204,6 @@ async function fetchSongDetails(songList, accessToken) {
           );
         }
       }
-      console.log(
-        `Request URL: https://api.spotify.com/v1/audio-features?ids=${trackIdString}`,
-        accessToken
-      );
       const featuresResponse = await fetchWithRetry(
         `https://api.spotify.com/v1/audio-features?ids=${trackIdString}`,
         accessToken
@@ -218,7 +212,6 @@ async function fetchSongDetails(songList, accessToken) {
       if (!featuresResponse.ok) {
         const retryAfter = featuresResponse.headers.get("Retry-After");
         if (retryAfter) {
-          console.log("entering retry after");
           await new Promise((resolve) =>
             setTimeout(resolve, retryAfter * 1000)
           );
@@ -230,12 +223,9 @@ async function fetchSongDetails(songList, accessToken) {
         }
       }
 
-      console.log("getting track data");
       const trackData = await trackResponse.json();
-      console.log("getting features data");
       const featuresData = await featuresResponse.json();
 
-      // Accumulate the results
       allTrackDetails.push(...trackData.tracks);
       allFeaturesDetails.push(...featuresData.audio_features);
     } catch (error) {

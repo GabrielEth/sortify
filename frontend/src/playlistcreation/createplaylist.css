@@ -32,22 +32,29 @@
   width: 100%;
   margin: 0 auto;
   background-color: #d8f3dc;
+  table-layout: fixed;
+}
+
+.playlist-table th, .playlist-table td {
+  overflow: hidden; 
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-bottom: 1px solid #000000;
+  padding: .5rem;
+  text-align: left;
+}
+
+.playlist-table th:nth-child(1), .playlist-table td:nth-child(1) {
+  width: 10%;
+}
+
+.playlist-table th:nth-child(2), .playlist-table td:nth-child(2),
+.playlist-table th:nth-child(3), .playlist-table td:nth-child(3) {
+  width: 45%;
 }
 
 .playlist-table th:first-child {
   width: 0.5rem;
-}
-
-.playlist-table th {
-  border-bottom: 1px solid #000000;
-  padding: 10px;
-  text-align: left;
-}
-
-.playlist-table td {
-  border-bottom: 1px solid #000000;
-  padding: 10px;
-  text-align: left;
 }
 
 .playlist-table tr:first-child td:first-child {
