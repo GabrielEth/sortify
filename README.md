@@ -164,6 +164,67 @@ Mason Melead
     - [Scrum 101](https://cs3398s24luna.atlassian.net/browse/SCRUM-101), [Bitbucket](https://bitbucket.org/%7B%7D/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/41)
 
 
+
+# THIRD SPRINT
+
+Dylan Bladen
+- Scrum #124: Show more than 20 playlists (set limit to 50)
+  - [Scrum 124](https://cs3398s24luna.atlassian.net/browse/SCRUM-124) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #131: Update dashboard banner
+  - [Scrum 131](https://cs3398s24luna.atlassian.net/browse/SCRUM-131) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #142: Fix liked songs import (only once per login)
+  - [Scrum 142](https://cs3398s24luna.atlassian.net/browse/SCRUM-142) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #126: Create Playlist UI update + view all liked songs
+  - [Scrum 126](https://cs3398s24luna.atlassian.net/browse/SCRUM-126) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #129: Code cleanup
+  - [Scrum 129](https://cs3398s24luna.atlassian.net/browse/SCRUM-129) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #140: Protect other routes with route guard
+  - [Scrum 140](https://cs3398s24luna.atlassian.net/browse/SCRUM-140) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #145: Create playlist show selected songs
+  - [Scrum 145](https://cs3398s24luna.atlassian.net/browse/SCRUM-145) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #146: Misc/artists in playlist table
+  - [Scrum 146](https://cs3398s24luna.atlassian.net/browse/SCRUM-146) | [Bitbucket](BitbucketLinkPlaceholder)
+
+
+Stormie Renevey
+- Scrum #116: Redeploy App
+  - [Scrum 116](https://cs3398s24luna.atlassian.net/browse/SCRUM-116) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #130: Playlist album images
+  - [Scrum 130](https://cs3398s24luna.atlassian.net/browse/SCRUM-130) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #135: Fix page movement with Tutorial
+  - [Scrum 135](https://cs3398s24luna.atlassian.net/browse/SCRUM-135) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #128: Store user's liked songs when logging in
+  - [Scrum 128](https://cs3398s24luna.atlassian.net/browse/SCRUM-128) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #144: Loading Page Implementation (while songs are being imported)
+  - [Scrum 141](https://cs3398s24luna.atlassian.net/browse/SCRUM-141) | [Bitbucket](BitbucketLinkPlaceholder)
+
+Gabriel Garza
+
+- Scrum 132: Contact Us From Settings drawer
+    - [Scrum 132]( https://cs3398s24luna.atlassian.net/browse/SCRUM-132), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/commits/aa0076865a052dbb2379e6374ce642f9bb3ebb4e)
+- Scrum 136: Additional Routes for Creating and Updating playlists
+    - [Scrum 136](https://cs3398s24luna.atlassian.net/browse/SCRUM-136), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/commits/8e57049dd73184c67bef0b1478b3300938d44ce1)
+
+Jason Fuller
+- Scrum #127: Create Update pop up
+  - [Scrum 127](https://cs3398s24luna.atlassian.net/browse/SCRUM-127) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #39: Exporting to spotify (button)
+  - [Scrum 39](https://cs3398s24luna.atlassian.net/browse/SCRUM-39) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #37: Cancelling the playlist generation (button)
+  - [Scrum 37](https://cs3398s24luna.atlassian.net/browse/SCRUM-37) | [Bitbucket](BitbucketLinkPlaceholder)
+
+
+Mason Melead
+- Scrum #137: Integrate Google Analytics
+  - [Scrum 137](https://cs3398s24luna.atlassian.net/browse/SCRUM-137) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #138: Get song feature data and store it
+  - [Scrum 138](https://cs3398s24luna.atlassian.net/browse/SCRUM-138) | [Bitbucket](BitbucketLinkPlaceholder)
+- Scrum #102: Implement Sorting Algorithms
+  - [Scrum 102](https://cs3398s24luna.atlassian.net/browse/SCRUM-102) | [Bitbucket](BitbucketLinkPlaceholder)
+
+
+
+
 # THIRD SPRINT
 
 Objectives
