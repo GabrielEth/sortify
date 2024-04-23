@@ -168,6 +168,7 @@ Mason Melead
 # THIRD SPRINT
 
 Dylan Bladen
+
 - Scrum #124: Show more than 20 playlists (set limit to 50)
   - [Scrum 124](https://cs3398s24luna.atlassian.net/browse/SCRUM-124) | [Bitbucket](BitbucketLinkPlaceholder)
 - Scrum #131: Update dashboard banner
@@ -187,6 +188,7 @@ Dylan Bladen
 
 
 Stormie Renevey
+
 - Scrum #116: Redeploy App
   - [Scrum 116](https://cs3398s24luna.atlassian.net/browse/SCRUM-116) | [Bitbucket](BitbucketLinkPlaceholder)
 - Scrum #130: Playlist album images
@@ -206,6 +208,7 @@ Gabriel Garza
     - [Scrum 136](https://cs3398s24luna.atlassian.net/browse/SCRUM-136), [Bitbucket](https://bitbucket.org/cs3398s24luna/sortify/commits/8e57049dd73184c67bef0b1478b3300938d44ce1)
 
 Jason Fuller
+
 - Scrum #127: Create Update pop up
   - [Scrum 127](https://cs3398s24luna.atlassian.net/browse/SCRUM-127) | [Bitbucket](BitbucketLinkPlaceholder)
 - Scrum #39: Exporting to spotify (button)
@@ -215,6 +218,7 @@ Jason Fuller
 
 
 Mason Melead
+
 - Scrum #137: Integrate Google Analytics
   - [Scrum 137](https://cs3398s24luna.atlassian.net/browse/SCRUM-137) | [Bitbucket](BitbucketLinkPlaceholder)
 - Scrum #138: Get song feature data and store it
