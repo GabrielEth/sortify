@@ -135,20 +135,19 @@ const CreatePlaylist = () => {
           </p>
         </div>
         <div className="create-playlist-container">
-          <table className="playlist-table" style={{ position: "sticky" }}>
+          <table className="playlist-table">
             <thead>
               <tr>
                 <th>Select</th>
                 <th>Song</th>
-                <th style={{ position: "sticky", left: 2 }}>Artist</th>
+                <th>Artist</th>
               </tr>
             </thead>
             <tbody>
               {filteredSongs.map((song, index) => (
-                <tr key={index}>
+                <tr key={index} onClick={() => handleToggleSong(song)} style={{ cursor: "pointer" }}>
                   <td>
                     <Checkbox
-                      onChange={() => handleToggleSong(song)}
                       checked={selectedSongs.includes(song)}
                       color="primary"
                       sx={{
