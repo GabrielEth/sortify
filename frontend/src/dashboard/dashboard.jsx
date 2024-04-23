@@ -54,18 +54,29 @@ export default function Dashboard() {
 
   useEffect(() => {
     async function fetchLikedSongs() {
-      setIsLoading(true);
-      try {
-        const data = await callSpotifyAPI("/api/fetch-liked-songs");
-        setLikedSongs(data.likedSongs);
-      } catch (error) {
-        console.error("Error fetching liked songs:", error);
-        setError(error.message || "An unexpected error occurred");
-      } finally {
-        setIsLoading(false);
+      if (accessToken) {
+        setIsLoading(true);
+        try {
+          const response = await fetch("/api/fetch-liked-songs-and-details", {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${accessToken}`,
+              "Content-Type": "application/json",
+            },
+          });
+          if (!response.ok) {
+            throw new Error(`Failed to fetch liked songs: ${response.status}`);
+          }
+          const data = await response.json();
+          setLikedSongs(data.likedSongs);
+        } catch (error) {
+          console.error("Error fetching liked songs:", error);
+          setError(error.message || "An unexpected error occurred");
+        } finally {
+          setIsLoading(false);
+        }
       }
     }
-
     async function getSpotifyProfilePicture() {
       try {
         const data = await callSpotifyAPI("https://api.spotify.com/v1/me");
@@ -78,12 +89,14 @@ export default function Dashboard() {
       }
     }
 
-    getSpotifyProfilePicture();
+    if (!profilePicture) {
+      getSpotifyProfilePicture();
+    }
 
     if (likedSongs.length == 0 && accessToken) {
       fetchLikedSongs();
     }
-  }, [accessToken, setLikedSongs, likedSongs]);
+  }, [accessToken, setLikedSongs, likedSongs, profilePicture]);
 
   if (isLoading) {
     return (
@@ -140,7 +153,11 @@ export default function Dashboard() {
         <h2 className="text-black"></h2>
         <PlaylistComponent accessToken={accessToken} />
       </div>
-      <Popup title="Update Playlist" openPopup={openPopup} setOpenPopup={setOpenPopup} />
+      <Popup
+        title="Update Playlist"
+        openPopup={openPopup}
+        setOpenPopup={setOpenPopup}
+      />
     </div>
   );
 }
