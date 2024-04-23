@@ -20,7 +20,6 @@
 
 ## Technologies Used
 - MERN
-- Firebase
 
 
 ## Features
@@ -170,35 +169,35 @@ Mason Melead
 Dylan Bladen
 
 - Scrum 124: Show more than 20 playlists (set limit to 50)
-    - [Scrum 124](https://cs3398s24luna.atlassian.net/browse/SCRUM-124) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 124](https://cs3398s24luna.atlassian.net/browse/SCRUM-124) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/42)
 - Scrum 131: Update dashboard banner
-    - [Scrum 131](https://cs3398s24luna.atlassian.net/browse/SCRUM-131) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 131](https://cs3398s24luna.atlassian.net/browse/SCRUM-131) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/43)
 - Scrum 142: Fix liked songs import (only once per login)
-    - [Scrum 142](https://cs3398s24luna.atlassian.net/browse/SCRUM-142) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 142](https://cs3398s24luna.atlassian.net/browse/SCRUM-142) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/59)
 - Scrum 126: Create Playlist UI update + view all liked songs
-    - [Scrum 126](https://cs3398s24luna.atlassian.net/browse/SCRUM-126) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 126](https://cs3398s24luna.atlassian.net/browse/SCRUM-126) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/51)
 - Scrum 129: Code cleanup
-    - [Scrum 129](https://cs3398s24luna.atlassian.net/browse/SCRUM-129) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 129](https://cs3398s24luna.atlassian.net/browse/SCRUM-129) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/49)
 - Scrum 140: Protect other routes with route guard
-    - [Scrum 140](https://cs3398s24luna.atlassian.net/browse/SCRUM-140) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 140](https://cs3398s24luna.atlassian.net/browse/SCRUM-140) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/44)
 - Scrum 145: Create playlist show selected songs
-    - [Scrum 145](https://cs3398s24luna.atlassian.net/browse/SCRUM-145) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 145](https://cs3398s24luna.atlassian.net/browse/SCRUM-145) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/55)
 - Scrum 146: Misc/artists in playlist table
-    - [Scrum 146](https://cs3398s24luna.atlassian.net/browse/SCRUM-146) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 146](https://cs3398s24luna.atlassian.net/browse/SCRUM-146) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/62)
 
 
 Stormie Renevey
 
 - Scrum 116: Redeploy App
-    - [Scrum 116](https://cs3398s24luna.atlassian.net/browse/SCRUM-116) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 116](https://cs3398s24luna.atlassian.net/browse/SCRUM-116) | [Bitbucket]()
 - Scrum 130: Playlist album images
-    - [Scrum 130](https://cs3398s24luna.atlassian.net/browse/SCRUM-130) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 130](https://cs3398s24luna.atlassian.net/browse/SCRUM-130) | [Bitbucket]()
 - Scrum 135: Fix page movement with Tutorial
-    - [Scrum 135](https://cs3398s24luna.atlassian.net/browse/SCRUM-135) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 135](https://cs3398s24luna.atlassian.net/browse/SCRUM-135) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/45)
 - Scrum 128: Store user's liked songs when logging in
-    - [Scrum 128](https://cs3398s24luna.atlassian.net/browse/SCRUM-128) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 128](https://cs3398s24luna.atlassian.net/browse/SCRUM-128) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/46)
 - Scrum 144: Loading Page Implementation (while songs are being imported)
-    - [Scrum 141](https://cs3398s24luna.atlassian.net/browse/SCRUM-141) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 141](https://cs3398s24luna.atlassian.net/browse/SCRUM-141) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/48)
 
 Gabriel Garza
 
@@ -210,21 +209,21 @@ Gabriel Garza
 Jason Fuller
 
 - Scrum 127: Create Update pop up
-    - [Scrum 127](https://cs3398s24luna.atlassian.net/browse/SCRUM-127) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 127](https://cs3398s24luna.atlassian.net/browse/SCRUM-127) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/53)
 - Scrum 39: Exporting to spotify (button)
-    - [Scrum 39](https://cs3398s24luna.atlassian.net/browse/SCRUM-39) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 39](https://cs3398s24luna.atlassian.net/browse/SCRUM-39) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/57)
 - Scrum 37: Cancelling the playlist generation (button)
-    - [Scrum 37](https://cs3398s24luna.atlassian.net/browse/SCRUM-37) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 37](https://cs3398s24luna.atlassian.net/browse/SCRUM-37) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/58)
 
 
 Mason Melead
 
 - Scrum 137: Integrate Google Analytics
-    - [Scrum 137](https://cs3398s24luna.atlassian.net/browse/SCRUM-137) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 137](https://cs3398s24luna.atlassian.net/browse/SCRUM-137) | [Bitbucket]()
 - Scrum 138: Get song feature data and store it
-    - [Scrum 138](https://cs3398s24luna.atlassian.net/browse/SCRUM-138) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 138](https://cs3398s24luna.atlassian.net/browse/SCRUM-138) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/60)
 - Scrum 102: Implement Sorting Algorithms
-    - [Scrum 102](https://cs3398s24luna.atlassian.net/browse/SCRUM-102) | [Bitbucket](BitbucketLinkPlaceholder)
+    - [Scrum 102](https://cs3398s24luna.atlassian.net/browse/SCRUM-102) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/60)
 
 
 
@@ -237,7 +236,7 @@ Objectives
 - Debug API (Unpreditably Fails to Work Sometimes)
 - Extensive Unit Testing of Playlist Generation 
 - Add Ability to Preview Generated Playlists Before Exporting 
-- Add "Report a Problem" Feature
+- Add "Contact us" Feature
 - Fine-tune the entire U/I
 
 
@@ -249,30 +248,22 @@ Objectives
 ## Setup
 What are the project requirements/dependencies? Where are they listed? A requirements.txt or a Pipfile.lock file perhaps? Where is it located?
 
-Proceed to describe how to install / setup one's local environment / get started with the project.
-
-`TBD`
+Dependencies can be installed via npm install.
+Use 'npm install --legacy-peer-deps' within the frontend directory.
 
 
 ## Usage
 How does one go about using it?
 Provide various use cases and code examples here.
 
-`TBD`
+Playlist Creation and Updating
 
 
 ## Project Status
 Project is: _in progress_
 
 
-## Room for Improvement
-Include areas you believe need improvement / could be improved. Also add TODOs for future development.
-
-Room for improvement:
-- Improvement to be done 1
-- Improvement to be done 2
-
-To do:
+## To do:
 - Feature to be added 1
 - Feature to be added 2
 
