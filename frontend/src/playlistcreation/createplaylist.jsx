@@ -163,6 +163,8 @@ const CreatePlaylist = () => {
               onClick={() => generatePlaylist(songsForPlaylist)}
               style={{
                 opacity: selectedSongs.length != chosenSongMax ? 0.2 : 1,
+                marginRight: "5rem",
+                marginTop: "1rem",
               }}
             >
               Generate
@@ -170,6 +172,7 @@ const CreatePlaylist = () => {
             {isLoading && (
               <button
                 className="sortify-music-btn"
+                style={{ margin: "1rem .5rem" }}
                 onClick={() => cancelGeneration()}
               >
                 Cancel
