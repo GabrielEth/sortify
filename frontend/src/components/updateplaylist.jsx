@@ -1,142 +1,217 @@
-import React, { useState } from 'react';
-import './createplaylist.css'; // Import CSS file for styling
+import React, { useState, useEffect } from "react";
+import Checkbox from "@mui/material/Checkbox";
+import TextField from "@mui/material/TextField";
+import { useLikedSongs } from "../LikedSongsContext";
+import callSpotifyAPI from "../services/apiservice";
+import CircularIndeterminate from "../loading-circle";
 
 const UpdatePlaylist = () => {
-    const [selectedPlaylist, setSelectedPlaylist] = useState('');
-    const [selectedSongs, setSelectedSongs] = useState([]);
-    const [likedResult, setLikedResult] = useState(null);
-    const accessToken = localStorage.getItem("access_token");
-    const playlists = ['Playlist 1', 'Playlist 2', 'Playlist 3']; // Placeholder for pre-existing playlists
-    const placeholderSongs = ['Song 1', 'Song 2', 'Song 3', 'Song 4', 'Song 5']; // Placeholder for songs
-    const placeholderResult = ['Result 1', 'Result 2', 'Result 3', 'Result 4', 'Result 5']; // Placeholder for result
+  const { likedSongs } = useLikedSongs();
+  const [selectedSongs, setSelectedSongs] = useState([]);
+  const [selectedPlaylist, setSelectedPlaylist] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [cancelRequested, setCancelRequested] = useState(false);
 
-    const handleAddSong = (song) => {
-        if (selectedSongs.length < 5 && !selectedSongs.includes(song)) {
-            setSelectedSongs([...selectedSongs, song]);
-        }
-    };
+  const placeholderSongs = [
+    { name: "Song 1" },
+    { name: "Song 2" },
+    { name: "Song 3" },
+    { name: "Song 4" },
+    { name: "Song 5" },
+    { name: "Song 6" },
+    { name: "Song 7" },
+    { name: "Song 8" },
+    { name: "Song 9" },
+  ];
+  const chosenSongMax = 5;
+  const handleToggleSong = (song) => {
+    if (selectedSongs.includes(song)) {
+      setSelectedSongs(selectedSongs.filter((item) => item !== song));
+    } else {
+      if (selectedSongs.length < 5) {
+        setSelectedSongs([...selectedSongs, song]);
+      } else {
+        alert("You can only select up to 5 songs.");
+      }
+    }
+  };
 
-    const handleRemoveSong = (song) => {
-        setSelectedSongs(selectedSongs.filter(item => item !== song));
-    };
+  const handleSearchTermChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
-    const handleLikeResult = (like) => {
-        setLikedResult(like);
-    };
+  const handleGenerate = async () => {
+    setIsLoading(true);
+    setCancelRequested(false);
 
-    const handleExport = async () => {
-        if (!selectedPlaylist) {
-          console.error("No playlist selected.");
-          return;
-        }
-      
-        try {
-          const playlistId = selectedPlaylist; // Assuming playlistId is directly set from selectedPlaylist
-      
-          // Extract URIs of the selected songs
-          const songURIs = selectedSongs.map((song) => {
-            // Assuming each song object has a URI property
-            return song.uri;
-          });
-      
-          const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
-            method: "PUT",
-            headers: {
-              Authorization: "Bearer 1POdFZRZbvb...qqillRxMr2z",
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              uris: songURIs
-            })
-          });
-      
-          if (!response.ok) {
-            throw new Error("Failed to update playlist");
-          }
-      
-          const data = await response.json();
-          console.log("Playlist updated:", data);
-        } catch (error) {
-          console.error("Error updating playlist:", error);
-        }
-      };
-      
-      
+    try {
+      await generatePlaylist(selectedSongs);
+    } catch (error) {
+      console.error("Error generating playlist:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  const handleExport = async () => {
+    if (!selectedPlaylist) {
+      console.error("No playlist selected.");
+      return;
+    }
+  
+    try {
+      const playlistId = selectedPlaylist; // Assuming playlistId is directly set from selectedPlaylist
+  
+      // Extract URIs of the selected songs
+      const songURIs = selectedSongs.map((song) => {
+        // Assuming each song object has a URI property
+        return song.uri;
+      });
+  
+      const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+        method: "PUT",
+        headers: {
+          Authorization: "Bearer 1POdFZRZbvb...qqillRxMr2z",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          uris: songURIs
+        })
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to update playlist");
+      }
+  
+      const data = await response.json();
+      console.log("Playlist updated:", data);
+    } catch (error) {
+      console.error("Error updating playlist:", error);
+    }
+  };
+  const generatePlaylist = async (selectedSongs) => {
+    // Simulate API call delay
+    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-    const handleExportPrompt = () => {
-        // Recursive function to prompt user until they like the playlist
-        if (likedResult === false) {
-            setLikedResult(null); // Reset likedResult
-            // Prompt the user again for liking the playlist
-            handleLikeResult(window.confirm('Do you like your creation now?'));
-        }
-    };
+    // Check for cancellation at various points during the generation process
+    for (let i = 0; i < selectedSongs.length; i++) {
+      if (cancelRequested) {
+        console.log("Generation cancelled.");
+        return;
+      }
 
-    // Call handleExportPrompt whenever likedResult changes
-    React.useEffect(() => {
-        handleExportPrompt();
-    }, [likedResult]);
+      // Simulate generating playlist for each selected song
+      console.log("Generating playlist for song:", selectedSongs[i]);
+      // Your playlist generation logic goes here
+    }
 
-    return (
-        <div className="create-playlist-container">
-            <div className="content">
-                <h1 className="section-heading">Update Playlist</h1>
+    if (cancelRequested) {
+      console.log("Generation cancelled.");
+      return;
+    }
 
-                <div className="playlist-section">
-                    <h2 className="subsection-heading">Choose The Playlist You Want To Update</h2>
-                    <select className="dropdown" value={selectedPlaylist} onChange={(e) => setSelectedPlaylist(e.target.value)}>
-                        <option value="">Select Playlist</option>
-                        {playlists.map((playlist, index) => (
-                            <option key={index} value={playlist}>{playlist}</option>
-                        ))}
-                    </select>
-                </div>
+    console.log("Playlist generation completed successfully.");
+  };
 
-                {selectedPlaylist && (
-                    <div className="songs-section">
-                        <h2 className="subsection-heading">Pick 5 Songs</h2>
-                        <div className="scrollable-list">
-                            {placeholderSongs.map((song, index) => (
-                                <div key={index} className="song-item">
-                                    <label className="song-label">
-                                        <input type="checkbox" onChange={() => handleAddSong(song)} checked={selectedSongs.includes(song)} />
-                                        {song}
-                                    </label>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
+  const cancelGeneration = () => {
+    setCancelRequested(true);
+  };
 
-                {selectedSongs.length > 0 && (
-                    <div className="result-section">
-                        <h2 className="subsection-heading">Result</h2>
-                        <div className="scrollable-list">
-                            {selectedSongs.map((song, index) => (
-                                <div key={index} className="result-item">{song}</div>
-                            ))}
-                            {placeholderResult.map((result, index) => (
-                                <div key={index} className="result-item">{result}</div>
-                            ))}
-                        </div>
-                        <div className="like-dislike-section">
-                            <label className="like-dislike-label">Do You Like Your Creation?</label>
-                            <div className="like-dislike-buttons">
-                                <button className="like-button" onClick={() => handleLikeResult(true)}>Yes</button>
-                                <button className="dislike-button" onClick={() => handleLikeResult(false)}>No</button>
-                            </div>
-                        </div>
-                    </div>
-                )}
+  const filteredSongs = likedSongs.filter((song) =>
+    song.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-                {likedResult === true && (
-                    <div className="button-section">
-                        <button className="export-button" onClick={handleExport}>EXPORT</button>
-                    </div>
-                )}
-            </div>
+  return (
+    <>
+      <h1 className="instructions main">
+        Select 5 songs to update your playlist on
+      </h1>
+      <div className="main">
+        <TextField
+          fullWidth
+          label="Search Songs"
+          variant="outlined"
+          onChange={handleSearchTermChange}
+          sx={{
+            fontFamily: "Arial, sans-serif",
+            backgroundColor: "#d8f3dc",
+            marginBottom: ".5rem",
+            borderRadius: ".75rem",
+            width: "89%",
+            display: "flex",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        />
+        <div
+          className="selected-songs-box"
+          style={{
+            backgroundColor: "#081c15",
+            padding: "1rem",
+            borderRadius: ".75rem",
+            color: "#ffffff",
+            marginLeft: "4rem",
+          }}
+        >
+          <p style={{ color: "#d8f3dc", fontWeight: "bold" }}>
+            Selected Songs: {selectedSongs.map((song) => song.name).join(", ")}
+          </p>
         </div>
-    );
+        <div className="create-playlist-container">
+          <table className="playlist-table">
+            <thead>
+              <tr>
+                <th>Select</th>
+                <th>Song</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filteredSongs.map((song, index) => (
+                <tr key={index}>
+                  <td>
+                    <Checkbox
+                      onChange={() => handleToggleSong(song)}
+                      checked={selectedSongs.includes(song)}
+                      color="primary"
+                      sx={{
+                        color: "#000000",
+                        "&.Mui-checked": { color: "#52b788" },
+                        marginRight: "2rem",
+                      }}
+                    />
+                  </td>
+                  <td>{song.name}</td>
+                </tr>
+              ))} 
+            </tbody>
+          </table>
+        </div>
+
+        <div className="like-dislike-section main">
+          <span>
+            <button
+              className="sortify-music-btn"
+              disabled={isLoading}
+              onClick={handleGenerate}
+            >
+              Generate
+            </button>
+            {isLoading && (
+              <button
+                className="sortify-music-btn"
+                onClick={cancelGeneration}
+              >
+                Cancel
+              </button>
+            )}
+          </span>
+        </div>
+
+        {isLoading && <CircularIndeterminate message="Generating you playlist" />}
+      </div>
+    </>
+  );
 };
+
 
 export default UpdatePlaylist;
