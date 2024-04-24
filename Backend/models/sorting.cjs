@@ -89,7 +89,7 @@ function kNearestNeighbors(data, queryList, k) {
 
     // Calculate distance from queryPoint to all others
     const distances = source.map((point, index) => ({
-      index,
+      index: index,
       distance: euclideanDistance(
         Object.values(point.features),
         Object.values(centroid)
