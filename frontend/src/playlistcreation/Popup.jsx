@@ -7,8 +7,7 @@ import {
 } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import CloseIcon from "@mui/icons-material/Close";
-import UpdatePlaylist from "./updateplaylist";
-import "./createplaylist.css"; // Import CSS file for styling
+import "./createplaylist.css";
 
 const useStyles = makeStyles((theme) => ({
   dialogWrapper: {
@@ -57,7 +56,7 @@ export default function Popup(props) {
         </div>
       </DialogTitle>
       <DialogContent dividers>
-        <UpdatePlaylist/>
+        {/* tbd */}
       </DialogContent>
     </Dialog>
   );

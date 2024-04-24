@@ -37,18 +37,41 @@
 const express = require("express");
 const router = express.Router();
 
+function sleep(seconds) {
+  return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
+}
+
+async function fetchWithRetry(url, accessToken) {
+  let response = await fetch(url, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (response.status === 429) {
+    // 429 is the status code for rate limiting
+    console.log(
+      "fetching failed - 429 error retry-after is ",
+      response.headers.get("Retry-After")
+    );
+    const retryAfter = parseInt(response.headers.get("Retry-After"));
+    if (retryAfter) {
+      await sleep(retryAfter);
+      return fetchWithRetry(url, accessToken); // Recursively retry the request after the specified delay
+    }
+  }
+
+  return response;
+}
+
 const fetchUserPlaylists = async (accessToken) => {
   const playlists = [];
   let url = "https://api.spotify.com/v1/me/playlists?limit=50";
 
   while (url) {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetchWithRetry(url, accessToken);
     const data = await response.json();
     playlists.push(
       ...data.items.map((item) => ({
@@ -66,15 +89,8 @@ const fetchUserPlaylists = async (accessToken) => {
 async function fetchLikedSongs(accessToken) {
   let likedSongs = [];
   let url = "https://api.spotify.com/v1/me/tracks?limit=50"; // Starting URL, increased limit to 50
-
   while (url) {
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetchWithRetry(url, accessToken);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -96,7 +112,6 @@ async function fetchLikedSongs(accessToken) {
 }
 
 async function fetchArtistsGenres(artistIds, accessToken) {
-  // Function to split the artistIds array into chunks of 50 elements each
   const chunkArray = (array, chunkSize) => {
     const chunks = [];
     for (let i = 0; i < array.length; i += chunkSize) {
@@ -108,18 +123,11 @@ async function fetchArtistsGenres(artistIds, accessToken) {
   // Splitting artistIds into chunks of 50
   const artistIdChunks = chunkArray(artistIds, 50);
 
-  // Function to fetch genres for a chunk of artist IDs
   const fetchGenresForChunk = async (idsChunk) => {
     const endpoint = `https://api.spotify.com/v1/artists?ids=${idsChunk.join(
       ","
     )}`;
-    const response = await fetch(endpoint, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetchWithRetry(endpoint, accessToken);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -128,7 +136,7 @@ async function fetchArtistsGenres(artistIds, accessToken) {
     const data = await response.json();
     return data.artists.map((artist) => ({
       id: artist.id,
-      genres: artist.genres, // Each artist's genres
+      genres: artist.genres,
     }));
   };
 
@@ -143,85 +151,71 @@ async function fetchArtistsGenres(artistIds, accessToken) {
   return flattenedResults;
 }
 
-async function fetchSongDetails(likedSongs, accessToken) {
-  const allArtistIds = [
-    ...new Set(likedSongs.flatMap((song) => song.artistIds)),
-  ];
-  const artistGenres = await fetchArtistsGenres(allArtistIds, accessToken);
-
-  // Helper function to map artist IDs to genres
-  const mapArtistIdToGenres = (artistId) => {
-    const artist = artistGenres.find((artist) => artist.id === artistId);
-    return artist ? artist.genres : [];
-  };
-
-  // Function to fetch details for a single song
-  const fetchDetailsForSong = async (song) => {
-    try {
-      const [trackResponse, featuresResponse] = await Promise.all([
-        fetch(`https://api.spotify.com/v1/tracks/${song.id}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }),
-        fetch(`https://api.spotify.com/v1/audio-features/${song.id}`, {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-            "Content-Type": "application/json",
-          },
-        }),
-      ]);
-
-      if (!trackResponse.ok || !featuresResponse.ok) {
-        console.error(`Failed to fetch details for song ID ${song.id}`);
-        return null; // Skip this song or handle accordingly
-      }
-
-      const [trackData, featuresData] = await Promise.all([
-        trackResponse.json(),
-        featuresResponse.json(),
-      ]);
-
-      const genres = song.artistIds
-        .flatMap((id) => mapArtistIdToGenres(id))
-        .filter((value, index, self) => self.indexOf(value) === index)
-        .join(", ");
-
-      return {
-        name: song.name,
-        id: song.id,
-        artists: trackData.artists.map((artist) => artist.name),
-        album: trackData.album.name,
-        release_date: trackData.album.release_date,
-        genre: genres,
-        bpm: featuresData.tempo,
-        danceability: featuresData.danceability,
-        energy: featuresData.energy,
-        acousticness: featuresData.acousticness,
-        instrumentalness: featuresData.instrumentalness,
-        liveness: featuresData.liveness,
-        loudness: featuresData.loudness,
-        speechiness: featuresData.speechiness,
-        valence: featuresData.valence,
-        duration_ms: trackData.duration_ms,
-        popularity: trackData.popularity,
-        explicit: trackData.explicit,
-      };
-    } catch (error) {
-      console.error(`Error fetching details for song ID ${song.id}:`, error);
-      return null; // Skip this song or handle accordingly
+async function fetchSongDetails(songList, accessToken) {
+  // Function to chunk an array into smaller arrays of a specified size
+  const chunkArray = (array, chunkSize) => {
+    const chunks = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      chunks.push(array.slice(i, i + chunkSize));
     }
+    return chunks;
   };
 
-  // Fetch details for all songs in parallel, filtering out any null results
-  const detailedSongsPromises = likedSongs.map((song) =>
-    fetchDetailsForSong(song)
-  );
-  const detailedSongsResults = await Promise.all(detailedSongsPromises);
-  const detailedSongs = detailedSongsResults.filter((song) => song !== null);
+  // Get an array of song ids from likedSongs
+  const songIds = songList.map((song) => song.id);
+
+  // Split songIds into chunks of 100
+  const songIdChunks = chunkArray(songIds, 50);
+
+  // Limit to only the first chunk of up to 100 song IDs
+  // const firstChunk = songIdChunks[0] ? songIdChunks[0] : [];
+
+  // Now, songIdChunks is a 2d array, where each sub-array has up to 100 song IDs.
+  const trackIdStrings = songIdChunks.map((chunk) => chunk.join(","));
+
+  // Initialize arrays to hold the responses for tracks and features
+  let allTrackDetails = [];
+  let allFeaturesDetails = [];
+
+  for (let index = 0; index < trackIdStrings.length; index++) {
+    const trackIdString = trackIdStrings[index];
+    try {
+      // Fetch track details for the current chunk
+      const trackResponse = await fetchWithRetry(
+        `https://api.spotify.com/v1/tracks?ids=${trackIdString}`,
+        accessToken
+      );
+
+      const featuresResponse = await fetchWithRetry(
+        `https://api.spotify.com/v1/audio-features?ids=${trackIdString}`,
+        accessToken
+      );
+
+      const trackData = await trackResponse.json();
+      const featuresData = await featuresResponse.json();
+
+      allTrackDetails.push(...trackData.tracks);
+      allFeaturesDetails.push(...featuresData.audio_features);
+    } catch (error) {
+      console.error(`Error fetching data for chunk: `, index, error);
+      // Handle error, for example by breaking the loop or continuing to the next chunk
+    }
+  }
+
+  // At this point, allTrackDetails and allFeaturesDetails contain the details and features for all tracks// At this point, allTrackDetails and allFeaturesDetails contain the details and features for all tracks
+  const detailedSongs = allTrackDetails.map((track, index) => {
+    const { album, available_markets, duration_ms, ...rest } = track;
+    // Map over the artists to include only their name and id
+    const simplifiedArtists = track.artists.map(({ name, id }) => ({
+      name,
+      id,
+    }));
+    return {
+      ...rest,
+      artists: simplifiedArtists,
+      features: allFeaturesDetails[index],
+    };
+  });
 
   return detailedSongs;
 }
@@ -230,7 +224,9 @@ router.get("/fetch-playlists", async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      return res.status(401).json({ success: false, message: "No authorization token provided" });
+      return res
+        .status(401)
+        .json({ success: false, message: "No authorization token provided" });
     }
     const accessToken = req.header("Authorization").split(" ")[1];
 
@@ -247,88 +243,83 @@ router.get("/fetch-playlists", async (req, res) => {
   }
 });
 
-router.get("/fetch-liked-songs", async (req, res) => {
+router.get("/fetch-liked-songs-and-details", async (req, res) => {
   try {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-      return res.status(401).json({ success: false, message: "No authorization token provided" });
+      return res
+        .status(401)
+        .json({ success: false, message: "No authorization token provided" });
     }
     const accessToken = req.header("Authorization").split(" ")[1];
-    
+
     const likedSongs = await fetchLikedSongs(accessToken);
+
+    console.log("getting song details");
+    const songDetails = await fetchSongDetails(likedSongs, accessToken);
+
     res.json({
       success: true,
-      likedSongs,
+      likedSongs: songDetails,
     });
   } catch (error) {
-    console.error("Error fetching liked songs:", error);
+    console.error("Error fetching liked songs and details:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to fetch liked songs",
+      message: "Failed to fetch liked songs and details",
     });
   }
 });
 
-// Route to fetch song details
-router.get("/fetch-song-details", async (req, res) => {
-  const accessToken = req.header("Authorization").split(" ")[1];
-  try {
-    const likedSongsArray = req.body.likedSongs;
-    const songDetails = await fetchSongDetails(likedSongsArray, accessToken);
-    res.json({
-      success: true,
-      songDetails,
-    });
-  } catch (error) {
-    console.error("Error fetching song details:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch song details",
-    });
-  }
-});
-
-//routes for playlist creation and updating
-router.post('/create-playlist', async (req, res) => {
+router.post("/create-playlist", async (req, res) => {
   const userId = req.body.userId;
   const accessToken = req.header("Authorization").split(" ")[1];
   const playlistDetails = req.body.playlistDetails;
   const trackUris = req.body.trackUris;
 
   try {
-      const playlistId = await exportPlaylistToSpotify(userId, accessToken, playlistDetails, trackUris);
-      res.json({
-          success: true,
-          playlistId: playlistId,
-          message: "Playlist created successfully"
-      });
+    const playlistId = await exportPlaylistToSpotify(
+      userId,
+      accessToken,
+      playlistDetails,
+      trackUris
+    );
+    res.json({
+      success: true,
+      playlistId: playlistId,
+      message: "Playlist created successfully",
+    });
   } catch (error) {
-      console.error("Error creating playlist:", error);
-      res.status(500).json({
-          success: false,
-          message: "Failed to create playlist"
-      });
+    console.error("Error creating playlist:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to create playlist",
+    });
   }
 });
 
-router.post('/update-playlist', async (req, res) => {
+router.post("/update-playlist", async (req, res) => {
   const accessToken = req.header("Authorization").split(" ")[1];
   const playlistId = req.body.playlistId;
   const trackUris = req.body.trackUris;
 
   try {
-      const updatedPlaylistId = await updatePlaylistOnSpotify(accessToken, playlistId, trackUris);
-      res.json({
-          success: true,
-          playlistId: updatedPlaylistId,
-          message: "Playlist updated successfully"
-      });
+    const updatedPlaylistId = await updatePlaylistOnSpotify(
+      accessToken,
+      playlistId,
+      trackUris
+    );
+    res.json({
+      success: true,
+      playlistId: updatedPlaylistId,
+      message: "Playlist updated successfully",
+    });
   } catch (error) {
-      console.error("Error updating playlist:", error);
-      res.status(500).json({
-          success: false,
-          message: "Failed to update playlist"
-      });
+    console.error("Error updating playlist:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to update playlist",
+    });
   }
 });
 
