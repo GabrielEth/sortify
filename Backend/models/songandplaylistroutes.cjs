@@ -42,12 +42,6 @@ const fetchUserPlaylists = async (accessToken) => {
       const data = await response.json();
       playlists.push(
         ...data.items.map((item) => {
-          // Safely log the Image URL, checking if item.images is truthy and has at least one element
-          if (item.images && item.images.length > 0) {
-            console.log("Image URL:", item.images[0].url); // Assuming item.images[0] exists and has a url property
-          } else {
-            console.log("Image URL: No image available");
-          }
           return {
             playlistId: item.id,
             name: item.name,
@@ -260,8 +254,8 @@ router.post("/create-playlist", async (req, res) => {
   const sampleData = req.body.sampleData;
 
   const knnInfo = await generatePlaylist(sourceData, sampleData);
-  const trackUris = knnInfo.map(item => sourceData[item].uri);
-  
+  const trackUris = knnInfo.map((item) => sourceData[item].uri);
+
   try {
     const playlistId = await exportPlaylistToSpotify(
       userId,
