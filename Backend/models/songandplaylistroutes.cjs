@@ -184,7 +184,8 @@ async function fetchSongDetails(songList, accessToken) {
 }
 
 async function generatePlaylist(sourceData, sampleData) {
-  const tracks = await kNearestNeighbors(sourceData, sampleData, 30);
+  const tracks = await kNearestNeighbors(sourceData, sampleData, 50);
+  console.log(tracks);
   return tracks;
 }
 
@@ -246,7 +247,7 @@ router.post("/create-playlist", async (req, res) => {
   const sampleData = req.body.sampleData;
 
   const knnInfo = await generatePlaylist(sourceData, sampleData);
-  const trackUris = knnInfo.map(item => sourceData[item.index].uri);
+  const trackUris = knnInfo.map(item => sourceData[item.index - 1].uri);
   
   try {
     const playlistId = await exportPlaylistToSpotify(

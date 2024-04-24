@@ -11,8 +11,6 @@ const CreatePlaylist = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [cancelRequested, setCancelRequested] = useState(false);
-  const [songsForPlaylist, setSongsForPlaylist] = useState([]);
-  const [generatedPlaylist, setGeneratedPlaylist] = useState();
 
   const chosenSongMax = 5;
 
@@ -133,9 +131,9 @@ const CreatePlaylist = () => {
             <tbody>
               {filteredSongs.map((song, index) => (
                 <tr
+                  className="song-row"
                   key={index}
                   onClick={() => handleToggleSong(song)}
-                  style={{ cursor: "pointer" }}
                 >
                   <td>
                     <Checkbox
@@ -160,7 +158,7 @@ const CreatePlaylist = () => {
             <button
               className="sortify-music-btn"
               disabled={selectedSongs.length != chosenSongMax}
-              onClick={() => generatePlaylist(songsForPlaylist)}
+              onClick={() => generatePlaylist()}
               style={{
                 opacity: selectedSongs.length != chosenSongMax ? 0.2 : 1,
                 marginRight: "5rem",

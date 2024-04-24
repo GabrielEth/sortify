@@ -73,6 +73,13 @@
   border-bottom-right-radius: 10px;
 }
 
+.song-row {
+  cursor: pointer;
+  &:hover {
+    background-color: #b7e4c7;
+  }
+}
+
 .table-footer {
   margin-top: 3rem;
 }
