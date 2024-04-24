@@ -11,23 +11,6 @@ const PlaylistComponent = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
-  async function fetchFirstTrackImage(tracksHref, accessToken) {
-    try {
-      const response = await fetchWithRetry(tracksHref + '?limit=1', accessToken); // Fetch only the first track
-      const data = await response.json();
-      if (data.items.length > 0 && data.items[0].track.album.images.length > 0) {
-        return data.items[0].track.album.images[0].url; // Return the URL of the first image of the album
-      } else {
-        return null; // Return null if no image is found
-      }
-    } catch (error) {
-      console.error('Error fetching first track image:', error);
-      return null;
-    }
-  }
-  
-  
-
   const fetchPlaylists = async () => {
     setIsLoading(true);
     setError("");
@@ -35,14 +18,10 @@ const PlaylistComponent = () => {
     try {
       const response = await callSpotifyAPI("/api/fetch-playlists");
       if (response && response.success) {
-        const promises = response.playlists.map(async (playlist) => {
-          const imageUrl = await fetchFirstTrackImage(playlist.id);
-          return {
-            ...playlist,
-            imageUrl,
-          };
-        });
-        const playlistsWithImages = await Promise.all(promises);
+        const playlistsWithImages = response.playlists.map((playlist) => ({
+          ...playlist,
+          imageUrl: (playlist.images && playlist.images.length > 0) ? playlist.images[0].url : defaultPlaylistImage,
+        }));
         setPlaylists(playlistsWithImages);
       } else {
         setError("Failed to fetch playlists");
@@ -56,10 +35,10 @@ const PlaylistComponent = () => {
   };
 
   useEffect(() => {
-    if (playlists.length === 0 && accessToken) {
+    if (playlists.length == 0 && accessToken) {
       fetchPlaylists();
     }
-  }, [accessToken, playlists.length]);
+  }, [accessToken, playlists]);
 
   if (error) return <div>Error: {error}</div>;
 

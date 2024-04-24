@@ -220,47 +220,28 @@ async function fetchSongDetails(songList, accessToken) {
   return detailedSongs;
 }
 
-async function fetchFirstTrackImage(tracksHref, accessToken) {
-  try {
-    const response = await fetchWithRetry(tracksHref + '?limit=1', accessToken);
-    const data = await response.json();
-    if (data.items.length > 0 && data.items[0].track.album.images.length > 0) {
-      return data.items[0].track.album.images[0].url;
-    } else {
-      return 'path_to_default_image'; // Default image path if no image found
-    }
-  } catch (error) {
-    console.error('Error fetching first track image:', error);
-    return 'path_to_default_image'; // Default image path on error
-  }
-}
-
-async function fetchPlaylistsWithFirstTrackImage(accessToken) {
-  const playlists = await fetchUserPlaylists(accessToken);
-  const playlistsWithImages = await Promise.all(playlists.map(async (playlist) => {
-    const imageUrl = await fetchFirstTrackImage(playlist.tracksHref, accessToken);
-    return { ...playlist, imageUrl };
-  }));
-  return playlistsWithImages;
-}
-
 router.get("/fetch-playlists", async (req, res) => {
   try {
-    const accessToken = req.header("Authorization").split(" ")[1]; // Extract access token
-    const playlists = await fetchPlaylistsWithFirstTrackImage(accessToken);
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return res
+        .status(401)
+        .json({ success: false, message: "No authorization token provided" });
+    }
+    const accessToken = req.header("Authorization").split(" ")[1];
+
+    const playlists = await fetchUserPlaylists(accessToken);
     res.json({
       success: true,
       playlists,
     });
   } catch (error) {
-    console.error("Error fetching playlists with images:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to fetch user playlists with images",
+      message: "Failed to fetch user playlists",
     });
   }
 });
-
 
 router.get("/fetch-liked-songs-and-details", async (req, res) => {
   try {
