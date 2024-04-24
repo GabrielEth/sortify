@@ -11,8 +11,6 @@ const CreatePlaylist = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [cancelRequested, setCancelRequested] = useState(false);
-  const [songsForPlaylist, setSongsForPlaylist] = useState([]);
-  const [generatedPlaylist, setGeneratedPlaylist] = useState();
 
   const chosenSongMax = 5;
 
@@ -32,54 +30,40 @@ const CreatePlaylist = () => {
     setSearchTerm(e.target.value);
   };
 
-  const generatePlaylist = async (songsForPlaylist) => {
+  const generatePlaylist = async () => {
     setIsLoading(true);
     setCancelRequested(false);
-
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-
+    const accessToken = localStorage.getItem("access_token");
+    const userId = localStorage.getItem("userId");
+    const sourceData = JSON.parse(sessionStorage.getItem("likedSongs"));
+    const sampleData = selectedSongs;
+    const playlistDetails = {
+      name: "Sortify Playlist",
+      public: true,
+      description: "Your playlist based on your selected songs",
+    };
     try {
-      const response = await fetch(`https://api.spotify.com/v1/playlists`, {
+      const response = await fetch("/api/create-playlist", {
         method: "POST",
         headers: {
-          Authorization: "Bearer 1POdFZRZbvb...qqillRxMr2z",
           "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
-          name: "My New Playlist",
-          public: false,
-          description: "Playlist description",
-          tracks: songsForPlaylist.map((song) => song.uri),
+          userId,
+          playlistDetails,
+          sourceData,
+          sampleData,
         }),
       });
 
       if (!response.ok) {
         throw new Error("Failed to create playlist");
       }
-
       const data = await response.json();
-
-      const playlistId = data.id;
-
-      const addTracksResponse = await fetch(
-        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer 1POdFZRZbvb...qqillRxMr2z",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            uris: songsForPlaylist.map((song) => song.uri),
-          }),
-        }
-      );
-
-      if (!addTracksResponse.ok) {
-        throw new Error("Failed to add tracks to playlist");
-      }
+      return data;
     } catch (error) {
-      console.error("Error creating or updating playlist:", error);
+      console.error("Error creating playlist:", error);
     } finally {
       setIsLoading(false);
     }
@@ -93,9 +77,10 @@ const CreatePlaylist = () => {
     setCancelRequested(true);
   };
 
-  const filteredSongs = likedSongs.filter((song) =>
-    song.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    song.artists[0].name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredSongs = likedSongs.filter(
+    (song) =>
+      song.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      song.artists[0].name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -145,7 +130,11 @@ const CreatePlaylist = () => {
             </thead>
             <tbody>
               {filteredSongs.map((song, index) => (
-                <tr className="song-row" key={index} onClick={() => handleToggleSong(song)} >
+                <tr
+                  className="song-row"
+                  key={index}
+                  onClick={() => handleToggleSong(song)}
+                >
                   <td>
                     <Checkbox
                       checked={selectedSongs.includes(song)}
@@ -169,9 +158,11 @@ const CreatePlaylist = () => {
             <button
               className="sortify-music-btn"
               disabled={selectedSongs.length != chosenSongMax}
-              onClick={() => generatePlaylist(songsForPlaylist)}
+              onClick={() => generatePlaylist()}
               style={{
                 opacity: selectedSongs.length != chosenSongMax ? 0.2 : 1,
+                marginRight: "5rem",
+                marginTop: "1rem",
               }}
             >
               Generate
@@ -179,6 +170,7 @@ const CreatePlaylist = () => {
             {isLoading && (
               <button
                 className="sortify-music-btn"
+                style={{ margin: "1rem .5rem" }}
                 onClick={() => cancelGeneration()}
               >
                 Cancel

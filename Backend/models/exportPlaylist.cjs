@@ -87,6 +87,7 @@ async function exportPlaylistToSpotify(
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          position: 0,
           uris: trackUris,
         }),
       }
@@ -101,36 +102,10 @@ async function exportPlaylistToSpotify(
     console.log(
       `Playlist created and tracks added. Playlist ID: ${playlist.id}`
     );
-    return playlist.id; // Return the new playlist ID for further use
+    return playlist.id;
   } catch (error) {
     console.error("Error exporting playlist to Spotify:", error);
   }
 }
 
-// Example usage
-const userId = "spotify_user_id_here";
-const playlistId = "your_existing_playlist_id_here";
-const accessToken = "your_spotify_access_token_here";
-const playlistDetails = {
-  name: "New Generated Playlist",
-  description: "Playlist description here...",
-  public: true,
-};
-const trackUris = [
-  "spotify:track:4iV5W9uYEdYUVa79Axb7Rh",
-  "spotify:track:1301WleyT98MSxVHPZCA6M",
-];
-
-// exportPlaylistToSpotify(userId, accessToken, playlistDetails, trackUris)
-//   .then((playlistId) =>
-//     console.log(`Playlist exported successfully: ${playlistId}`)
-//   )
-//   .catch((error) => console.error(error));
-
-// updatePlaylistOnSpotify(accessToken, playlistId, trackUris)
-//   .then((updatedPlaylistId) =>
-//     console.log(`Playlist updated successfully: ${updatedPlaylistId}`)
-//   )
-//   .catch((error) => console.error(error));
-
-module.exports = router;
+module.exports = exportPlaylistToSpotify;
