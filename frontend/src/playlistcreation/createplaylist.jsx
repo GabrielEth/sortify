@@ -38,7 +38,6 @@ const CreatePlaylist = () => {
     const accessToken = localStorage.getItem("access_token");
     const userId = localStorage.getItem("userId");
     const sourceData = JSON.parse(sessionStorage.getItem("likedSongs"));
-    console.log(sourceData[1]);
     const sampleData = selectedSongs;
     const playlistDetails = {
       name: "Sortify Playlist",
