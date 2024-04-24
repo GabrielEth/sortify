@@ -18,7 +18,7 @@ const PlaylistComponent = () => {
     try {
       const response = await callSpotifyAPI("/api/fetch-playlists");
       if (response && response.success) {
-        const playlistsWithImages = response.playlists.map((playlist) => ({
+        response.playlists.map((playlist) => ({
           ...playlist,
           imageUrl:
             playlist.images && playlist.images.length > 0
