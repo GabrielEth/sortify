@@ -145,7 +145,7 @@ const CreatePlaylist = () => {
             </thead>
             <tbody>
               {filteredSongs.map((song, index) => (
-                <tr key={index} onClick={() => handleToggleSong(song)} style={{ cursor: "pointer" }}>
+                <tr className="song-row" key={index} onClick={() => handleToggleSong(song)} >
                   <td>
                     <Checkbox
                       checked={selectedSongs.includes(song)}
