@@ -5,7 +5,7 @@ import { useLikedSongs } from "../LikedSongsContext";
 import callSpotifyAPI from "../services/apiservice";
 import CircularIndeterminate from "../loading-circle";
 
-const UpdatePlaylist = () => {
+const UpdatePlaylist = ({ accessToken }) => {
   const { likedSongs } = useLikedSongs();
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState('');
@@ -71,7 +71,7 @@ const UpdatePlaylist = () => {
       const response = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
         method: "PUT",
         headers: {
-          Authorization: "Bearer 1POdFZRZbvb...qqillRxMr2z",
+            Authorization: `Bearer ${accessToken}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
@@ -196,18 +196,20 @@ const UpdatePlaylist = () => {
             >
               Generate
             </button>
-            {isLoading && (
-              <button
-                className="sortify-music-btn"
-                onClick={cancelGeneration}
-              >
-                Cancel
-              </button>
-            )}
+            
+            
           </span>
         </div>
 
         {isLoading && <CircularIndeterminate message="Generating you playlist" />}
+        {!isLoading && (
+                <button
+                    className="sortify-music-btn"
+                    onClick={handleExport}
+                >
+                    Export
+                </button>
+            )}
       </div>
     </>
   );

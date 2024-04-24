@@ -5,12 +5,14 @@ import { useLikedSongs } from "../LikedSongsContext";
 import callSpotifyAPI from "../services/apiservice";
 import CircularIndeterminate from "../loading-circle";
 
-const CreatePlaylist = () => {
+const CreatePlaylist = ({ accessToken }) => {
   const { likedSongs } = useLikedSongs();
   const [selectedSongs, setSelectedSongs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [playlistId, setPlaylistId] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [cancelRequested, setCancelRequested] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   const placeholderSongs = [
     { name: "Song 1" },
@@ -84,6 +86,74 @@ const CreatePlaylist = () => {
   const filteredSongs = likedSongs.filter((song) =>
     song.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  useEffect(() => {
+    async function getSpotifyUserId() {
+      try {
+        const data = await callSpotifyAPI("https://api.spotify.com/v1/me");
+        const spotifyUserId = data.id;
+        setUserId(spotifyUserId);
+      } catch (error) {
+        console.error("Failed to fetch user profile:", error);
+      }
+    }
+    getSpotifyUserId();
+  }, [accessToken]);
+
+  const handleExport = async () => {
+    if (!userId) {
+      console.error("User ID is not available.");
+      return;
+    }
+  
+    try {
+      //Creating a new playlist
+      const createPlaylistResponse = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer 1POdFZRZbvb...qqillRxMr2z",
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          name: "Discover Sortify",
+          description: "Highly personalized with Sortify based on your chosen songs",
+          public: false
+        })
+      });
+  
+      if (!createPlaylistResponse.ok) {
+        throw new Error("Failed to create playlist");
+      }
+  
+      const createdPlaylistData = await createPlaylistResponse.json();
+      const newPlaylistId = createdPlaylistData.id;
+  
+      console.log("Playlist created:", createdPlaylistData);
+  
+      //Add songs to the new playlist
+      const addTracksResponse = await fetch(`https://api.spotify.com/v1/playlists/${newPlaylistId}/tracks`, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          uris: selectedSongs.map(song => song.uri),
+          position: 0
+        })
+      });
+  
+      if (!addTracksResponse.ok) {
+        throw new Error("Failed to add tracks to playlist");
+      }
+  
+      const addedTracksData = await addTracksResponse.json();
+      console.log("Tracks added to playlist:", addedTracksData);
+  
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   return (
     <>
@@ -168,9 +238,16 @@ const CreatePlaylist = () => {
                 Cancel
               </button>
             )}
+            {!isLoading && (
+                        <button
+                            className="sortify-music-btn"
+                            onClick={handleExport}
+                        >
+                            Export
+                        </button>
+                    )}
           </span>
         </div>
-
         {isLoading && <CircularIndeterminate message="Generating you playlist" />}
       </div>
     </>
