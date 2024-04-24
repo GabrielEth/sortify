@@ -20,9 +20,12 @@ const PlaylistComponent = () => {
       if (response && response.success) {
         const playlistsWithImages = response.playlists.map((playlist) => ({
           ...playlist,
-          imageUrl: (playlist.images && playlist.images.length > 0) ? playlist.images[0].url : defaultPlaylistImage,
+          imageUrl:
+            playlist.images && playlist.images.length > 0
+              ? playlist.images[0].url
+              : defaultPlaylistImage,
         }));
-        setPlaylists(playlistsWithImages);
+        setPlaylists(response.playlists);
       } else {
         setError("Failed to fetch playlists");
       }
