@@ -35,8 +35,31 @@ const CreatePlaylist = () => {
   const generatePlaylist = async (songsForPlaylist) => {
     setIsLoading(true);
     setCancelRequested(false);
+    const accessToken = localStorage.getItem("access_token");
+    const sourceData = sessionStorage.getItem("likedSongs");
+    const sampleData = selectedSongs;
+    try {
+      const response = await fetch("http://localhost:5555/create-playlist", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`, // Ensure the token is included in the Authorization header
+        },
+        body: JSON.stringify({
+          userId,
+          playlistDetails,
+          sourceData,
+          sampleData,
+        }),
+      });
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+      if (!response.ok) {
+        throw new Error("Failed to create playlist");
+      }
+      const data = await response.json();
+    } catch (error) {
+      console.error("Error creating playlist:", error);
+    }
 
     try {
       const response = await fetch(`https://api.spotify.com/v1/playlists`, {
@@ -93,9 +116,10 @@ const CreatePlaylist = () => {
     setCancelRequested(true);
   };
 
-  const filteredSongs = likedSongs.filter((song) =>
-    song.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    song.artists[0].name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredSongs = likedSongs.filter(
+    (song) =>
+      song.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      song.artists[0].name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   return (
@@ -145,7 +169,11 @@ const CreatePlaylist = () => {
             </thead>
             <tbody>
               {filteredSongs.map((song, index) => (
-                <tr key={index} onClick={() => handleToggleSong(song)} style={{ cursor: "pointer" }}>
+                <tr
+                  key={index}
+                  onClick={() => handleToggleSong(song)}
+                  style={{ cursor: "pointer" }}
+                >
                   <td>
                     <Checkbox
                       checked={selectedSongs.includes(song)}

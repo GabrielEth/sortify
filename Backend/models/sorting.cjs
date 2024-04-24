@@ -31,6 +31,7 @@ function formatSongDetails(songs) {
       name: song.name,
       id: song.id,
       artist,
+      uri,
       features: {
         danceability,
         energy,
@@ -104,3 +105,5 @@ function kNearestNeighbors(data, queryList, k) {
     return []; // Return an empty array in case of error
   }
 }
+
+module.exports = { kNearestNeighbors };

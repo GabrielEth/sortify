@@ -1,41 +1,6 @@
-/*
- * Important:
- * ----------
- * - Ensure compliance with Spotify's Web API terms of use.
- * - Always secure user data if adapting this script for web applications.
- * 
- * For algorithm purposes:
-
- * - id: The Spotify ID for the track, a unique identifier used by Spotify to reference the song.
- * - artists: A list of the names of artists who performed or contributed to the song. Since a track can have multiple artists, this is mapped to an array.
- * - album: The name of the album on which the song appears.
- * - release_date: The date the album was first released, which can vary in precision (e.g., year, year-month, or exact date).
- * - genre: The musical genre(s) associated with the song. As genres are generally associated with artists rather than individual tracks, this would 
- * require additional API calls to the artists' endpoints to fetch.
- * - bpm (Beats Per Minute): The tempo of the song, a measure of how fast or slow the song is, which is a key factor in determining the energy and mood of the track.
- * - danceability: A measure from 0.0 to 1.0 of how suitable a track is for dancing based on musical elements including tempo, rhythm stability, beat 
- * strength, and overall regularity.
- * - energy: A measure from 0.0 to 1.0 that represents a perceptual measure of intensity and activity. Typically, energetic tracks feel fast, loud, and noisy.
- * - acousticness: A measure from 0.0 to 1.0 of whether the track is acoustic. 1.0 represents high confidence the track is acoustic.
- * - instrumentalness: Predicts whether a track contains no vocals. Tracks with a value closer to 1.0 are instrumental, whereas values near 0.0 
- * indicate the track contains vocal content.
- * - liveness: Detects the presence of an audience in the recording. Higher values (closer to 1.0) indicate the track was performed live.
- * - loudness: The overall loudness of a track in decibels (dB). Loudness values are averaged across the entire track and are useful in 
- * understanding the relative volume.
- * - speechiness: Measures the presence of spoken words in a track. A value above 0.66 likely means the track is mostly spoken word 
- * (talk show, audiobook, poetry); a value between 0.33 and 0.66 could indicate both music and speech (such as rap music), and a value 
- * below 0.33 likely means the track is music without speech.
- * - valence: A measure from 0.0 to 1.0 describing the musical positiveness conveyed by a track. Tracks with high valence sound more 
- * positive (happy, cheerful, euphoric), while tracks with low valence sound more negative (sad, depressed, angry).
- * - duration_ms: The duration of the track in milliseconds. This is useful for understanding the length of the song.
- * - popularity: A rating from 0 to 100, with 100 being the most popular. The popularity is calculated by Spotify and is based, in 
- * part, on the total number of plays the track has received and how recent those plays are.
- * - explicit: Indicates whether the song contains explicit content (true or false). This is useful for applications that wish to 
- * filter out songs with explicit lyrics.
- */
-
 const express = require("express");
 const router = express.Router();
+const { knearestneighbors } = require("./sorting");
 
 function sleep(seconds) {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
@@ -167,9 +132,6 @@ async function fetchSongDetails(songList, accessToken) {
   // Split songIds into chunks of 100
   const songIdChunks = chunkArray(songIds, 50);
 
-  // Limit to only the first chunk of up to 100 song IDs
-  // const firstChunk = songIdChunks[0] ? songIdChunks[0] : [];
-
   // Now, songIdChunks is a 2d array, where each sub-array has up to 100 song IDs.
   const trackIdStrings = songIdChunks.map((chunk) => chunk.join(","));
 
@@ -202,7 +164,7 @@ async function fetchSongDetails(songList, accessToken) {
     }
   }
 
-  // At this point, allTrackDetails and allFeaturesDetails contain the details and features for all tracks// At this point, allTrackDetails and allFeaturesDetails contain the details and features for all tracks
+  // At this point, allTrackDetails and allFeaturesDetails contain the details and features for all tracks
   const detailedSongs = allTrackDetails.map((track, index) => {
     const { album, available_markets, duration_ms, ...rest } = track;
     // Map over the artists to include only their name and id
@@ -218,6 +180,12 @@ async function fetchSongDetails(songList, accessToken) {
   });
 
   return detailedSongs;
+}
+
+async function generatePlaylist(sourceData, sampleData) {
+  const tracks = await kNearestNeighbors(sourceData, sampleData, 30);
+  const trackUris = tracks.map((song) => song.uri);
+  return trackUris;
 }
 
 router.get("/fetch-playlists", async (req, res) => {
@@ -275,7 +243,10 @@ router.post("/create-playlist", async (req, res) => {
   const userId = req.body.userId;
   const accessToken = req.header("Authorization").split(" ")[1];
   const playlistDetails = req.body.playlistDetails;
-  const trackUris = req.body.trackUris;
+  const sourceData = req.body.sourceData;
+  const sampleData = req.body.sampleData;
+
+  const trackUris = await generatePlaylist(sourceData, sampleData);
 
   try {
     const playlistId = await exportPlaylistToSpotify(
