@@ -80,6 +80,7 @@ export default function Dashboard() {
     async function getSpotifyProfilePicture() {
       try {
         const data = await callSpotifyAPI("https://api.spotify.com/v1/me");
+        localStorage.setItem("userId", data.id);
         if (data.images.length > 0) {
           const largestImage = data.images.sort((a, b) => b.width - a.width)[0];
           setProfilePicture(largestImage.url);

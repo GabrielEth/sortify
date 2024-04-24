@@ -36,6 +36,7 @@ const CreatePlaylist = () => {
     setIsLoading(true);
     setCancelRequested(false);
     const accessToken = localStorage.getItem("access_token");
+    const userId = localStorage.getItem("userId");
     const sourceData = sessionStorage.getItem("likedSongs");
     const sampleData = selectedSongs;
     try {

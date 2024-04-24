@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { knearestneighbors } = require("./sorting");
+const { knearestneighbors } = require("./sorting.cjs");
 
 function sleep(seconds) {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
