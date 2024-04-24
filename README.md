@@ -191,7 +191,7 @@ Stormie Renevey
 - Scrum 116: Redeploy App
     - [Scrum 116](https://cs3398s24luna.atlassian.net/browse/SCRUM-116) | [Bitbucket]()
 - Scrum 130: Playlist album images
-    - [Scrum 130](https://cs3398s24luna.atlassian.net/browse/SCRUM-130) | [Bitbucket]()
+    - [Scrum 130](https://cs3398s24luna.atlassian.net/browse/SCRUM-130) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/64)
 - Scrum 135: Fix page movement with Tutorial
     - [Scrum 135](https://cs3398s24luna.atlassian.net/browse/SCRUM-135) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/45)
 - Scrum 128: Store user's liked songs when logging in
@@ -224,7 +224,8 @@ Mason Melead
     - [Scrum 138](https://cs3398s24luna.atlassian.net/browse/SCRUM-138) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/60)
 - Scrum 102: Implement Sorting Algorithms
     - [Scrum 102](https://cs3398s24luna.atlassian.net/browse/SCRUM-102) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/60)
-
+- Scrum 147: Integrate Algorithm into Create Playlist Component
+    - [Scrum 147](https://cs3398s24luna.atlassian.net/browse/SCRUM-147) | [Bitbucket](https://bitbucket.org/cs3398s24luna/%7B9fa3a791-70c1-4eff-b116-22c031575c68%7D/pull-requests/65)
 
 
 
