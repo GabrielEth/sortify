@@ -133,4 +133,4 @@ const trackUris = [
 //   )
 //   .catch((error) => console.error(error));
 
-module.exports = router;
+module.exports = [exportPlaylistToSpotify];

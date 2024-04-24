@@ -31,7 +31,7 @@ function formatSongDetails(songs) {
       name: song.name,
       id: song.id,
       artist,
-      uri,
+      uri: song.uri,
       features: {
         danceability,
         energy,
@@ -90,6 +90,7 @@ function kNearestNeighbors(data, queryList, k) {
     const centroid = calculateCentroid(selected);
 
     // Calculate distance from queryPoint to all others
+    console.log(source);
     const distances = source.map((point, index) => ({
       index,
       distance: euclideanDistance(point.features, centroid),

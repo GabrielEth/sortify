@@ -32,12 +32,13 @@ const CreatePlaylist = () => {
     setSearchTerm(e.target.value);
   };
 
-  const generatePlaylist = async (songsForPlaylist) => {
+  const generatePlaylist = async () => {
     setIsLoading(true);
     setCancelRequested(false);
     const accessToken = localStorage.getItem("access_token");
     const userId = localStorage.getItem("userId");
-    const sourceData = sessionStorage.getItem("likedSongs");
+    const sourceData = JSON.parse(sessionStorage.getItem("likedSongs"));
+    console.log(sourceData[1]);
     const sampleData = selectedSongs;
     const playlistDetails = {
       name: "Sortify Playlist",
@@ -45,7 +46,7 @@ const CreatePlaylist = () => {
       description: "Your playlist based on your selected songs",
     };
     try {
-      const response = await fetch("http://localhost:5555/create-playlist", {
+      const response = await fetch("/api/create-playlist", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
