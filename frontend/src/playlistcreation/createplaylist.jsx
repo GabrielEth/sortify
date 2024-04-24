@@ -39,12 +39,17 @@ const CreatePlaylist = () => {
     const userId = localStorage.getItem("userId");
     const sourceData = sessionStorage.getItem("likedSongs");
     const sampleData = selectedSongs;
+    const playlistDetails = {
+      name: "Sortify Playlist",
+      public: true,
+      description: "Your playlist based on your selected songs",
+    };
     try {
       const response = await fetch("http://localhost:5555/create-playlist", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${accessToken}`, // Ensure the token is included in the Authorization header
+          Authorization: `Bearer ${accessToken}`,
         },
         body: JSON.stringify({
           userId,
@@ -58,52 +63,9 @@ const CreatePlaylist = () => {
         throw new Error("Failed to create playlist");
       }
       const data = await response.json();
+      return data;
     } catch (error) {
       console.error("Error creating playlist:", error);
-    }
-
-    try {
-      const response = await fetch(`https://api.spotify.com/v1/playlists`, {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer 1POdFZRZbvb...qqillRxMr2z",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: "My New Playlist",
-          public: false,
-          description: "Playlist description",
-          tracks: songsForPlaylist.map((song) => song.uri),
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Failed to create playlist");
-      }
-
-      const data = await response.json();
-
-      const playlistId = data.id;
-
-      const addTracksResponse = await fetch(
-        `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: "Bearer 1POdFZRZbvb...qqillRxMr2z",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            uris: songsForPlaylist.map((song) => song.uri),
-          }),
-        }
-      );
-
-      if (!addTracksResponse.ok) {
-        throw new Error("Failed to add tracks to playlist");
-      }
-    } catch (error) {
-      console.error("Error creating or updating playlist:", error);
     } finally {
       setIsLoading(false);
     }
