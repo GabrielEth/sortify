@@ -247,7 +247,7 @@ router.post("/create-playlist", async (req, res) => {
   const sampleData = req.body.sampleData;
 
   const knnInfo = await generatePlaylist(sourceData, sampleData);
-  const trackUris = knnInfo.map(item => sourceData[item.index - 1].uri);
+  const trackUris = knnInfo.map(item => sourceData[item].uri);
   
   try {
     const playlistId = await exportPlaylistToSpotify(

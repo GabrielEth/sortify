@@ -100,7 +100,7 @@ function kNearestNeighbors(data, queryList, k) {
     distances.sort((a, b) => a.distance - b.distance);
 
     // Return first k sorted points
-    return distances.slice(0, k);
+    return distances.slice(0, k).map((item) => item.index);
   } catch (error) {
     console.error("Error in kNearestNeighbors:", error);
     return []; // Return an empty array in case of error
