@@ -55,11 +55,10 @@ function calculateCentroid(querySongs) {
     energy: 0,
     acousticness: 0,
     instrumentalness: 0,
-    liveness: 0,
-    loudness: 0,
     speechiness: 0,
     valence: 0,
     normalizedTempo: 0,
+    liveness: 0,
   };
 
   // Sum up the values of each feature across all query songs
@@ -69,7 +68,6 @@ function calculateCentroid(querySongs) {
     centroid.acousticness += song.features.acousticness;
     centroid.instrumentalness += song.features.instrumentalness;
     centroid.liveness += song.features.liveness;
-    centroid.loudness += song.features.loudness;
     centroid.speechiness += song.features.speechiness;
     centroid.valence += song.features.valence;
     centroid.normalizedTempo += song.features.normalizedTempo;
@@ -90,10 +88,14 @@ function kNearestNeighbors(data, queryList, k) {
     const centroid = calculateCentroid(selected);
 
     // Calculate distance from queryPoint to all others
-    console.log(source);
+    console.log(Object.values(source[0].features));
+    console.log(centroid);
     const distances = source.map((point, index) => ({
       index,
-      distance: euclideanDistance(point.features, centroid),
+      distance: euclideanDistance(
+        Object.values(point.features),
+        Object.values(centroid)
+      ),
     }));
 
     // Sort by distance

@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const { kNearestNeighbors } = require("./sorting.cjs");
-const { exportPlaylistToSpotify } = require("./exportPlaylist.cjs");
+const exportPlaylistToSpotify = require("./exportPlaylist.cjs");
+
 function sleep(seconds) {
   return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
 }
