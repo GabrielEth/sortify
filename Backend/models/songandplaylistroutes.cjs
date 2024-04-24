@@ -185,7 +185,9 @@ async function fetchSongDetails(songList, accessToken) {
 
 async function generatePlaylist(sourceData, sampleData) {
   const tracks = await kNearestNeighbors(sourceData, sampleData, 30);
+  console.log(tracks);
   const trackUris = tracks.map((song) => song.uri);
+  console.log(trackUris);
   return trackUris;
 }
 
@@ -224,7 +226,6 @@ router.get("/fetch-liked-songs-and-details", async (req, res) => {
 
     const likedSongs = await fetchLikedSongs(accessToken);
 
-    console.log("getting song details");
     const songDetails = await fetchSongDetails(likedSongs, accessToken);
 
     res.json({

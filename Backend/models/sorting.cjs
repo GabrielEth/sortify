@@ -88,8 +88,6 @@ function kNearestNeighbors(data, queryList, k) {
     const centroid = calculateCentroid(selected);
 
     // Calculate distance from queryPoint to all others
-    console.log(Object.values(source[0].features));
-    console.log(centroid);
     const distances = source.map((point, index) => ({
       index,
       distance: euclideanDistance(
