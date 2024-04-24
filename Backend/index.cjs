@@ -4,13 +4,16 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const querystring = require("querystring");
 const axios = require("axios");
-
+const bodyParser = require("body-parser");
 const app = express();
 
 const corsOptions = {
   origin: "http://localhost:5173",
   optionsSuccessStatus: 200,
 };
+
+app.use(bodyParser.json({ limit: "50mb" }));
+app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
 app.use(cors(corsOptions));
 app.use(express.json());
