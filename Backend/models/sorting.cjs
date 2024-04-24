@@ -9,26 +9,40 @@ function euclideanDistance(point1, point2) {
 // takes a list of songs, formats them to be used for sorting
 function formatSongDetails(songs) {
   return songs.map((song) => {
-    // Destructure to separate the properties
-    const {
-      name,
-      id,
-      artists,
-      album,
-      genre,
-      release_date,
-      popularity,
-      duration_ms,
-      explicit,
-      ...audioFeatures
-    } = song;
+    // Extract only the required artist details (assuming only the first artist is needed)
+    const artist = song.artists.map(({ name, id }) => ({ name, id }))[0];
 
-    // Return the new structure
+    // Extract the required audio features
+    const {
+      danceability,
+      energy,
+      speechiness,
+      acousticness,
+      instrumentalness,
+      liveness,
+      valence,
+      tempo,
+    } = song.features;
+
+    const normalizedTempo = tempo / 200;
+
+    // Return the new structure with only the specified fields
     return {
-      name,
-      id,
-      artists,
-      audioFeatures,
+      name: song.name,
+      id: song.id,
+      artist,
+      features: {
+        danceability,
+        energy,
+        speechiness,
+        acousticness,
+        instrumentalness,
+        liveness,
+        valence,
+        normalizedTempo,
+      },
+      preview_url: song.preview_url,
+      analysis_url: song.features.analysis_url,
     };
   });
 }
@@ -36,7 +50,6 @@ function formatSongDetails(songs) {
 function calculateCentroid(querySongs) {
   const numSongs = querySongs.length;
   const centroid = {
-    //bpm: 0,
     danceability: 0,
     energy: 0,
     acousticness: 0,
@@ -45,19 +58,20 @@ function calculateCentroid(querySongs) {
     loudness: 0,
     speechiness: 0,
     valence: 0,
+    normalizedTempo: 0,
   };
 
   // Sum up the values of each feature across all query songs
   for (const song of querySongs) {
-    //centroid.bpm += song.bpm; --------------- bpm might not be relevant given other features
-    centroid.danceability += song.danceability;
-    centroid.energy += song.energy;
-    centroid.acousticness += song.acousticness;
-    centroid.instrumentalness += song.instrumentalness;
-    centroid.liveness += song.liveness;
-    centroid.loudness += song.loudness;
-    centroid.speechiness += song.speechiness;
-    centroid.valence += song.valence;
+    centroid.danceability += song.features.danceability;
+    centroid.energy += song.features.energy;
+    centroid.acousticness += song.features.acousticness;
+    centroid.instrumentalness += song.features.instrumentalness;
+    centroid.liveness += song.features.liveness;
+    centroid.loudness += song.features.loudness;
+    centroid.speechiness += song.features.speechiness;
+    centroid.valence += song.features.valence;
+    centroid.normalizedTempo += song.features.normalizedTempo;
   }
 
   // Calculate the average value for each feature
@@ -75,7 +89,7 @@ function kNearestNeighbors(data, queryList, k) {
     const centroid = calculateCentroid(selected);
 
     // Calculate distance from queryPoint to all others
-    const distances = data.map((point, index) => ({
+    const distances = source.map((point, index) => ({
       index,
       distance: euclideanDistance(point.features, centroid),
     }));
@@ -85,5 +99,8 @@ function kNearestNeighbors(data, queryList, k) {
 
     // Return first k sorted points
     return distances.slice(0, k);
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error in kNearestNeighbors:", error);
+    return []; // Return an empty array in case of error
+  }
 }
