@@ -37,18 +37,31 @@ const fetchUserPlaylists = async (accessToken) => {
   let url = "https://api.spotify.com/v1/me/playlists?limit=50";
 
   while (url) {
-    const response = await fetchWithRetry(url, accessToken);
-    const data = await response.json();
-    playlists.push(
-      ...data.items.map((item) => ({
-        playlistId: item.id,
-        name: item.name,
-        tracksHref: item.tracks.href,
-      }))
-    );
-    url = data.next;
+    try {
+      const response = await fetchWithRetry(url, accessToken);
+      const data = await response.json();
+      playlists.push(
+        ...data.items.map((item) => {
+          // Safely log the Image URL, checking if item.images is truthy and has at least one element
+          if (item.images && item.images.length > 0) {
+            console.log("Image URL:", item.images[0].url); // Assuming item.images[0] exists and has a url property
+          } else {
+            console.log("Image URL: No image available");
+          }
+          return {
+            playlistId: item.id,
+            name: item.name,
+            tracksHref: item.tracks.href,
+            imageUrl: item.images && item.images[0] ? item.images[0].url : null,
+          };
+        })
+      );
+      url = data.next;
+    } catch (error) {
+      console.error("Failed to fetch or process playlists:", error);
+      break; // Exit the loop in case of an error
+    }
   }
-
   return playlists;
 };
 
